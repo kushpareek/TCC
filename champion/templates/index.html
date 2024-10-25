@@ -1,0 +1,4210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | Home</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.5/css/swiper.min.css">
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    {% load static %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    
+   
+      
+</head>
+
+<body>
+    <style>
+        /* Base Styles */
+       /* Base Styles */
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000;
+    color: #e0e0e0;
+    height: 10vh;
+    padding: 0 2%;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    opacity: 1;
+}
+
+.top-navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+}
+
+.top-navbar li {
+    margin: 0;
+}
+
+.top-navbar a {
+    text-decoration: none;
+    color: #ccc;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.top-navbar a:hover {
+    background-color: #ffcc00;
+    color: #111;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 204, 0, 0.3);
+}
+
+/* Logo Styles */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+    letter-spacing: 0.1em;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    max-height: 50px;
+    margin-right: 15px;
+}
+
+/* Full-Screen Overlay Navigation Styles */
+#nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    opacity: 0;
+    z-index: 3;
+}
+
+#nav-links.show {
+    transform: scaleY(1);
+    opacity: 1;
+}
+
+#nav-links li {
+    margin: 20px 0;
+}
+
+#nav-links a {
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+#nav-links a:hover {
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Menu Icon for Mobile */
+.menu-icon {
+    margin-right: 10px;
+    cursor: pointer;
+    width: 30px;
+    height: 25px;
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    z-index: 5;
+    transition: transform 0.3s ease;
+}
+
+.menu-icon div {
+    width: 100%;
+    height: 4px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.menu-icon .bar1 {
+    transform-origin: top left;
+}
+
+.menu-icon .bar3 {
+    transform-origin: bottom left;
+}
+
+/* Change to X when menu is open */
+.menu-icon.open .bar1 {
+    transform: rotate(40deg);
+    background-color: #fff;
+}
+
+.menu-icon.open .bar2 {
+    opacity: 0;
+}
+
+.menu-icon.open .bar3 {
+    transform: rotate(-40deg);
+    background-color: #fff;
+}
+
+/* Responsive Media Queries */
+@media (min-width: 769px) {
+    .menu-icon {
+        display: none;
+    }
+
+    .top-navbar {
+        justify-content: space-between;
+        opacity: 0.6;
+        position: relative;
+    }
+
+    #nav-links {
+        position: static;
+        transform: none;
+        background-color: transparent;
+        flex-direction: row;
+        justify-content: flex-end;
+        height: auto;
+        width: auto;
+        opacity: 1;
+    }
+
+    #nav-links li {
+        margin: 0 20px;
+    }
+
+    #nav-links a {
+        font-size: 16px;
+        
+    }
+
+    #nav-links a:hover {
+        color: #111;
+        background-color: #ffcc00;
+    }
+}
+
+/* Button Styles */
+.cta-btn {
+    background-color: #ffcc00;
+    color: #000;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.cta-btn:hover {
+    background-color: #e6b800;
+    color: #000;
+}
+
+/* Toggle Button Styles */
+.toggle {
+    position: relative;
+    display: inline-block;
+}
+
+.toggle__input {
+    display: none;
+}
+
+.toggle__label {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Montserrat';
+    font-weight: bold;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+.diagonal-line {
+    position: absolute;
+    top: 2px;
+    left: 75px;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transform: rotate(-210deg);
+    z-index: 2;
+    transition: width 0.4s ease-out;
+    transform-origin: left center;
+    pointer-events: none;
+}
+
+.toggle__input:checked + .toggle__label .diagonal-line {
+    width: 90%;
+}
+
+.toggle__label #buttonText {
+    z-index: 1;
+    position: relative;
+}
+
+/* Dropdown Styles */
+/* Base styles for the dropdown container */
+/* Base Dropdown */
+.dropdown {
+    position: relative;
+}
+
+/* Dropdown content - hidden by default */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #000;
+    top: 30px;
+    left: 0;
+    padding: 10px 0;
+    min-width: 150px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+/* Individual dropdown links inside the dropdown content */
+.dropdown-content a {
+    display: block;
+    padding: 10px 10px;
+    color: #e0e0e0;
+    font-size: 16px;
+    text-decoration: none;
+}
+.dropdown-link{
+    display: none;
+}
+
+/* Hover effect on links */
+.dropdown-content a:hover {
+    background-color: #ffcc00;
+    color: #111;
+}
+
+/* Show dropdown content on hover for desktop */
+@media (min-width: 769px) {
+    .dropdown:hover .dropdown-content {
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+    }
+    .dropdown:hover .dropdown-link{
+        display: block;
+    }
+}
+
+/* Mobile-specific dropdown behavior */
+@media (max-width: 768px) {
+    ul {
+        text-align: center;
+    }
+
+    /* Hide dropdown content by default for mobile */
+    .dropdown-content {
+        display: none;
+        position: static;
+        background-color: #000;
+        width: 100%;
+    }
+
+    /* When dropdown has 'show' class, display the content */
+    .dropdown.show .dropdown-content {
+        display: block;
+    }
+    .dropdown.show .dropdown-link {
+        display: block;
+    }
+   
+    /* Dropdown links styling */
+    .dropdown-content .dropdown-link {
+        display: none;
+        padding: 10px 20px;
+        color: #e0e0e0;
+    }
+
+    /* Hover effect on mobile */
+    .dropdown-content .dropdown-link a:hover {
+        background-color: #ffcc00;
+        color: #111;
+    }
+}.navbar-profile-img {
+            width: 35px;             /* Adjust width as needed */
+            height: 35px;  
+                      /* Adjust height as needed */
+            border-radius: 50%;      /* Makes the image circular */
+            object-fit: cover;       /* Ensures the image covers the container without distortion */
+            vertical-align: middle;  /* Aligns the image vertically */
+        }
+
+    </style>
+<script>
+    
+function toggleMusic() {
+
+  const muteToggle = document.getElementById("muteToggle");
+  const backgroundMusic = document.getElementById("backgroundMusic");
+  const buttonText = document.getElementById("buttonText");
+
+  if (muteToggle.checked) {
+    backgroundMusic.muted = true; // Mute the music
+    buttonText.textContent = "MUSIC";
+  } else {
+    backgroundMusic.muted = false; // Unmute the music
+    buttonText.textContent = "MUSIC";
+  }
+}
+
+</script>
+    <nav class="top-navbar">
+        <!-- Logo on the left -->
+        <div class="logo">
+            <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+            THE CHAMPIONS CLUB
+        </div>
+
+        <!-- Menu Icon for Mobile -->
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <ul id="nav-links">
+          
+            <li><a href="{% url 'news_feed' %}">NEWS</a></li>
+            
+          
+    
+            <!-- Dropdown tab for Resources -->
+            <li class="dropdown">
+                <a href="#">RESOURCES</a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'blog_list' %}">BLOGS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                    <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                    
+                    
+                </ul>
+            </li>
+
+
+
+            
+            <li><a href="{% url 'support_request' %}">CONTACT</a></li>
+            
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+            {% else %}
+            {% if registration.approved == 1 %}
+            {% if registration.membership_paid == 0 %}
+            <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li>
+            {% else %}
+            <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> Dashboard</a></li>
+            {% endif %}
+            {% else %}
+            <li class="dropdown">
+                <a href="#">
+                    {% if registration.profile_image %}
+                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                    {% else %}
+                        <i class="fa-solid fa-circle-user fa-xl"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'user_profile' %}">Profile</a></li>
+                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </li>
+            
+            {% endif %}
+            {% endif %}
+            <li>
+                <div class="toggle">
+                  <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                  <label for="muteToggle" class="toggle__label">
+                    <span id="buttonText">MUSIC</span>
+                    <div class="diagonal-line" id="diagonalLine"></div>
+                  </label>
+                </div>
+              </li>
+            <!-- <li>
+                <div class="toggle">
+                    <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                    <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                       </div>
+                </li> -->
+        </ul>
+    </nav>
+
+    <!-- Add your page content here -->
+
+    <script>
+        function toggleMenu() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.getElementById('nav-links');
+
+            menuIcon.classList.toggle('open');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+    <audio id="backgroundMusic" loop autoplay playsinline>
+        <source src="{% static 'audio/back_audio.mp3' %}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+<div class="progress-container">
+    <div class="progress-bar" id="myBar"></div>
+  </div>  
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const backgroundMusic = document.getElementById('backgroundMusic');
+  var audio = document.getElementById('backgroundMusic');
+  audio.volume = 0.02;
+  // Function to play audio after user interaction
+  function playBackgroundMusic() {
+    backgroundMusic.play()
+      .then(() => {
+        console.log('Audio started playing');
+      })
+      .catch(error => {
+        console.error('Failed to play audio:', error);
+      });
+    
+  }
+
+  // Add event listeners for user interaction
+  function enableAutoplay() {
+    document.addEventListener('click', startAudio);
+    document.addEventListener('touchstart', startAudio);
+  }
+
+  // Start playing the music and remove the event listener
+  function startAudio() {
+    playBackgroundMusic();
+    document.removeEventListener('click', startAudio);
+    document.removeEventListener('touchstart', startAudio);
+  }
+
+  enableAutoplay();
+});
+
+
+  // Toggle dropdown for mobile
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdownLinks = document.querySelectorAll('.dropdown > a');
+    
+    dropdownLinks.forEach(function(dropdownLink) {
+        dropdownLink.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            
+            const dropdown = this.parentElement; // Get the parent <li> element
+
+            // Toggle the 'show' class to show or hide the dropdown
+            dropdown.classList.toggle('show');
+
+            // Close any other open dropdowns
+            document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                if (otherDropdown !== dropdown) {
+                    otherDropdown.classList.remove('show');
+                }
+            });
+        });
+    });
+});
+
+
+   function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    const menuIcon = document.querySelector('.menu-icon');
+    navLinks.classList.toggle('show');
+    menuIcon.classList.toggle('open');
+}
+
+    </script>
+      <section id="dividing-section">
+
+      </section>
+    <div class="hero-container">
+        <video autoplay muted loop id="myVideo">
+            <source src="{% static 'videos/back2.mp4' %}" type="video/mp4">
+        </video>
+        <div class="pos-abs flex-cont text-container1">
+            
+            <p class="hero-text{% if user.is_authenticated %} authenticated{% endif %}">FOR CHAMPIONS BY CHAMPIONS</p>
+          
+        </div>
+        <div class="pos-abs flex-cont text-container2">
+            <div class="reveal-container">
+                <p class="reveal-box"></p>
+                <p class="hero-text2">WINNERS UNITED</p>
+                <p class="hero-text3">STEP INTO A WORLD OF ABUNDANCE WHERE ACHIEVEMENTS MATTER</p>
+                {% if not user.is_authenticated %}
+                <a href="#membership-section" class="hero-text4"><button>LEARN MORE</button></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+<!-- <style>
+ #CHAMPION-BANNER {
+    background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+    text-align: center;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: -20px; /* Adjust this value to control the blend into the next section */
+}
+
+#CHAMPION-BANNER::before,
+#CHAMPION-BANNER::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    
+    height: 100px; /* Height of the gradient blend */
+    background: linear-gradient(to bottom, transparent, transparent); /* Top blend gradient */
+    z-index: -1;
+}
+
+#CHAMPION-BANNER::after {
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 1)); /* Bottom blend gradient */
+    bottom: 0px; /* Negative value ensures smooth blend with the next section */
+}
+
+#CHAMPION-BANNER::before {
+    top: -0px; /* Ensures smooth blend with the section above */
+}
+.fa-arrow-down{
+    color:#fff;
+    text-decoration: none;
+}
+.authenticated {
+    transform: translateY(50px) !important;
+  }
+
+</style>
+
+    <section id="CHAMPION-BANNER">
+        <div class="who-is-a-champion">
+            {% if not user.is_authenticated %}
+            <h1>APPLICATIONS ARE NOW OPEN</h1>
+            {% else %}
+            {% if registration.approved == 1 %}
+            <h1>WELCOME CHAMPION</h1>
+            {% else %}
+            <h1>WELCOME ASSOCIATE</h1>
+            {% endif %}
+            {% endif %}
+            <a href="#membership-section"><i class="fa-solid fa-arrow-down"></i></a>
+        </div>
+    </section> -->
+    <!-- Add this in your template file -->
+<div class="marquee-container">
+    <div class="marquee">
+        <span>Special Announcement: We are pleased to announce that our team has started filming new content. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>
+        <span>Special Announcement: We are pleased to announce that our team has started filming new content. &nbsp; &nbsp;</span>
+    </div>
+</div>
+
+    <section id="dividing-section"></section>
+
+    </section>
+   
+    
+    <style>
+        /* Marquee Styles */
+/* Marquee Styles */
+
+.marquee-container {
+
+    
+    background-color: #000;
+    overflow: hidden;
+    height: 90px;
+    position: relative;
+    font-family: 'Roboto';
+    font-weight: 400;
+}
+
+.marquee {
+    display: flex;
+    width: max-content; /* Width adjusts to content size */
+    animation: marquee-animation 15s linear infinite;
+}
+
+.marquee span {
+    padding: 30px;
+    display: inline-block;
+    font-size: 28px; /* Adjust the font size as needed */
+    color: #fff; /* Gold color for text */
+    white-space: nowrap;
+}
+
+@keyframes marquee-animation {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+
+        .authenticated {
+    transform: translateY(50px) !important;
+  }
+            #who-is-a-champion3 {
+        height: 200px;
+        width: auto;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) 100%), url("{% static 'images/lightbackground.jpg'%}");
+        background-size: auto, cover;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        padding: 10px 20px;
+    }
+    #who-is-a-champion3 h1 {
+        margin-top:20px;
+        font-size: 48px;
+        color: #fff;
+        font-weight: 600;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+    }
+    .who-is-a-champion3 {
+       
+        display: flex;
+        flex-direction: row;
+        gap:20px;
+        align-items: center;
+        margin: 30px auto;
+    }
+        .who-is-a-champion3 button {
+        background-color: transparent;
+        width: 350px;
+        color: white;
+        
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-top: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        
+    }
+    
+    .who-is-a-champion3 button::before,
+    .who-is-a-champion3 button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 2px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    
+    .who-is-a-champion3 button::before {
+        left: 10px;
+    }
+    
+    .who-is-a-champion3 button::after {
+        right: 10px;
+    }
+    
+    .who-is-a-champion3 button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    @media (max-width: 768px) {
+        #who-is-a-champion3 {
+            padding: 60px 10px;
+            height: auto;
+        }
+        .who-is-a-champion3{
+            flex-direction: column;
+        }
+    
+        .who-is-a-champion3 h1 {
+            font-size: 1.5rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+    
+    }
+    #dis{
+        padding: 40px 20px;
+        background-color: #000;
+        color: #fff;
+        text-align: center;
+    }
+    #dis h1{
+        font-size: 2.5rem;
+    }
+    </style>
+<!-- Include this in your HTML file -->
+<section id="dis">
+    <h1>DISCOVER THE CHAMPIONS CLUB</h1>
+</section>
+<section id="interactive-section">
+    
+    <div class="interactive-section-container">
+        
+        <div class="interactive-left-content">
+            <div class="interactive-card-button active" id="interactive-card1" data-index="1">
+                <div class="icon">
+                    <img src="{% static 'images/network icon.png' %}" alt="Networking Icon">
+                </div>
+                <div class="text">
+                    <h4>TCC NETWORKING</h4>
+                    <p>We offer a global private network of like-minded individuals.</p>
+                    <a href="{% url 'membership_portal' %}" class="find-out-more-link">Find out more &rarr;</a>
+                </div>
+            </div>
+            <div class="interactive-card-button" id="interactive-card2" data-index="2">
+                <div class="icon">
+                    <img src="{% static 'images/academia icon.png' %}" alt="Academia Icon">
+                </div>
+                <div class="text">
+                    <h4>TCC ACADEMIA</h4>
+                    <p>Embark on a new journey with specialized learning paths.</p>
+                    <a href="{% url 'tcc_academia' %}" class="find-out-more-link">Find out more &rarr;</a>
+                </div>
+            </div>
+            <div class="interactive-card-button" id="interactive-card3" data-index="3">
+                <div class="icon">
+                    <img src="{% static 'images/business icon.png' %}" alt="Business Icon">
+                </div>
+                <div class="text">
+                    <h4>TCC BUSINESS</h4>
+                    <p>Create tailored business solutions with industry experts.</p>
+                    <a href="{% url 'register_partner' %}" class="find-out-more-link">Find out more &rarr;</a>
+                </div>
+            </div>
+        </div>
+        <div class="interactive-right-content">
+            
+            <div class="interactive-content active" id="interactive-content1">
+                <h2>TCC NETWORKING</h2>
+                <p>Join our exclusive global network of like-minded individuals. Collaborate, share ideas, and grow together in a community that fosters success.</p>
+                <img src="{% static 'images/TCC NE.png' %}" alt="Networking Image">
+            </div>
+            <div class="interactive-content" id="interactive-content2">
+                <h2>TCC ACADEMIA</h2>
+                <p>Advance your knowledge with our specialized learning paths. Gain access to premium educational resources and expert guidance.</p>
+                <img src="{% static 'images/TCC ACA.png' %}" alt="Academia Image">
+            </div>
+            <div class="interactive-content" id="interactive-content3">
+                <h2>TCC BUSINESS</h2>
+                <p>Leverage our expertise to create customized business solutions. Work with industry leaders to drive innovation and achieve your goals.</p>
+                <img src="{% static 'images/TCCBusiness.png' %}" alt="Business Image">
+            </div>
+        </div>
+    </div>
+</section>
+<section id="stats-section">
+    <div class="stats-section">
+        <div class="stat-box">
+          <h2>10K+</h2>
+          <p>Success Stories</p>
+        </div>
+        <div class="stat-box">
+          <h2>12+</h2>
+          <p>Wealth Methods</p>
+        </div>
+        <div class="stat-box">
+          <h2>112K+</h2>
+          <p>Active Students</p>
+        </div>
+      </div>
+    </section>
+<script>
+// Include this in a <script> tag or your JS file
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const cardButtons = document.querySelectorAll('.interactive-card-button');
+    const contents = document.querySelectorAll('.interactive-content');
+
+    function showContent(index) {
+        // Remove 'active' class from all buttons
+        cardButtons.forEach(btn => btn.classList.remove('active'));
+
+        // Hide all content sections
+        contents.forEach(content => content.classList.remove('active'));
+
+        // Add 'active' class to the clicked button
+        cardButtons[index - 1].classList.add('active');
+
+        // Show the corresponding content
+        contents[index - 1].classList.add('active');
+    }
+
+    cardButtons.forEach((button, idx) => {
+        button.addEventListener('click', function() {
+            showContent(idx + 1);
+        });
+    });
+});
+
+</script>
+<style>
+    /* Reset default styles */
+/* Include this in your CSS file or within <style> tags */
+
+/* Reset Styles */
+
+
+/* Styles for the Find Out More links */
+.find-out-more-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #FFD700;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.find-out-more-link:hover {
+    color: #fff;
+}
+
+/* Adjustments if needed */
+.interactive-card-button .text {
+    /* Ensure sufficient space for the link */
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Interactive Section Styles */
+#interactive-section {
+    background-color: #000;
+    padding: 30px 20px 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.interactive-section-container {
+    display: flex;
+    max-width: 1400px;
+    width: 100%;
+    gap: 80px;
+    align-items: flex-start;
+}
+
+.interactive-left-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.interactive-card-button {
+    display: flex;
+    align-items: center;
+    background-color: #000;
+    padding: 30px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: 2px solid #333;
+    position: relative;
+    overflow: hidden;
+}
+
+.interactive-card-button::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+.interactive-card-button.active::before {
+    background-color: #FFD700;
+}
+
+.interactive-card-button .icon {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    margin-right: 25px;
+}
+
+.interactive-card-button .icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: invert(1); /* Makes the icon white */
+}
+
+.interactive-card-button .text h4 {
+    font-size: 26px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.interactive-card-button .text p {
+    font-size: 18px;
+    color: #aaa;
+}
+
+.interactive-card-button:hover {
+    background-color: #111;
+    transform: translateY(-10px);
+}
+
+.interactive-card-button.active {
+    background-color: #FFD700;
+    color: #000;
+    border-color: #FFD700;
+}
+.interactive-card-button.active a{
+    color:#000;
+}
+.interactive-card-button.active .text h4,
+.interactive-card-button.active .text p {
+    color: #000;
+}
+
+.interactive-card-button.active .icon img {
+    filter: invert(0); /* Makes the icon black */
+}
+
+.interactive-right-content {
+    flex: 1.5;
+    background-color: #000;
+    border-radius: 15px;
+    position: relative;
+    /* overflow: hidden;
+    min-height: 500px; */
+}
+
+.interactive-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 50px;
+}
+
+.interactive-content.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.interactive-content h2 {
+    font-size: 36px;
+    margin-bottom: 30px;
+    font-weight: 700;
+    color: #FFD700;
+}
+
+.interactive-content p {
+    font-size: 20px;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    color: #ccc;
+}
+
+.interactive-content img {
+    max-width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 992px) {
+    .interactive-section-container {
+        flex-direction: column;
+        gap: 50px;
+    }
+
+    .interactive-left-content,
+    .interactive-right-content {
+        width: 100%;
+    }
+
+    .interactive-content {
+        position: relative;
+        padding: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .interactive-card-button .text h4 {
+        font-size: 22px;
+    }
+
+    .interactive-card-button .text p {
+        font-size: 16px;
+    }
+
+    .interactive-content h2 {
+        font-size: 28px;
+    }
+
+    .interactive-content p {
+        font-size: 16px;
+    }
+}
+
+
+</style>
+
+   
+    <section id="dividing-section">
+
+    </section>
+ 
+ 
+    <section id="who-is-a-champion3">
+        <div class="who-is-a-champion3">
+            <h1>THE GLOBAL PRIVATE NETWORK</h1>
+            <a href="{% url 'membership_portal' %}"><button>CHECK YOUR ELIGIBILITY</button></a>
+        </div>
+    </section>
+    <section id="dividing-section">
+    
+    </section>
+
+    <section id="strength">
+        
+        
+        <h1 class="strength-heading">STRENGTH ABOVE ALL</h1>
+        <hr class="strength-divider">
+        
+        
+        <h3 class="strength-subheading">MENTAL - PHYSICAL - SPIRITUAL</h3>
+        
+        <p class="strength-text">A community of achievers who reject the ordinary and challenge the extraordinary.</p>
+        <p class="strength-text">We celebrate Champions and nurture new talent by example.</p>
+        <p class="strength-quote"><i>"For Champions, by Champions." - The Champions Club</i></p>
+
+    </section>
+    <section id="dividing-section">
+    
+    </section>
+    <section id="dividing-section">
+
+    </section>
+    <section id="exclusive" class="fade-in">
+        <div class="exclusive-container-left">
+            <h1>EXCLUSIVE</h1>
+            <hr>
+            <h3>Private & Invite Only</h3>
+            <p>Achievements are best celebrated with those who stand by one's side no matter the time or place..</p>
+            
+            <p>The Champions Club provides it's esteemed community members with an <strong> invite-only</strong> global <strong> private</strong> network where achievers from all around the world connect and celebrate life together.</p>
+            
+            <p><strong>TCC Networking </strong> is in a league of it's own, we provide the best as we look for the best. One doesn't ask to join The Global Private Network, one get's asked.</p>
+            <a href="#for-champions"><button>LEARN MORE</button></a>
+        </div>
+        <div class="exclusive-container-right"></div> <!-- No need for an img tag since we are using the background image -->
+    </section>
+    
+
+<section id="dividing-section">
+
+</section>
+<style>
+    #dividing-section{
+        background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+        height: 1px;
+        position: relative;
+    }
+    
+
+.exclusive-container-left,
+.exclusive-container-right {
+    flex: 1;
+    min-width: 44%; /* Adjusted for smaller screens */
+    margin: 0px 20px;
+}
+
+.exclusive-container-left {
+    margin: 1% 5%;
+    max-width: 700px;
+    text-align: left !important;
+    
+}
+
+.exclusive-container-right {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 0;
+    max-width: 50%;
+    background-image: url("{% static 'images/exclusive.jpg' %}"); /* Ensure this points to the correct static image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%; /* Ensure it fills the entire height */
+    min-height: 300px;
+}
+
+/* No need for an img tag in exclusive-container-right */
+
+/* Left content styles */
+.exclusive-container-left h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #f4f4f4;
+    margin-bottom: 10px;
+}
+
+#exclusive hr {
+    width: 50px;
+    height: 2px;
+    background-color: #333;
+    border: none;
+    margin-bottom: 20px;
+    margin-left: 0; /* Ensure hr aligns to the left */
+    text-align: left !important; /* Keep left alignment */
+    justify-content: flex-start; /* Ensure flex container aligns left if hr is in a flex container */
+}
+
+
+.exclusive-container-left h3 {
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    font-family: 'Roboto';
+    font-weight: 400;
+    color: #f4f4f4;
+    margin-bottom: 20px;
+}
+
+.exclusive-container-left p {
+    font-size: 1rem;
+    line-height: 1.6;
+    font-weight: 400;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.exclusive-container-left button {
+    background-color: transparent;
+    color: white;
+    padding: 15px 45px;
+    border: 1px solid white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.exclusive-container-left button::before,
+.exclusive-container-left button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 1px;
+    background-color: white;
+    transform: translateY(-50%);
+}
+
+.exclusive-container-left button::before {
+    left: 10px;
+}
+
+.exclusive-container-left button::after {
+    right: 10px;
+}
+
+.exclusive-container-left button:hover {
+    background-color: white;
+    color: #333;
+    border-color: #333;
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 768px) {
+    #exclusive {
+        flex-direction: column; /* Stack the containers vertically */
+        padding: 20px;
+        height: auto; /* Let height adjust based on content */
+    }
+
+    .exclusive-container-left,
+    .exclusive-container-right {
+        max-width: 100%; /* Full width for both containers */
+        margin: 10px 0;
+        padding: 20px;
+    }
+
+    .exclusive-container-left {
+        text-align: center; /* Center the text content on small screens */
+    }
+
+    .exclusive-container-right {
+        background-image: url("{% static 'images/exclusive.jpg' %}"); /* Keep background image for smaller screens */
+        min-height: 200px;
+        justify-content: center; /* Ensure the content is centered */
+        margin-top: 20px; 
+        WIDTH: 100%;/* Add some margin between the containers */
+    }
+}
+
+@media (max-width: 480px) {
+    .exclusive-container-left h1 {
+        font-size: 2rem;
+    }
+
+    .exclusive-container-left h3 {
+        font-size: 1rem;
+    }
+
+    .exclusive-container-left p {
+        font-size: 0.9rem;
+    }
+
+    .exclusive-container-left button {
+        padding: 10px 30px;
+        font-size: 14px;
+    }
+
+    .exclusive-container-left button::before,
+    .exclusive-container-left button::after {
+        width: 15px;
+    }
+}
+
+</style>
+
+
+
+    <section id="for-champions">
+        <div class="for-champions-container">
+            <h1>FOR CHAMPIONS BY CHAMPIONS</h1>
+            <hr>
+            <div class="container-1">
+                <div class="left-container">
+                    <img src="{% static 'images/Networking.webp' %}" alt="">
+                </div>
+                <div class="right-container">
+                    <h3>TCC NETWORKING</h3>
+                    <ul>
+                        <li>Join an <strong >exclusive</strong> social club of global elites</li>
+                        <li>Gain access to our <strong>premier</strong> social media channels</li>
+                        <li><strong >Network</strong> with achievers from all around the world</li>
+                        <li>Grow your social circle with <strong>like-minded</strong> individuals</li>
+                        <li>Enjoy <strong>complimentary</strong> promotions of your elite lifestyle</li>
+                        <li>Receive <strong>member only</strong> perks, privileges and much more</li>
+                      </ul>
+                </div>
+
+
+            </div>
+            <div class="container-2">
+
+                <div class="left-container">
+                    <h3>TCC ACADEMIA</h3>
+                    <ul>
+                        <li>Access our inventory of <strong>premium</strong> courses</li>
+                        <li>Watch and grow with our <strong>tailor-made</strong> podcasts</li>
+                        <li>Stay updated with the lifestyle of our <strong>TCC Champions</strong></li>
+                        <li>Develop <strong>practical</strong> skills and improve your skillset further</li>
+                        <li>Learn and grow in an environment of <strong>constant</strong> learning</li>
+                        <li>Find your <strong>own</strong> path, chase your dreams and much more</li>
+                      </ul>
+                </div>
+                <div class="right-container">
+                    <img src="{% static 'images/Academia.webp' %}" alt="">
+                </div>
+
+            </div>
+            <div class="container-3">
+
+                <div class="right-container">
+                    <img src="{% static 'images/Business.webp' %}" alt="">
+                </div>
+                <div class="left-container">
+                    <h3>TCC BUSINESS</h3>
+                    <ul>
+                        <li>Participate in exclusive <strong>invite-only</strong> social events</li>
+                        <li>Forge partnerships that <strong>enrich</strong> all aspects of life</li>
+                        <li>Access <strong>high-quality</strong> Business Consultancy services</li>
+                        <li>Discover the very essence of business as an <strong>explorer</strong></li>
+                        <li>Brainstorm new ideas and <strong>improve</strong> business models</li>
+                        <li>Grow your business with our <strong>Global Alliance Network</strong></li>
+                      </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <style>
+        #strength{
+            padding-bottom: 100px ;
+            padding-top: 50px;
+        }
+                  #who-is-a-champion {
+        height: 200px;
+        width: auto;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) 100%), url("{% static 'images/background2.jpeg'%}");
+        background-size: auto, cover;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        padding: 10px 20px;
+    }
+    #who-is-a-champion h1 {
+        margin-top:20px;
+        font-size: 48px;
+        color: #fff;
+        font-weight: 600;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+    }
+    .who-is-a-champion {
+       
+        display: flex;
+        flex-direction: row;
+        gap:20px;
+        align-items: center;
+        margin: 30px auto;
+    }
+       
+    
+
+
+
+
+    @media (max-width: 768px) {
+        #who-is-a-champion {
+            padding: 60px 10px;
+            height: auto;
+        }
+        .who-is-a-champion{
+            flex-direction: column;
+        }
+    
+        .who-is-a-champion h1 {
+            font-size: 1.5rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+    
+    }
+    </style>
+    </style>
+    <section id="dividing-section"></section>
+    <section id="who-is-a-champion" >
+
+    <div class="who-is-a-champion">
+        <h1>WHO IS A CHAMPION?</h1>
+        <a href="{% url 'learnmore' %}"><button>LEARN MORE</button></a>
+    </div>
+</section>
+
+
+
+
+<section id="dividing-section"></section>
+<section id="join-private-network">
+    <div class="join-network-container">
+        <div class="join-network-content-container">
+            <p class="connect-heading">THE CHAMPIONS CLUB</p>
+            <h1>JOIN OUR EXCLUSIVE NETWORK OF CHAMPIONS</h1>
+            <p class="paragraph-private">Unlock unparalleled opportunities by connecting with industry leaders and innovators. Our global private network is designed for those who have achieved remarkable success and are ready to share their insights.</p>
+            <ul class="benefits-list">
+                <li>Network with the best in your industry</li>
+                <li>Gain insights from other champions</li>
+                <li>Collaborate to evaluate your business potential</li>
+            </ul>
+            <div class="cta-buttons">
+                <button class="join-btn">Join</button>
+                <a href="#" class="learn-more-link">Learn More <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                    <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
+                </svg></a>
+            </div>
+        </div>
+        <div class="join-network-image">
+            <img class="join-private-network-img" src="{% static 'images/laptop3.png' %}" alt="Exclusive Network">
+        </div>
+    </div>
+</section>
+<style>
+      #join-private-network button {
+        background-color: transparent;
+        width: 150px;
+        color: white;
+        
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-top: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        
+    }
+    
+    #join-private-network button::before,
+    #join-private-network button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 2px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    
+    #join-private-network button::before {
+        left: 10px;
+    }
+    
+    #join-private-network button::after {
+        right: 10px;
+    }
+    
+    #join-private-network button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    #join-private-network {
+    background-color: #000;
+    color: #fff;
+    padding: 80px 20px 0px;
+}
+
+.join-network-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    align-items: center;
+    padding: 60px 30px;
+}
+
+.join-network-content-container {
+    width: 55%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+#join-private-network h1 {
+    font-size: 40px;
+    line-height: 1.3;
+    margin-bottom: 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.connect-heading {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+   
+}
+
+.paragraph-private {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: #ddd;
+}
+
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.benefits-list li {
+    font-size: 18px;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+
+
+
+
+
+
+.learn-more-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 18px;
+    color: #fff;
+    text-decoration: none;
+    padding-left: 10px;
+    font-weight: 600;
+}
+
+.learn-more-link svg {
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+}
+
+.learn-more-link:hover svg {
+    transform: translateX(5px);
+}
+
+.join-network-image {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.join-network-image img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .join-network-content-container {
+        width: 60%;
+    }
+    .join-network-image {
+        width: 35%;
+    }
+}
+
+@media (max-width: 992px) {
+    .join-network-container {
+        flex-direction: column;
+        padding: 30px;
+    }
+    .join-network-content-container {
+        width: 100%;
+        text-align: center;
+    }
+    .join-network-image {
+        width: 100%;
+        margin-top: 30px;
+    }
+    .join-network-image img {
+        max-width: 80%;
+    }
+}
+
+@media (max-width: 768px) {
+    #join-private-network h1 {
+        font-size: 34px;
+    }
+    .connect-heading {
+        font-size: 16px;
+    }
+    .join-btn {
+        font-size: 16px;
+    }
+    .paragraph-private, .benefits-list li {
+        font-size: 16px;
+    }
+}
+
+</style>
+
+
+
+<section id="dividing-section"></section>
+
+<section id="unlock-potential-section">
+    <div class="unlock-potential-container">
+        <div class="unlock-potential-image">
+            <img src="{% static 'images/DiscoverTCC.png' %}" alt="Unlock Your Potential">
+        </div>
+        <div class="unlock-potential-content">
+            <p class="connect-heading">TCC ACADEMIA</p>
+            <h1>Unlock Your Potential with Our Transformative Wealth-Making Courses</h1>
+            <p>Our wealth-making courses are meticulously crafted to empower you with the skills and knowledge needed to excel in your field. Join a community of champions and transform your ambitions into reality.</p>
+            <div class="container-holder">
+                <div class="small-box small-box-1">
+                    <h5>Expert Instructors</h5>
+                    <p>Learn from industry leaders and gain insights that drive success.</p>
+                </div>
+                <div class="small-box small-box-2">
+                    <h5>Practical Life Lessons</h5>
+                    <p>Get practical lessons that actually help you earn.</p>
+                </div>
+            </div>
+            <div class="cta-buttons">
+                <button class="join-btn">Join</button>
+                <a href="#" class="learn-more-link">Learn More 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                        <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    #unlock-potential-section {
+    background-color: #000;
+    color: #fff;
+    padding: 0px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+}
+
+.unlock-potential-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    align-items: center;
+    padding: 50px 30px;
+}
+
+.unlock-potential-image img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.unlock-potential-content {
+    width: 100%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+}
+
+#unlock-potential-section h1 {
+    font-size: 40px;
+    line-height: 1.3;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.unlock-potential-content p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: #ddd;
+}
+
+.container-holder {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.small-box {
+    
+    padding: 20px;
+    border-radius: 10px;
+    width: 45%;
+}
+
+.small-box h5 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.small-box p {
+    font-size: 14px;
+    color: #bbb;
+}
+#unlock-potential-section button {
+        background-color: transparent;
+        width: 150px;
+        color: white;
+        
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-top: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        
+    }
+    
+    #unlock-potential-section button::before,
+    #unlock-potential-section button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 2px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    
+    #unlock-potential-section button::before {
+        left: 10px;
+    }
+    
+    #unlock-potential-section button::after {
+        right: 10px;
+    }
+    
+    #unlock-potential-section button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    .business-container-small-1, .business-container-small-2 {
+    
+    padding: 20px;
+    border-radius: 10px;
+    width: 45%;
+}
+.learn-more-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 18px;
+    color: #fff;
+    text-decoration: none;
+    padding-left: 10px;
+    font-weight: 600;
+}
+
+.learn-more-link svg {
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+}
+
+.learn-more-link:hover svg {
+    transform: translateX(5px);
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .unlock-potential-content {
+        width: 55%;
+    }
+}
+
+@media (max-width: 992px) {
+    .small-box {
+    
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+}
+    .unlock-potential-container {
+        flex-direction: column;
+    }
+    .unlock-potential-content {
+        width: 100%;
+        text-align: center;
+    }
+    .unlock-potential-image {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+    .unlock-potential-image img {
+        max-width: 100%;
+    }
+    .business-container-small-1, .business-container-small-2 {
+    
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+}
+}
+
+@media (max-width: 768px) {
+    #unlock-potential-section h1 {
+        font-size: 34px;
+    }
+    .join-btn {
+        font-size: 16px;
+    }
+    .container-holder {
+        flex-direction: column;
+    }
+}
+
+</style>
+
+<section id="dividing-section"></section>
+
+<section id="business-potential-section">
+    <div class="business-potential-container">
+
+        <div class="business-potential-content">
+            <p class="connect-heading">TCC Business</p>
+            <h1>Unlock Your Business Potential with Our Expert Consulting and Development Services</h1>
+            <p>Our business consulting services are designed to meet your unique needs and drive growth. By forming strategic partnerships, we empower you to navigate challenges and seize opportunities.</p>
+            <div class="business-container-small">
+                <div class="business-container-small-1">
+                    <h5>Tailored Strategies</h5>
+                    <p>We create customized plans that align with your business goals and vision.</p>
+                </div>
+                <div class="business-container-small-2">
+                    <h5>Strategic Alliances</h5>
+                    <p>Partner with us to leverage our global network and enhance your business success.</p>
+                </div>
+            </div>
+            <div class="cta-buttons">
+                <button class="join-btn">Schedule a Meeting</button>
+                <a href="#" class="learn-more-link">Learn More 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                        <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="business-potential-image">
+            <img src="{% static 'images/lap2.png.png' %}" alt="Business Potential Image">
+        </div>
+    </div>
+</section>
+<style>
+    #business-potential-section {
+    background-color: #000;
+    color: #fff;
+    padding: 0px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+}
+
+.business-potential-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    align-items: center;
+    padding: 50px 30px;
+}
+
+.business-potential-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#business-potential-section h1 {
+    font-size: 38px;
+    line-height: 1.3;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.business-potential-content p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: #ddd;
+}
+
+.business-container-small {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+
+
+.business-container-small h5 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.business-container-small p {
+    font-size: 14px;
+    color: #bbb;
+}
+#business-potential-section button {
+        background-color: transparent;
+        width: 300px;
+        color: white;
+        
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-top: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        
+    }
+    
+    #business-potential-section button::before,
+    #business-potential-section button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 2px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    
+    #business-potential-section button::before {
+        left: 10px;
+    }
+    
+    #business-potential-section button::after {
+        right: 10px;
+    }
+    
+    #business-potential-section button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+
+.learn-more-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 18px;
+    color: #fff;
+    text-decoration: none;
+    padding-left: 10px;
+    font-weight: 600;
+}
+
+.learn-more-link svg {
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+}
+
+.learn-more-link:hover svg {
+    transform: translateX(5px);
+}
+
+.business-potential-image img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+.business-potential-image{
+    max-width: 55%;
+}
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .business-potential-content {
+        width: 60%;
+    }
+}
+
+@media (max-width: 992px) {
+    .business-potential-container {
+        flex-direction: column;
+    }
+    .business-potential-content {
+        width: 100%;
+        text-align: center;
+    }
+    .business-potential-image {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+    .business-potential-image img {
+        max-width: 100%;
+    }
+    .business-potential-image{
+    max-width: 100%;
+}
+}
+
+@media (max-width: 768px) {
+    #business-potential-section h1 {
+        font-size: 34px;
+    }
+    .join-btn {
+        font-size: 16px;
+    }
+    .business-container-small {
+        flex-direction: column;
+    }
+}
+
+</style>
+<section id="dividing-section">
+
+</section>
+<section id="explore-services">
+    <div class="explore-services-container">
+        <h1>Discover How Our Services Empower Your Path to Success</h1>
+        <div class="explore-services-card-container">
+            <div class="explore-services-1">
+                <div class="icon-container">
+                    <img src="{% static 'images/net.png' %}" alt="">
+                </div>
+                <h2>Join Our Global Network of Champions and Achieve Greatness</h2>
+                <p>Engage with our exclusive network to connect with like-minded achievers.</p>
+                <a href="#" class="learn-more-link">Join
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                        <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="explore-services-1">
+                <div class="icon-container">
+                    <img src="{% static 'images/edu.png' %}" alt="">
+                </div>
+                <h2>Transform Your Skills with Our Wealth-Making Courses</h2>
+                <p>Our courses are designed to equip you with the tools for success.</p>
+                <a href="#" class="learn-more-link"> Learn
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                        <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="explore-services-1">
+                <div class="icon-container">
+                    <img src="{% static 'images/cube.png' %}" alt="">
+                </div>
+                <h2>Expert Business Consulting Tailored to Your Unique Needs</h2>
+                <p>Our consulting services provide actionable strategies to elevate your business.</p>
+                <a href="#" class="learn-more-link">Consult
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                        <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<style>
+    #explore-services{
+        background-color: #000;
+        padding:50px 30px;
+        width: 100%;
+        color: #fff;
+        text-align: center;
+    }
+    #explore-services h1{
+        padding: 100px;
+        font-size: 38px;
+        width: 70%;
+        margin: 0 auto;
+    }
+  
+    .explore-services-card-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap:30px;
+
+    }
+    .icon-container img{
+        height: 40px;
+        margin-bottom: 30px;
+    }
+    .explore-services-1{
+        width: 22%;
+        line-height: 1.5;
+        gap: 30px;
+        
+    }
+    @media (max-width:992px){
+        #explore-services h1{
+        padding: 50px 0;
+        font-size: 38px;
+        width: 100%;
+        margin: 0 auto;
+    }
+    .explore-services-card-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap:30px;
+
+    }
+    .explore-services-1{
+        width: 100%;
+        line-height: 1.5;
+        gap: 30px;
+        
+    }
+    }
+    
+    .explore-services-1 h2{
+        margin-bottom: 20px;
+    }
+    .explore-services-1 p{
+        margin-bottom: 20px;
+    }
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="dividing-section">
+
+</section>
+
+<section id="what-youll-learn">
+    <h4>ACCESS 20+ CAMPUSES</h4>
+    <h1>What You'll Learn</h1>
+    <div class="wrapper">
+       
+        <div class="item-bg"></div>
+        
+        <div class="news-slider">
+            <div class="news-slider__wrp swiper-wrapper">
+                <!-- Slide 1 -->
+                <div class="news-slider__item swiper-slide">
+                    <a href="#" class="news__item">
+                        <div class="news__img">
+                            <img src="{% static 'images/e-commerce.png' %}" alt="news">
+                        </div>
+                        <div class="news__title">
+                            E-Commerce Mastery
+                        </div>
+                        <p class="news__txt">
+                            Learn how to launch and scale a successful e-commerce business from scratch. From selecting profitable niches to mastering online sales funnels, this course covers every step needed to build a sustainable online store.
+                        </p>
+                       
+                    </a>
+                </div>
+                
+                <!-- Slide 2 -->
+                <div class="news-slider__item swiper-slide">
+                    <a href="#" class="news__item">
+                        <div class="news__img">
+                            <img src="{% static 'images/copyright.png' %}" alt="news">
+                        </div>
+                        <div class="news__title">
+                            The Art of Copywriting
+                        </div>
+                        <p class="news__txt">
+                            Words have the power to persuade, and in this course, you’ll learn the secrets to crafting copy that converts. Whether you’re writing emails, sales pages, or product descriptions, this course will teach you the formulas and techniques behind compelling copy. 
+                        </p>
+                       
+                    </a>
+                </div>
+                
+                <!-- Slide 3 -->
+                <div class="news-slider__item swiper-slide">
+                    <a href="#" class="news__item">
+                        <div class="news__img">
+                            <img src="{% static 'images/crypto.png' %}" alt="news">
+                        </div>
+                        <div class="news__title">
+                            Crypto Trading & Investing
+                        </div>
+                        <p class="news__txt">
+                            Dive deep into the exciting world of cryptocurrency trading and investing. This course offers everything from understanding blockchain technology to executing advanced trading strategies.
+                        </p>
+                       
+                    </a>
+                </div>
+                
+                <!-- Slide 4 -->
+                <div class="news-slider__item swiper-slide">
+                    <a href="#" class="news__item">
+                        <div class="news__img">
+                            <img src="{% static 'images/social-media.png' %}" alt="news">
+                        </div>
+                        <div class="news__title">
+                            Social Media Marketing
+                        </div>
+                        <p class="news__txt">
+                            Harness the power of social media to build a strong online presence and reach your target audience.
+                        </p>
+                        
+                    </a>
+                </div>
+                
+                <!-- Slide 5 -->
+                <div class="news-slider__item swiper-slide">
+                    <a href="#" class="news__item">
+                        <div class="news__img">
+                            <img src="{% static 'images/digital-marketing.png' %}" alt="news">
+                        </div>
+                        <div class="news__title">
+                            Digital Product Creation
+                        </div>
+                        <p class="news__txt">
+                            Create and sell your own digital products, from eBooks to online courses, in this comprehensive course. Learn how to research profitable product ideas, develop high-value content, and market your creations to a global audience.
+                        </p>
+                       
+                    </a>
+                </div>
+                
+                <!-- Slide 6 -->
+                <div class="news-slider__item swiper-slide">
+                    <a href="#" class="news__item">
+                        <div class="news__img">
+                            <img src="{% static 'images/personal-finance.png' %}" alt="news">
+                        </div>
+                        <div class="news__title">
+                            Personal Finance Mastery
+                        </div>
+                        <p class="news__txt">
+                            Take control of your financial life with this in-depth personal finance course. Learn the principles of budgeting, saving, investing, and debt management.
+                        </p>
+                        
+                    </a>
+                </div>
+            </div>
+            
+            <div class="news-slider__ctr">
+                <!-- Arrows -->
+                <div class="news-slider__arrows">
+                    <button class="news-slider__arrow news-slider-prev">
+                        <span class="icon-font">
+                            <svg class="icon icon-arrow-left">
+                                <use xlink:href="#icon-arrow-left"></use>
+                            </svg>
+                        </span>
+                    </button>
+                    <button class="news-slider__arrow news-slider-next">
+                        <span class="icon-font">
+                            <svg class="icon icon-arrow-right">
+                                <use xlink:href="#icon-arrow-right"></use>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+                <!-- Pagination Dots -->
+                <div class="news-slider__pagination"></div>
+            </div>
+        </div>
+    </div>
+    
+    <svg hidden="hidden">
+        <defs>
+            <symbol id="icon-arrow-left" viewBox="0 0 32 32">
+                <title>arrow-left</title>
+                <path d="M0.704 17.696l9.856 9.856c0.896 0.896 2.432 0.896 3.328 0s0.896-2.432 0-3.328l-5.792-5.856h21.568c1.312 0 2.368-1.056 2.368-2.368s-1.056-2.368-2.368-2.368h-21.568l5.824-5.824c0.896-0.896 0.896-2.432 0-3.328-0.48-0.48-1.088-0.704-1.696-0.704s-1.216 0.224-1.696 0.704l-9.824 9.824c-0.448 0.448-0.704 1.056-0.704 1.696s0.224 1.248 0.704 1.696z"></path>
+            </symbol>
+            <symbol id="icon-arrow-right" viewBox="0 0 32 32">
+                <title>arrow-right</title>
+                <path d="M31.296 14.336l-9.888-9.888c-0.896-0.896-2.432-0.896-3.328 0s-0.896 2.432 0 3.328l5.824 5.856h-21.536c-1.312 0-2.368 1.056-2.368 2.368s1.056 2.368 2.368 2.368h21.568l-5.856 5.824c-0.896 0.896-0.896 2.432 0 3.328 0.48 0.48 1.088 0.704 1.696 0.704s1.216-0.224 1.696-0.704l9.824-9.824c0.448-0.448 0.704-1.056 0.704-1.696s-0.224-1.248-0.704-1.664z"></path>
+            </symbol>
+        </defs>
+    </svg>
+</section>
+
+
+<section id="dividing-section">
+
+</section>
+
+<section id="take-action-section">
+    <div class="take-action-container">
+        <h1>Take the next Step Today</h1>
+        <p>Join a Community of Champions and elevate your journey</p>
+    </div>
+    <div class="button-container">
+    <button>Join Now</button>
+</div>
+</section>
+ 
+<style>
+    #take-action-section{
+        padding:100px 20px;
+        display: flex;
+        color: #fff;
+        width: 100%;
+    background-color: #000;
+        flex-direction: row;
+        gap:50px;
+    }
+    .take-action-container h1{
+        font-size: 38px;
+    }
+    .take-action-container{
+        display: flex;
+        width: 80%;
+        margin-left: 50px;
+        flex-direction: column;
+        gap: 30px;
+    }
+#take-action-section button {
+        background-color: transparent;
+        width: 200px;
+        color: white;
+        
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-top: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        
+    }
+    
+    #take-action-section button::before,
+    #take-action-section button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 2px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    
+    #take-action-section button::before {
+        left: 10px;
+    }
+    
+    #take-action-section button::after {
+        right: 10px;
+    }
+    
+    #take-action-section button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    @media (max-width:992px){
+        #take-action-section{
+        padding:100px 20px;
+        display: flex;
+        color: #fff;
+        width: 100%;
+    background-color: #000;
+        flex-direction: column;
+        gap:50px;
+        text-align: center;
+    }
+    .take-action-container{
+        display: flex;
+        width: 80%;
+        margin: 0px auto;
+        flex-direction: column;
+        gap: 30px;
+    }
+    }
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+  
+#stats-section{
+    height: 300px;
+    padding: 50px 0;
+    background-color: #000;
+    position: relative;
+    z-index: 222;
+}
+.stats-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 50%;
+  background-color: #AA771C;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 15px;
+  background-image: url("{% static 'images/tile1.webp' %}");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.stat-box {
+  color: white;
+  text-align: center;
+  margin: 0 10px;
+  padding: 30px;
+}
+
+.stat-box h2 {
+  font-size: 42px;
+  margin: 0;
+}
+
+.stat-box p {
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.stat-box:not(:last-child) {
+  border-right: 1px solid white;
+}
+@media (max-width: 768px){
+    .stats-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 90%;
+  background-color: #AA771C;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 15px;
+  background-image: url("{% static 'images/tile1.webp' %}");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.stat-box h2 {
+  font-size: 24px;
+  margin: 0;
+}
+.stat-box p {
+  font-size: 12px;
+  margin-top: 10px;
+}
+.stat-box {
+  color: white;
+  text-align: center;
+  margin: 0 10px;
+  padding: 5px;
+}
+}
+
+
+</style>
+
+<style>
+    #take-action{
+        background-color: #000;   }
+
+.take-action-section {
+  display: flex;
+  max-width: 80%;
+  gap:50px;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+margin: 0px auto;
+  background: linear-gradient(135deg, #000 0%, #000000 100%);
+ 
+}
+
+.text-content {
+  flex: 1;
+  padding-right: 40px;
+}
+
+.image-content {
+  flex: 1;
+  padding-left: 40px;
+}
+
+.text-content h4 {
+  font-size: 16px;
+  letter-spacing: 3px;
+  color: #ff9800;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.text-content h1 {
+    text-align: left;
+  font-size: 52px;
+  line-height: 1.2;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+.text-content h1 .underline {
+  position: relative;
+  display: inline-block;
+}
+
+.text-content h1 .underline::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: #ff9800;
+}
+
+.text-content p {
+  font-size: 18px;
+  font-family: 'Roboto';
+  font-weight: 400;
+  color: #ccc;
+  margin: 15px 0;
+}
+
+.enroll-btn {
+  background-color: #ff9800;
+  color: #fff;
+  padding: 18px 36px;
+  border: none;
+  border-radius: 50px;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 30px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.enroll-btn:hover {
+  background-color: #e68a00;
+  transform: translateY(-3px);
+}
+
+.image-content img {
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 992px) {
+  .text-content h1 {
+    font-size: 42px;
+  }
+
+  .text-content p {
+    font-size: 17px;
+  }
+
+  .take-action-section {
+    padding: 50px 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .take-action-section {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .text-content {
+    padding-right: 0;
+    margin-bottom: 30px;
+  }
+
+  .image-content {
+    padding-left: 0;
+  }
+}
+
+
+</style>
+
+
+
+
+<style>
+    /* General Styling */
+#what-youll-learn {
+    padding: 50px;
+    text-align: center;
+    position: relative;
+    background-color: #000  ;
+  overflow-x: hidden !important;
+}
+
+#what-youll-learn h4 {
+    letter-spacing: 1px;
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+#what-youll-learn h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    #what-youll-learn h1 {
+        font-size: 24px;
+    }
+
+   
+}
+@import url('https://fonts.googleapis.com/css?family=Quicksand:400,500,700&subset=latin-ext');
+
+
+
+a,
+a:hover {
+
+  text-decoration: none;
+  z-index: 2 !important;
+}
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+
+
+.item-bg {
+  width: 300px;
+  height: 500px;
+  position: absolute;
+  top: 30px;
+  background: #000;
+  border-radius: 10px;
+  box-shadow: 0 6px 26px 6px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transition: all 0.3s;
+  left: -30px;
+  z-index: 0 !important;
+}
+
+.item-bg.active {
+  left: 0;
+  top: 0;
+  opacity: 1;
+  z-index: 0 !important;
+}
+
+.news-slider {
+  z-index: 2 !important;
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 60px;
+}
+
+@media screen and (max-width: 1300px) {
+  .news-slider {
+    max-width: 1000px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .news-slider {
+    margin-top: 45px;
+  }
+}
+
+.news-slider__wrp {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2;
+}
+
+.news-slider__item {
+  width: 400px;
+  flex-shrink: 0;
+}
+
+@media screen and (max-width: 992px) {
+  .news-slider__item {
+    width: 340px;
+  }
+}
+
+.news-slider__item.swiper-slide {
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s;
+}
+
+.news-slider__item.swiper-slide-active,
+.news-slider__item.swiper-slide-prev,
+.news-slider__item.swiper-slide-next {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.news-slider__ctr {
+  position: relative;
+  z-index: 12;
+}
+
+.news-slider__arrow {
+  background: #fff;
+  border: none;
+  display: inline-flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 6px 26px 6px rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  z-index: 12;
+  cursor: pointer;
+  outline: none !important;
+}
+
+.news-slider__arrow:focus {
+  outline: none !important;
+}
+
+.news-slider__arrow .icon-font {
+  display: inline-flex;
+}
+
+.news-slider-prev {
+  left: 15px;
+  transform: translateY(-50%);
+}
+
+.news-slider-next {
+  right: 15px;
+  transform: translateY(-50%);
+}
+
+.news-slider__pagination {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.swiper-pagination-bullet {
+  width: 13px;
+  height: 10px;
+  display: inline-block;
+  background: #fff;
+  opacity: 0.2;
+  margin: 0 5px;
+  border-radius: 20px;
+  transition: opacity 0.5s, background-color 0.5s, width 0.5s;
+  transition-delay: 0.5s, 0.5s, 0s;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #ffffff;
+  width: 100px;
+  transition-delay: 0s;
+}
+
+@media screen and (max-width: 576px) {
+  .swiper-pagination-bullet-active {
+    width: 70px;
+  }
+}
+
+.news__item {
+    z-index: 2 !important;
+  padding: 40px;
+  padding-top: 5px;
+  color: #fff;
+  border-radius: 10px;
+  display: block;
+  transition: all 0.3s;
+}
+
+@media screen and (min-width: 800px) {
+  .news__item:hover {
+    color: #222222;
+    transition-delay: 0.1s;
+  }
+
+  .news__item:hover .news-date,
+  .news__item:hover .news__title,
+  .news__item:hover .news__txt {
+    opacity: 1;
+    transition-delay: 0.1s;
+  }
+
+  .news__item:hover .news__img {
+    box-shadow: none;
+  }
+}
+
+.news__item.active {
+  color: #222222;
+}
+
+.news__item.active .news-date,
+.news__item.active .news__title,
+.news__item.active .news__txt {
+  opacity: 1;
+}
+
+.news__item.active .news__img {
+  box-shadow: none;
+}
+
+@media screen and (max-width: 992px) {
+  .news__item {
+    padding: 30px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .news__item {
+    padding: 20px;
+  }
+}
+
+.news-date {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid;
+  display: inline-block;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+@media screen and (max-width: 576px) {
+  .news-date {
+    margin-bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    padding-bottom: 0;
+  }
+}
+
+.news-date__title {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 576px) {
+  .news-date__title {
+    margin-right: 10px;
+  }
+}
+
+.news-date__txt {
+  font-size: 16px;
+  
+}
+
+.news__title {
+    text-align: left;
+  font-size: 25px;
+  font-weight: 500;
+  opacity: 0.7;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  transition: opacity 0.3s;
+  z-index: 2 !important;
+}
+
+@media screen and (max-width: 576px) {
+  .news__title {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+}
+
+.news__txt {
+  margin: 10px 0;
+  line-height: 1.6em;
+  font-size: 15px;
+  opacity: 0.7;
+  text-align: left;
+  transition: opacity 0.3s;
+}
+
+.news__img {
+  border-radius: 10px;
+  object-fit:scale-down;
+  height: 200px;
+  margin-top: 30px;
+  width: 100%;
+  transition: all 0.3s;
+  transform-origin: 0% 0%;
+}
+
+@media screen and (max-width: 576px) {
+  .news__img {
+    height: 180px;
+    margin-top: 20px;
+  }
+}
+
+.news__img img {
+  max-width: 100%;
+  border-radius: 10px;
+  height: 180px;
+  object-fit: cover;
+  aspect-ratio: 3/4;
+  width: 100%;
+}
+
+
+
+
+/* Add this to your existing CSS */
+
+/* Position the item-bg behind the news items */
+.item-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff; /* White background */
+    border-radius: 10px;
+    box-shadow: 0 6px 26px 6px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), width 0.3s, height 0.3s;
+    z-index: 1;
+}
+
+/* When active, make it visible */
+.item-bg.active {
+    opacity: 1;
+}
+
+/* Ensure news items are above the background */
+.news__item {
+    position: relative;
+    z-index: 2;
+    /* Remove background color to make the white background visible */
+    background: transparent;
+}
+
+/* Optional: Add a slight scale effect on hover */
+.news__item:hover {
+    transform: scale(1.02);
+}
+
+/* Ensure the wrapper is positioned relative for absolute positioning to work */
+.wrapper {
+    position: relative;
+}
+
+/* Adjust the transition effect to feel like water drop */
+.item-bg {
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), width 0.3s, height 0.3s;
+}
+
+
+
+
+
+
+
+
+</style>
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+    // Query elements for background and news items
+    var bg = document.querySelector('.item-bg');
+    var items = document.querySelectorAll('.news__item');
+
+    if (!bg) {
+        console.error('Error: .item-bg element not found in the DOM.');
+        return;
+    }
+
+    // Function to move the background to the active item
+    function moveBackground(element) {
+        var rect = element.getBoundingClientRect();
+        var wrapperRect = document.querySelector('.wrapper').getBoundingClientRect();
+
+        var x = rect.left - wrapperRect.left;
+        var y = rect.top - wrapperRect.top;
+        var width = rect.width;
+        var height = rect.height;
+
+        bg.style.width = width + 'px';
+        bg.style.height = height + 'px';
+        bg.style.transform = 'translateX(' + x + 'px) translateY(' + y + 'px)';
+    }
+
+    // Initialize Swiper
+    var swiper = new Swiper('.news-slider', {
+        effect: 'coverflow',
+        grabCursor: true,
+        loop: true,
+        centeredSlides: true,
+        keyboard: true,
+        spaceBetween: 0,
+        slidesPerView: 'auto',
+        speed: 300,
+        coverflowEffect: {
+            rotate: 0,
+            stretch: 0,
+            depth: 0,
+            modifier: 3,
+            slideShadows: false
+        },
+        simulateTouch: true,
+        navigation: {
+            nextEl: '.news-slider-next',
+            prevEl: '.news-slider-prev'
+        },
+        pagination: {
+            el: '.news-slider__pagination',
+            clickable: true
+        },
+        on: {
+            init: function () {
+                var swiper = this;
+                var activeSlide = document.querySelector('.swiper-slide-active');
+                var activeItem = activeSlide.querySelector('.news__item');
+
+                if (activeItem) {
+                    activeItem.classList.add('active');
+                    bg.classList.add('active');
+                    moveBackground(activeItem);
+                } else {
+                    console.error('Error: Active item not found during initialization.');
+                }
+            }
+        }
+    });
+
+    // When the slide change transition ends, reset the active state
+    swiper.on('slideChangeTransitionEnd', function () {
+        var swiper = this;
+        document.querySelectorAll('.news__item').forEach(function (item) {
+            item.classList.remove('active');
+        });
+
+        var activeSlide = document.querySelector('.swiper-slide-active');
+        var activeItem = activeSlide.querySelector('.news__item');
+
+        if (activeItem) {
+            activeItem.classList.add('active');
+            moveBackground(activeItem);
+        } else {
+            console.error('Error: Active item not found after slide change.');
+        }
+    });
+
+    // Add hover effect for the news items
+    items.forEach(function (item) {
+        item.addEventListener('mouseenter', function () {
+            items.forEach(function (el) {
+                el.classList.remove('active');
+            });
+            this.classList.add('active');
+            moveBackground(this);
+        });
+    });
+
+    // Reset background on mouse leave
+    items.forEach(function (item) {
+        item.addEventListener('mouseleave', function () {
+            var activeSlide = document.querySelector('.swiper-slide-active');
+            var activeItem = activeSlide.querySelector('.news__item');
+
+            items.forEach(function (el) {
+                el.classList.remove('active');
+            });
+
+            if (activeItem) {
+                activeItem.classList.add('active');
+                moveBackground(activeItem);
+            } else {
+                console.error('Error: Active item not found on mouse leave.');
+            }
+        });
+    });
+});
+
+
+
+</script>
+
+
+
+
+<section id="dividing-section">
+
+</section>
+<section id="choose-your-path-section">
+    <div class="path-header">
+        <h3>CHOOSE YOUR PATH</h3>
+        <h1>Two Paths Lie Before You</h1>
+    </div>
+
+    <div class="path-container">
+        <div class="path-left">
+            <div class="path-box gray-box">
+                <h4>PAY AT UNIVERSITY</h4>
+                <h2>$35,000+</h2>
+                <p>Follow the conventional university route, investing years and significant funds into a traditional education, only to join the ranks of countless graduates.</p>
+                
+            </div>
+        </div>
+
+        <div class="vs-circle">
+            <span>vs</span>
+        </div>
+
+        <div class="path-right">
+            <div class="path-box blue-box">
+                <h4>PAY</h4>
+                <h2>$49.99</h2>
+                <p>Immediately tap into a reservoir of cutting-edge knowledge, positioning yourself at the vanguard of innovation and fast-tracking your path to wealth.</p>
+                <button class="action-btn">Enroll Today</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+
+    /* Section styling */
+#choose-your-path-section {
+    padding: 50px;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+}
+
+.path-header h3 {
+    font-size: 16px;
+    letter-spacing: 3px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.path-header h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+
+/* Path container to hold both boxes */
+.path-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.path-left, .path-right {
+    width: 35%;
+    
+}
+
+.path-box {
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.gray-box {
+    background-color: #000;
+    color: #fff;
+}
+
+.blue-box {
+    background-color: #000;
+    color: #fff;
+    border: #111 1px solid;
+}
+
+.path-box h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.path-box h2 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.path-box p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* VS Circle */
+.vs-circle {
+    width: 80px;
+    height: 80px;
+    background-color: #fff;
+    border: 3px solid #ccc;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000;
+}
+
+/* Buttons */
+#choose-your-path-section button {
+        background-color: transparent;
+        width: 200px;
+        color: white;
+        
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-top: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        
+    }
+    
+    #choose-your-path-section button::before,
+    #choose-your-path-section button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 2px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    
+    #choose-your-path-section button::before {
+        left: 10px;
+    }
+    
+    #choose-your-path-section button::after {
+        right: 10px;
+    }
+    
+    #choose-your-path-section button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .path-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .path-left, .path-right {
+        width: 100%;
+    }
+
+    .vs-circle {
+        display: none;
+    }
+}
+</style>
+<section id="dividing-section">
+
+</section>
+ <section id="membership-section">
+   
+  
+    
+    <div class="container">
+        <h2>Join the Champions Club</h2>
+        <p class="membership-intro">
+            Become a part of an exclusive community where growth, excellence, and integrity are at the core of everything we do. Whether you choose to be a Champion or an Associate, you’ll gain access to resources, support, and opportunities to excel in your personal and professional life.
+        </p>
+     
+    </div>
+</section>
+
+
+<!-- FontAwesome Link for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- FontAwesome Link for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+#membership-section button {
+    background-color: transparent;
+    color: white;
+    padding: 15px 45px;
+    border: 1px solid white;
+    
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+#membership-section button:hover {
+    background-color: #fff;
+    color:#000;
+}
+
+#membership-section button::before,
+#membership-section button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 1px;
+    background-color: white;
+    transform: translateY(-50%);
+}
+#membership-section button::before {
+    left: 10px;
+    
+}
+#membership-section button::after{
+    right: 10px;
+}
+   #membership-section {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 0;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+#membership-section h1{
+    font-size: 2.5rem;
+    font-family: 'Montserrat';
+    
+    padding: 10px;
+    letter-spacing: 2px;
+    margin: 0px auto;
+
+}
+
+#membership-section .container {
+    
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 100px;
+    padding: 0 20px;
+}
+
+#membership-section h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    
+}
+
+#membership-section .membership-intro {
+    font-size: 20px;
+    margin-bottom: 50px;
+    font-family: 'Roboto';
+    font-weight: 300;
+    color: #ddd;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.membership-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.membership-option {
+    background-color: #000;
+    padding: 40px;
+    border-radius: 10px;
+    flex-basis: calc(50% - 40px);
+    text-align: left;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.membership-option:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+}
+
+.membership-option h3 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #ffcc00;
+}
+
+.membership-option p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #bbb;
+}
+
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 40px;
+}
+
+.benefits-list li {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #ddd;
+}
+
+.benefits-list li i {
+    color: #ffcc00;
+    margin-right: 15px;
+}
+
+.membership-btn {
+    display: inline-block;
+    padding: 15px 35px;
+    background-color: #ffcc00;
+    color: #000;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+}
+
+.membership-btn:hover {
+    background-color: #e6b800;
+    transform: translateY(-3px);
+}
+
+
+
+</style>
+
+
+
+    <section id="application-cta">
+        {% if user.is_authenticated %}
+        {% if registration.approved == 1 %}
+        {% if registration.membership_paid == 0 %}
+        <h1 class="congratulations">Congratulations!</h1>
+        <p>Your profile has been shortlisted to join the exclusive Champions Club.</p>
+        <!-- User is approved but hasn't paid the membership fee -->
+        <div class="membership-card">
+
+            <div class="silver-strip">
+                <h3>THE CHAMPIONS CLUB</h3>
+            </div>
+            <div class="price-section">
+                <h4>Annual Membership Fee: $999.99</h4>
+
+                 <p>Unlock a world of opportunities, connections, and knowledge.</p>
+                <a href="{% url 'champions_dashboard' %}">
+                    <button class="btn-primary">Buy Membership Now</button>
+                </a>
+            </div>
+
+        </div>
+        {% else %}
+        <h1 class="congratulations">WELCOME BACK</h1>
+        <!-- User is approved and has paid the membership fee -->
+        <div class="membership-card">
+
+            <div class="silver-strip">
+                <h3>THE CHAMPIONS CLUB</h3>
+            </div>
+            <div class="price-section">
+
+
+                <p>Unlock a world of opportunities, connections, and knowledge.</p>
+                <a href="{% url 'champions_dashboard' %}">
+                    <button class="btn-primary">Go TO YOUR DASHBOARD</button>
+                </a>
+            </div>
+
+        </div>
+        {% endif %}
+        {% elif registration.approved == 0 %}
+        <!-- User's application is pending -->
+        <h1>Your application is pending approval.</h1>
+        {% elif registration.approved == 2 %}
+        <!-- User's application was rejected -->
+        {% if registration.joined_as == False %}
+        <h1>Welcome associate</h1>
+        <!-- User is not an associate member -->
+        <a href="{% url 'course_list' %}"><button>GO TO COURSES</button></a>
+        {% else %}
+        {% if reapply_date < now %} <a href="{% url 'apply' %}"><button>REAPPLY NOW</button></a>
+            {% else %}
+            <h1>You can reapply in <span id="reapply-timer"></span></h1>
+            <script>
+                var countDownDate = new Date("{{ reapply_date|date:'Y-m-d H:i:s' }}").getTime();
+                var x = setInterval(function () {
+                    var now = new Date().getTime();
+                    var distance = countDownDate - now;
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    document.getElementById("reapply-timer").innerHTML = days + "d " + hours + "h "
+                        + minutes + "m " + seconds + "s ";
+                    if (distance < 0) {
+                        clearInterval(x);
+                        document.getElementById("reapply-timer").innerHTML = "Time to reapply!";
+                    }
+                }, 1000);
+            </script>
+            <a href="{% url 'course_list' %}"><button>GO TO COURSES</button></a>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% else %}
+            <!-- User is not logged in -->
+            <a href="{% url 'membership_portal' %}"><button>EXPLORE MEMBERSHIP OPTIONS</button></a>
+            
+            {% endif %}
+
+            <!-- Styles for Black Credit Card Look -->
+            <style>
+                #application-cta{
+                    padding-bottom: 50px;
+                    background-color: #000;
+                }
+                .membership-card {
+                    background-color: #000;
+                    color: #fff;
+                    border-radius: 15px;
+                    padding: 50px 0;
+                    margin: 40px auto;
+                    max-width: 800px;
+                    display: flex;
+                    flex-direction: column;
+                    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+                    position: relative;
+                    overflow: hidden;
+                    width: 100%;
+                }
+
+                .silver-strip {
+                    background: linear-gradient(90deg, #000, #e0e0e0);
+                    padding: 10px;
+                    text-align: center;
+
+                }
+
+                .silver-strip h3 {
+                    margin: 0;
+                    font-size: 1.5rem;
+                    color: #000;
+                    font-weight: bold;
+                    letter-spacing: 2px;
+                }
+
+                .btn-primary {
+                    margin-top: 20px;
+                }
+
+
+
+
+
+
+
+
+                .price-section {
+                    background-color: #000;
+                    padding: 15px;
+
+                    margin-bottom: 20px;
+                }
+
+                .price-section h4 {
+                    margin: 20px;
+
+                    font-size: 1.6rem;
+                }
+            </style>
+
+
+    </section>
+   <!-- HTML -->
+  
+  
+
+    
+<style>
+ #glimpses-section {
+    background-color: #000;
+    color: #fff;
+    padding: 20px 20px;
+    text-align: center;
+}#glimpses-section hr{
+    width: 50px;
+    height: 2px;
+    background-color: #333;
+    border: none;
+    margin-bottom: 40px;
+    /* Ensure hr aligns to the left */
+   
+}
+
+#glimpses-section .container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+#glimpses-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #fff;
+   
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.glimpses-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.glimpse-item {
+    flex: 1;
+    color: #bbb;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    height: 600px; /* Adjust this height as needed */
+}
+
+.glimpse-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    color:#ddd;
+    border-radius: 12px;
+}
+.progress-container {
+    position: fixed;
+    top: 0;
+  z-index: 100;
+  width: 100%;
+  height: 2px;
+  background: transparent;
+}
+
+.progress-bar {
+  height: 2px;
+ background:linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+  width: 0%;
+}
+#footer img{
+    height: 150px;
+    margin:0 auto;
+}
+</style>    
+  
+
+
+<section id="faq-section">
+    <div class="faq-container">
+        <div class="faq-info">
+            <h2>Frequently Asked Questions</h2>
+            <p>All content and training within The Champions Club is provided for educational purposes only. Success depends on each member's dedication, effort, and application of the strategies taught.</p> <p>The Champions Club does not promise or guarantee any specific financial outcomes or achievements.</p>
+            <ul>
+               
+            </ul>
+            <div class="support">
+                <p>Support</p>
+                <a href="mailto:info@thechampionsclub.com">Info@thechampionsclub.com</a>
+            </div>
+            
+        </div>
+        <div class="faq-items">
+            <div class="faq-item">
+                <button class="faq-question">Is this program suitable for women? <span>+</span></button>
+                <div class="faq-answer">
+                    <p>Yes, our program is designed to be inclusive and suitable for everyone.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">How quickly will I make my money back? <span>+</span></button>
+                <div class="faq-answer">
+                    <p>The speed of your return depends on the effort you put in and how you implement the strategies.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Do I need money once I’m inside university.com? <span>+</span></button>
+                <div class="faq-answer">
+                    <p>While the program itself provides a wealth of knowledge, there may be optional resources that require additional investment.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Does my age really not matter? <span>+</span></button>
+                <div class="faq-answer">
+                    <p>No, we believe that anyone can succeed at any age with the right mindset and effort.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">I know nothing about the skills you teach. Is it a problem? <span>+</span></button>
+                <div class="faq-answer">
+                    <p>No problem! Our courses are designed for beginners and experts alike.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">I don’t have a lot of time available, can I still apply? <span>+</span></button>
+                <div class="faq-answer">
+                    <p>Absolutely! The program is designed to be flexible and self-paced.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">I live in X country. Is it a problem? <span>+</span></button>
+                <div class="faq-answer">
+                    <p>No, you can participate in our program from anywhere in the world.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Will I get access to all the courses once I join? <span>+</span></button>
+                <div class="faq-answer">
+                    <p>Yes, all courses will be available to you once you sign up.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Still have questions? <span>+</span></button>
+                <div class="faq-answer">
+                    <p>Feel free to contact us at support@university.com for any additional questions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    #faq-section {
+        padding: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        background-color: #000; /* Dark grey/black background for a modern look */
+    }
+    
+    .faq-container {
+        display: flex;
+        max-width: 1200px;
+        width: 100%;
+        gap: 40px;
+    }
+    
+    .faq-info {
+        width: 40%;
+        padding-right: 20px;
+    }
+    
+    .faq-info h2 {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #f1f1f1; /* Subtle light grey text for elegance */
+    }
+    
+    .faq-info p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        color: #d3d3d3; /* Softer grey for supporting text */
+    }
+    
+    .faq-info ul {
+        margin-bottom: 20px;
+    }
+    
+    .faq-info ul li {
+        display: inline-block;
+        margin-right: 20px;
+    }
+    
+    .faq-info ul li a {
+        text-decoration: none;
+        color: #d3d3d3; /* Grey for links */
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+    
+    .faq-info ul li a:hover {
+        color: #ffd700; /* Soft gold hover effect for links */
+    }
+    
+    .faq-info .support {
+        margin-bottom: 20px;
+    }
+    
+    .faq-info .login-btn {
+        background-color: #ffd700; /* Soft gold button */
+        color: #1a1a1a; /* Dark text color */
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .faq-info .login-btn:hover {
+        background-color: #e0b800; /* Slightly darker gold on hover */
+    }
+    
+    .faq-items {
+        width: 60%;
+    }
+    
+    .faq-item {
+        margin-bottom: 10px;
+    }
+    .support a{
+        color:#ffd700
+    }
+    .faq-question {
+        width: 100%;
+        background-color: #262626; /* Slightly lighter grey/black for contrast */
+        color: #f1f1f1; /* Light grey/white text */
+        font-size: 18px;
+        padding: 15px;
+        border: none;
+        border-radius: 10px;
+        text-align: left;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        outline: none;
+        transition: background-color 0.3s ease;
+    }
+    
+    .faq-question:hover {
+        background-color: #333; /* Subtle hover effect on FAQ buttons */
+    }
+    
+    .faq-question span {
+        font-size: 24px;
+        color: #ffd700; /* Soft gold for the '+' icon */
+    }
+    
+    .faq-answer {
+        display: none;
+        background-color: #333; /* Slightly lighter grey */
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 5px;
+    }
+    
+    .faq-answer p {
+        font-size: 16px;
+        margin: 0;
+        color: #d3d3d3; /* Softer grey text for answers */
+    }
+    
+    @media (max-width: 768px) {
+        .faq-container {
+            flex-direction: column;
+            gap: 30px;
+        }
+    
+        .faq-info {
+            width: 100%;
+        }
+    
+        .faq-items {
+            width: 100%;
+        }
+    }
+    
+    
+</style>
+<script>
+    document.querySelectorAll('.faq-question').forEach(button => {
+        button.addEventListener('click', () => {
+            const answer = button.nextElementSibling;
+    
+            // Toggle active class
+            button.classList.toggle('active');
+    
+            // Toggle the answer visibility
+            if (answer.style.display === "block") {
+                answer.style.display = "none";
+                button.querySelector('span').textContent = '+';
+            } else {
+                answer.style.display = "block";
+                button.querySelector('span').textContent = '-';
+            }
+        });
+    });
+    
+</script>
+<section id="dividing-section">
+
+</section>
+        <footer id="footer" class="fade-in">
+
+
+            <div class="footer-content">
+
+                <div class="footer-section">
+                    <img src="{% static 'images/logo.png' %}" alt="">
+                 </div>
+                
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <a href="{% url 'support_request' %}" class="footer-link">Support</a>
+                    <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                    <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
+                    <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
+                    
+                    <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Company</h4>
+                    <a href="{% url 'register_partner' %}" class="footer-link">Become a Partner</a>
+                    <a href="{% url 'careers' %}" class="footer-link">Careers</a>
+                    
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">STAY CONNECTED</h4>
+                    <div class="social-media">
+                        <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
+                            <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
+                        </a>
+                        <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+
+                </div>
+                
+            </div>
+            <section id="dividing-section">
+
+            </section>
+            <div class="footer-bottom">
+                <div class="trademark">The Champions Club</div>
+                <div class="copyright">Copyright © & Trademark ® 2024 The Champions Club™ - All Rights Reserved.</div>
+            </div>
+        </footer>
+
+
+        <script src="scripts.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+        <script type="application/json" src="./js/animation.js"></script>
+       
+        <script>
+            var timeline = gsap.timeline();
+        
+            // Initial text appearance animation
+            timeline.fromTo(
+                ".hero-text",
+                { y: "70px", opacity: 0 },
+                { y: "0px", opacity: 1, stagger: 0.5 },
+                "+=1"
+            );
+        
+            // Adding a slight delay before starting the erase animation
+            timeline.to(".hero-text", { opacity: 1 }, "+=.5");
+        
+            // Reveal box appears to "erase" the hero text
+            timeline.fromTo(
+                ".reveal-box",
+                { opacity: 0, width: "0%", left: "-1%" },
+                { opacity: 1, width: "0%", right: "100%", immediateRender: false }
+            );
+        
+            // Animate the reveal-box to cover hero text (right to left)
+            timeline.to(".reveal-box", {
+                width: "100%",
+                duration: 0.8,
+                ease: "power1.inOut",
+            });
+        
+            // Make hero text invisible as it's "erased"
+            timeline.to(".hero-text", { opacity: 0 }, "-=0.6");
+        
+            // Animate reveal-box to shrink and disappear
+            timeline.to(".reveal-box", {
+                width: "0%",
+                duration: 0.5,
+                ease: "power1.inOut",
+            });
+        
+            // Hero-text2 appears after the reveal-box erases
+            timeline.fromTo(
+                ".hero-text2",
+                { opacity: 0 },
+                { opacity: 1, duration: 0.8 },
+                "-=0.3"
+            );
+        
+            // Continue animations for hero-text3 and hero-text4
+            timeline.fromTo(".hero-text3", { opacity: 0 }, { opacity: 1 }, "-=.5");
+            timeline.fromTo(".hero-text4", { opacity: 0 }, { opacity: 1 }, "-=.5");
+        </script>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const faders = document.querySelectorAll('.fade-in');
+
+                const appearOptions = {
+                    threshold: 0.1, // Trigger when 50% of the section is visible
+                    rootMargin: "0px 0px -10px 0px" // Slight offset to start the animation a bit earlier
+                };
+
+                const appearOnScroll = new IntersectionObserver(function (entries, appearOnScroll) {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) {
+                            return;
+                        } else {
+                            entry.target.classList.add('visible');
+                            appearOnScroll.unobserve(entry.target);
+                        }
+                    });
+                }, appearOptions);
+
+                faders.forEach(fader => {
+                    appearOnScroll.observe(fader);
+                });
+            });
+
+        </script>
+       
+            <script>
+// When the user scrolls the page, execute myFunction 
+window.onscroll = function() {myFunction()};
+
+function myFunction() {
+  var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  var scrolled = (winScroll / height) * 100;
+  document.getElementById("myBar").style.width = scrolled + "%";
+}
+</script>
+       
+    </body>
+
+</html>

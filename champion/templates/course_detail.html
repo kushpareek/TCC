@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load custom_filters %}
+
+    <meta charset="UTF-8">
+    <title>TCC | {{ course.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/courses.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000; /* Dark background for black theme */
+            color: #fff; /* Light text color for contrast */
+            font-family: 'Montserrat', 'Roboto', sans-serif;
+        }
+        h1, h4 {
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom:3%;
+            color:white;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        h4{
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.2rem;
+        }
+        p, .list-group-item {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            color: #cccccc; /* Slightly lighter color for paragraphs */
+        }
+        .card {
+            background-color: #1e1e1e; /* Slightly lighter dark color for cards */
+            border: none;
+        }
+        .card-header {
+            background-color: #000; /* Darker background for headers */
+            color: #f5f5f5;
+            border-bottom: white 1px solid;
+        }
+        .btn-primary {
+            background-color: #ffcc00;
+            border: none;
+            color: #121212;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background-color: #e6b800;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+            color: #121212;
+            font-weight: 600;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .list-group-item {
+            background-color: #1e1e1e; /* Match list items to card background */
+            border: none;
+        }
+        .list-group-item a {
+            color: #ffcc00; /* Bright color for links */
+            text-decoration: none;
+        }
+        .list-group-item a:hover {
+            text-decoration: underline;
+        }
+        
+       
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+</head>
+<body>
+    <section>
+        <nav class="top-navbar">
+            <!-- Logo on the left -->
+            <div class="logo">
+                <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+                THE CHAMPIONS CLUB
+            </div>
+    
+            <!-- Menu Icon for Mobile -->
+            <div class="menu-icon" onclick="toggleMenu()">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+    
+            <!-- Navigation Links -->
+            <ul id="nav-links">
+                <li><a href="{% url 'home' %}">HOME</a></li>
+                <li><a href="{% url 'blog_list' %}">NEWS</a></li>
+                
+              
+        
+                <!-- Dropdown tab for Resources -->
+                <li class="dropdown">
+                    <a href="#">RESOURCES</a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                        <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                    </ul>
+                </li>
+    
+    
+    
+                
+                <li><a href="{% url 'support_request' %}">CONTACT</a></li>
+                
+                {% if not user.is_authenticated %}
+                <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+                {% else %}
+                {% if registration.approved == 1 %}
+                {% if registration.membership_paid == 0 %}
+                <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li>
+                {% else %}
+                <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> DASHBOARD</a></li>
+                {% endif %}
+                {% else %}
+                <li class="dropdown">
+                    <a href="#">
+                        {% if registration.profile_image %}
+                            <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                        {% else %}
+                            <i class="fa-solid fa-circle-user fa-xl"></i>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'user_profile' %}">PROFILE</a></li>
+                        <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+                    </ul>
+                </li>
+                
+                {% endif %}
+                {% endif %}
+               
+                <!-- <li>
+                    <div class="toggle">
+                        <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                        <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                           </div>
+                    </li> -->
+            </ul>
+        </nav>
+    
+        <!-- Add your page content here -->
+    
+        <script>
+            function toggleMenu() {
+                const menuIcon = document.querySelector('.menu-icon');
+                const navLinks = document.getElementById('nav-links');
+    
+                menuIcon.classList.toggle('open');
+                navLinks.classList.toggle('show');
+            }
+        </script>
+       
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+      </div>  
+    
+    
+    <script>
+    
+    
+      // Toggle dropdown for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        const dropdownLinks = document.querySelectorAll('.dropdown > a');
+        
+        dropdownLinks.forEach(function(dropdownLink) {
+            dropdownLink.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default link behavior
+                
+                const dropdown = this.parentElement; // Get the parent <li> element
+    
+                // Toggle the 'show' class to show or hide the dropdown
+                dropdown.classList.toggle('show');
+    
+                // Close any other open dropdowns
+                document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                    if (otherDropdown !== dropdown) {
+                        otherDropdown.classList.remove('show');
+                    }
+                });
+            });
+        });
+    });
+    
+    
+       function toggleMenu() {
+        const navLinks = document.getElementById('nav-links');
+        const menuIcon = document.querySelector('.menu-icon');
+        navLinks.classList.toggle('show');
+        menuIcon.classList.toggle('open');
+    }
+    
+        </script>
+        </section>
+    <div class="container mt-5">
+        <div class="row">
+            <h1>{{ course.title }}</h1>
+            <!-- Course Description and Syllabus -->
+            <div class="col-lg-8">
+                
+                <p>{{ course.description }}</p>
+
+                <!-- Accordion for Syllabus -->
+                <div id="syllabusAccordion">
+                    {% for section in course.sections.all %}
+                    <div class="card mb-3">
+                        <div class="card-header" id="heading{{ section.id }}">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link text-left text-decoration-none text-light" type="button" data-toggle="collapse" data-target="#collapse{{ section.id }}" aria-expanded="true" aria-controls="collapse{{ section.id }}">
+                                    {{ section.title }}
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapse{{ section.id }}" class="collapse" aria-labelledby="heading{{ section.id }}" data-parent="#syllabusAccordion">
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    {% for video in section.lessons.all %}
+                                   
+                                    <li class="list-group-item">
+                                        <a href="">{{ video.title }}</a>
+                                    </li>
+                                   
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Sidebar with Course Details -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                    <ul class="list-group list-group-flush">
+                        {% if request.user.is_authenticated and request.user.registration.membership_paid %}
+                        <li class="list-group-item">
+                                        <strong>Price:</strong> <span style="text-decoration: line-through;">${{ course.price }}</span></li>
+                                        <li class="list-group-item"><strong>Champions Price:</strong> ${{ course.price|floatformat:2|mul:0.75|floatformat:2 }}</li>
+                                    
+                                {% else %}
+                                <li class="list-group-item"><strong>Price:</strong> ${{ course.price }}</li>
+                                {% endif %}
+                        <li class="list-group-item"><strong>Instructor:</strong> {{ course.instructor.get_full_name }}</li>
+                        <li class="list-group-item"><strong>Category:</strong> {{ course.category.name }}</li>
+                        <li class="list-group-item"><strong>Level:</strong> {{ course.get_level_display }}</li>
+                    </ul>
+                    <div class="card-body text-center">
+                        {% if not enrolled %}
+                            <form action="{% url 'enroll_in_course' course.id %}" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="text" name="coupon_code" class="form-control" placeholder="Enter coupon code" />
+                                </div>
+                                {% if discount %}
+                                    <p class="text-success">Coupon applied! Discount: {{ discount }}%</p>
+                                {% endif %}
+                                <button type="submit" class="btn btn-success btn-block">Enroll Now</button>
+                            </form>
+                        {% else %}
+                            <a href="{% url 'course_content' course.id %}" class="btn btn-primary btn-block">Go to Course</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    
+    <script>
+        const notificationSocket = new WebSocket('ws://' + window.location.host + '/ws/notifications/');
+        console.log("From Socket")
+        notificationSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const message = data['message'];
+    
+            toastr.success(message, 'New Purchase', {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-bottom-right',
+                timeOut: '5000',
+            });
+        };
+    
+        notificationSocket.onclose = function(e) {
+            console.error('Notification socket closed unexpectedly');
+        };
+    </script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

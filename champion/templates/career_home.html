@@ -1,0 +1,36 @@
+<!-- careers/templates/careers/home.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Careers{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <h2>Join Our Team</h2>
+    <p>At The Champions Club, we value innovation, collaboration, and growth.</p>
+    <a href="{% url 'job_list' %}" class="btn">View Job Openings</a>
+</section>
+
+<!-- Categories Section -->
+
+
+<!-- Featured Jobs Section -->
+<section class="featured-jobs">
+    <h3>Featured Jobs</h3>
+    <div class="job-list">
+        {% for job in featured_jobs %}
+            <div class="job-card">
+                <!-- Optional: Add an icon representing the job role -->
+                <i class="fas fa-user-tie fa-2x" aria-hidden="true"></i>
+                <h4><a href="{% url 'job_detail' slug=job.slug %}">{{ job.title }}</a></h4>
+                <p>{{ job.location }} | {{ job.get_employment_type_display }}</p>
+                <p>{{ job.description|truncatewords:20 }}</p>
+                <a href="{% url 'job_detail' slug=job.slug %}" class="btn btn-secondary apply-btn">Apply Now</a>
+            </div>
+        {% empty %}
+            <p>No job postings available.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

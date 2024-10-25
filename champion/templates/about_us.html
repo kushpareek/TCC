@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>TCC | About</title>
+</head>
+<body>
+    <section>
+        <nav class="top-navbar">
+            <!-- Logo on the left -->
+            <div class="logo">
+                <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+                THE CHAMPIONS CLUB
+            </div>
+    
+            <!-- Menu Icon for Mobile -->
+            <div class="menu-icon" onclick="toggleMenu()">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+    
+            <!-- Navigation Links -->
+            <ul id="nav-links">
+                <li><a href="{% url 'home' %}">HOME</a></li>
+                <li><a href="{% url 'blog_list' %}">NEWS</a></li>
+                
+              
+        
+                <!-- Dropdown tab for Resources -->
+                <li class="dropdown">
+                    <a href="#">RESOURCES</a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                        <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                    </ul>
+                </li>
+    
+    
+    
+                
+                <li><a href="{% url 'support_request' %}">CONTACT</a></li>
+                
+                {% if not user.is_authenticated %}
+                <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+                {% else %}
+                {% if registration.approved == 1 %}
+                {% if registration.membership_paid == 0 %}
+                <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li>
+                {% else %}
+                <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> DASHBOARD</a></li>
+                {% endif %}
+                {% else %}
+                <li class="dropdown">
+                    <a href="#">
+                        {% if registration.profile_image %}
+                            <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                        {% else %}
+                            <i class="fa-solid fa-circle-user fa-xl"></i>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'user_profile' %}">PROFILE</a></li>
+                        <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+                    </ul>
+                </li>
+                
+                {% endif %}
+                {% endif %}
+               
+                <!-- <li>
+                    <div class="toggle">
+                        <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                        <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                           </div>
+                    </li> -->
+            </ul>
+        </nav>
+    
+        <!-- Add your page content here -->
+    
+        <script>
+            function toggleMenu() {
+                const menuIcon = document.querySelector('.menu-icon');
+                const navLinks = document.getElementById('nav-links');
+    
+                menuIcon.classList.toggle('open');
+                navLinks.classList.toggle('show');
+            }
+        </script>
+       
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+      </div>  
+    
+    
+    <script>
+    
+    
+      // Toggle dropdown for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        const dropdownLinks = document.querySelectorAll('.dropdown > a');
+        
+        dropdownLinks.forEach(function(dropdownLink) {
+            dropdownLink.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default link behavior
+                
+                const dropdown = this.parentElement; // Get the parent <li> element
+    
+                // Toggle the 'show' class to show or hide the dropdown
+                dropdown.classList.toggle('show');
+    
+                // Close any other open dropdowns
+                document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                    if (otherDropdown !== dropdown) {
+                        otherDropdown.classList.remove('show');
+                    }
+                });
+            });
+        });
+    });
+    
+    
+       function toggleMenu() {
+        const navLinks = document.getElementById('nav-links');
+        const menuIcon = document.querySelector('.menu-icon');
+        navLinks.classList.toggle('show');
+        menuIcon.classList.toggle('open');
+    }
+    
+        </script>
+        </section>
+        <section id="dividing-section">
+    
+        </section>
+        
+    <style>
+        .navbar-profile-img {
+            width: 35px;             /* Adjust width as needed */
+            height: 35px;  
+                      /* Adjust height as needed */
+            border-radius: 50%;      /* Makes the image circular */
+            object-fit: cover;       /* Ensures the image covers the container without distortion */
+            vertical-align: middle;  /* Aligns the image vertically */
+        }
+        body{
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color:#fff;
+            font-family: 'Montserrat';
+        }
+    
+  #who-is-a-champion {
+    height: 214px;
+    width: auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) 100%), url("{% static 'images/buildings.jpg'%}");
+    background-size: auto, cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    padding: 10px 20px;
+}
+.who-is-a-champion {
+   
+    display: flex;
+    flex-direction: row;
+    gap:20px;
+    align-items: center;
+    margin: 30px auto;
+}
+
+.who-is-a-champion h1 {
+    margin-top:20px;
+    font-size: 48px;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.who-is-a-champion button {
+    background-color: transparent;
+    color: white;
+    width: 100px;
+    padding: 15px 45px;
+    border: 1px solid white;
+    margin-top: 0px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    
+}
+
+.who-is-a-champion button::before,
+.who-is-a-champion button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 2px;
+    background-color: white;
+    transform: translateY(-50%);
+}
+
+.who-is-a-champion button::before {
+    left: 10px;
+}
+
+.who-is-a-champion button::after {
+    right: 10px;
+}
+
+.who-is-a-champion button:hover {
+    background-color: white;
+    color: #333;
+    border-color: #333;
+}
+
+@media (max-width: 768px) {
+    #who-is-a-champion {
+        padding: 60px 10px;
+    }
+    .who-is-a-champion{
+        flex-direction: column;
+    }
+
+    .who-is-a-champion h1 {
+        font-size: 2rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 10px;
+    }
+
+    .who-is-a-champion button {
+        padding: 12px 35px;
+        font-size: 14px;
+    }
+}
+
+.winners-section {
+    display: flex;
+    height: 65vh; /* Full height section */
+    align-items: center;
+}
+
+.winners-image {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.winners-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire area without stretching */
+}
+
+.winners-content {
+    width: 40%;
+    padding: 50px;
+    padding-bottom: 0;
+    background-color: #000; /* Black background for the text content */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.winners-content p {
+    margin: 10px 0;
+    width: 100%;
+    font-size: 24px;
+    color: #bbb; /* Light gray text */
+}
+
+.winners-content h1 {
+    font-size: 48px;
+    font-weight: 600;
+    margin: 20px 0;
+}
+.upper-text{
+    font-size: 16px !important;
+    margin-top:180px !important;
+}
+@media screen and (max-width: 1268px){
+    .upper-text{
+    font-size: 16px !important;
+    margin-top:0px !important;
+}
+.winners-content h1 {
+    font-size: 40px;
+    font-weight: 600;
+    margin: 20px 0;
+}
+.winners-section {
+    display: flex;
+ /* Full height section */
+    align-items: center;
+}
+.winners-content p {
+    margin: 10px 0;
+    width: 100%;
+    font-size: 20px;
+    color: #bbb; /* Light gray text */
+}
+} 
+.winners-section button {
+    background-color: transparent;
+    width: 200px;
+    color: white;
+    padding: 15px 45px;
+    border: 1px solid white;
+    margin-top: 0px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    
+}
+
+.winners-section button::before,
+.winners-section button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 2px;
+    background-color: white;
+    transform: translateY(-50%);
+}
+
+.winners-section button::before {
+    left: 10px;
+}
+
+.winners-section button::after {
+    right: 10px;
+}
+
+.winners-section button:hover {
+    background-color: white;
+    color: #333;
+    border-color: #333;
+}
+@media screen and (max-width: 768px) {
+    .winners-section {
+        
+        flex-direction: column;
+        height: auto; /* Remove fixed height for better flexibility */
+    }
+
+    .winners-image {
+        width: 100%; /* Make the image take up full width */
+        height: 40vh; /* Reduce image height for mobile view */
+    }
+
+    .winners-image img {
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .winners-content {
+        width: 80%; /* Make the content take full width */
+        padding: 20px; /* Reduce padding for smaller screens */
+        text-align: center;
+         /* Center-align text */
+    }
+
+    .winners-content p {
+        font-size: 18px; /* Adjust font size */
+        width: 100%; /* Make paragraph full width */
+    }
+
+    .winners-content h1 {
+        font-size: 32px; /* Adjust heading size */
+        margin: 15px 0; /* Adjust margin for better spacing */
+    }
+
+    .upper-text {
+        font-size: 14px !important;
+        margin-top: 20px !important;
+    }
+
+    .winners-section button {
+        width: 50%; /* Full-width button on mobile */
+        font-size: 14px; /* Slightly smaller font for the button */
+        padding: 10px 0; /* Adjust padding for smaller screens */
+        margin: 20px auto;
+         /* Increase margin for better spacing */
+    }
+
+    .winners-section button::before, 
+    .winners-section button::after {
+        width: 10px; /* Adjust decorative line length for smaller buttons */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .winners-image {
+        height: 30vh; /* Further reduce image height for smaller devices */
+    }
+
+    .winners-content {
+        padding: 10px; /* Further reduce padding for very small screens */
+    }
+
+    .winners-content p {
+        font-size: 16px; /* Adjust paragraph font size */
+    }
+
+    .winners-content h1 {
+        font-size: 28px; /* Smaller heading for mobile view */
+    }
+
+    .winners-section button {
+        font-size: 12px; /* Smaller button text */
+    }
+}
+#who-is-a-champion1 {
+    height: 200px;
+    width: auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) 100%), url("{% static 'images/waterwaves.jpg'%}");
+    background-size: auto, cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    padding: 10px 20px;
+}
+.who-is-a-champion1 {
+   
+    display: flex;
+    flex-direction: row;
+    gap:20px;
+    align-items: center;
+    margin: 30px auto;
+}
+
+.who-is-a-champion1 h1 {
+    margin-top:20px;
+    font-size: 48px;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.who-is-a-champion1 button {
+    background-color: transparent;
+    color: white;
+    width: 100px;
+    padding: 15px 45px;
+    border: 1px solid white;
+    margin-top: 0px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    
+}
+
+
+@media (max-width: 768px) {
+    #who-is-a-champion1 {
+        padding: 60px 10px;
+    }
+    .who-is-a-champion1{
+        flex-direction: column;
+    }
+
+    .who-is-a-champion1 h1 {
+        font-size: 2rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 10px;
+    }
+
+}html {
+    scrollbar-width: none; /* FF */
+}
+::-webkit-scrollbar {
+    width: 0px; /* Chrome & Edge */
+}
+  </style>
+  <section id="dividing-section"></section>
+  <section id="who-is-a-champion">
+    <div class="who-is-a-champion">
+        <h1>THE GLOBAL PRIVATE NETWORK</h1>
+        
+    </div>
+</section>
+<section id="dividing-section"></section>
+
+<section class="winners-section">
+    <div class="winners-image">
+        <img src="{% static 'images/earth.jpg' %}" alt="Earth from space">
+    </div>
+    <div class="winners-content">
+        <p class="upper-text">CRAFTED WITH CARE, DRIVEN BY EXCELLENCE</p>
+        <h1>WINNERS UNITED</h1>
+        <p>The Champions Club is an invite-only global private network by <strong>Shagun Kalash</strong> where achievers from all around the world connect and celebrate life together.</p>
+        <button>READ MORE</button>
+    </div>
+</section>
+<section id="dividing-section"></section>
+<section id="who-is-a-champion1">
+    <div class="who-is-a-champion1">
+        <h1>CHAMPIONS ARE BORN NOT MADE</h1>
+        
+    </div>
+</section>
+<section id="dividing-section"></section>
+
+<style>
+/* Container for the founder section */
+.founder-section {
+    display: flex;
+    align-items: stretch; /* Ensure both children stretch to the same height */
+    background-color: #000; /* Black background */
+    height: 140vh; /* Full viewport height */
+    overflow: hidden; /* Prevent overflow */
+}
+
+/* Content on the left side */
+.founder-content {
+    width: 50%; /* 40% of the container width */
+    padding: 60px 50px; /* Top/Bottom and Left/Right padding */
+    box-sizing: border-box; /* Include padding in width */
+    color: #bbb;    
+    text-align: left;  /* Light gray text */
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+}
+
+.founder-content h1 {
+    font-size: 3rem; /* Responsive font size */
+    margin-bottom: 10px;
+    color: #fff; /* White color for the main heading */
+}
+
+.founder-content h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #bbb;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.founder-content p {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    word-wrap: break-word; /* Prevent long words from overflowing */
+}
+
+/* Image on the right side */
+.founder-image {
+    width: 60%; /* 60% of the container width */
+    position: relative;
+}
+
+.founder-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers its container */
+    display: block; /* Remove any gaps below the image */
+}
+
+/* Horizontal line styling */
+.founder-section hr {
+    width: 50px;
+    height: 2px;
+    background-color: #333;
+    border: none;
+    margin:0;
+    margin-bottom: 30px;
+}
+
+/* Responsive Design */
+
+/* Tablets and larger devices */
+@media (max-width: 1024px) {
+    .founder-content {
+        width: 45%;
+        padding: 50px 40px;
+    }
+
+    .founder-image {
+        width: 55%;
+    }
+
+    .founder-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .founder-content h2 {
+        font-size: 1.25rem;
+    }
+
+    .founder-content p {
+        font-size: 1rem;
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+    .founder-section {
+        flex-direction: column;
+        height: auto;
+         /* Allow height to adjust based on content */
+    }
+
+    .founder-content {
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .founder-content {
+        padding: 20px;
+        
+    }
+
+    .founder-content h1 {
+        font-size: 2rem;
+    }
+
+    .founder-content h2 {
+        font-size: 1.2rem;
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+
+    .founder-content p {
+        font-size: 1rem;
+    }
+
+    .founder-image {
+        width: 100%;
+        order:-1 !important;
+
+        
+    }
+
+    .founder-image img {
+        height: auto;
+         /* Let the image adjust its height */
+    }
+
+    .founder-section hr {
+        margin: 20px auto;
+    }
+}
+
+</style>
+<section id="dividing-section"></section>
+<section class="founder-section">
+    <div class="founder-content">
+        <h1>OUR FOUNDER</h1>
+        <hr>
+        <h2>AN EVERLASTING LEGACY</h2>
+        <p>Graduating from the Harvard Business Analytics Program with the honor of being awarded Distinction at the Harvard Business School, our Founder & Chief Executive Officer Shagun Kalash proved through exceptional personal merit that nothing is impossible as long as there is a will.</p>
+        <p>Admitted at the age of 26, Mr. Kalash became the youngest student in the history of the Program. Being elected as the youngest Cohort Representative in the history of the Program, Mr. Kalash proved his capabilities as a leader and guide to many on a global level.</p>
+        <p>Coming from a Service-class family with a long-lost history of Royalty, the blood of Persia's last Knights still flows through our Founder's veins. After a decade of working with Corporate, Government and Private employers, our Founder stood as a self-made man who decided to challenge the extraordinary and take life head on. Shagun Kalash was re-born as a Warrior ready to fight against the Matrix.</p>
+        <p>With a lifetime of achievements under his belt, Mr. Kalash has vanquished challenges in life with nothing but absolute competence, our Founder's story is a testament to strength and a relentless pursuit of excellence.</p>
+        <p><i>"Through thoughts a man develops a Belief, through action a man becomes Capable, through countless battles a man becomes a Warrior, through a lifetime of war a man becomes a Legend, through the stories of his various conquests a man becomes a Myth, through these myths shared over time a man becomes incredible as a Champion." - Shagun Kalash.</i></p>
+        <p><strong>Disclaimer: The consumption of Tobacco or Alcohol is injurious to health, The Champions Club and it's members including staff do not promote or advertise the same. Personal lifestyle is voluntary, smoke/drink responsibly.</strong></p>
+    </div>
+    <div class="founder-image">
+        <img src="{% static 'images/shagun.jpg' %}" alt="Shagun Kalash">
+    </div>
+</section>
+<section id="dividing-section"></section>
+
+<style>
+    #who-is-a-champion2 {
+    height: 200px;
+    width: auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) 100%), url("{% static 'images/goldspark.jpg'%}");
+    background-size: auto, cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    padding: 10px 20px;
+}
+#who-is-a-champion2 h1 {
+    margin-top:20px;
+    font-size: 48px;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+.who-is-a-champion2 {
+   
+    display: flex;
+    flex-direction: row;
+    gap:20px;
+    align-items: center;
+    margin: 30px auto;
+}
+    .who-is-a-champion2 button {
+    background-color: transparent;
+    width: 200px;
+    color: white;
+    padding: 15px 45px;
+    border: 1px solid white;
+    margin-top: 0px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    
+}
+
+.who-is-a-champion2 button::before,
+.who-is-a-champion2 button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 2px;
+    background-color: white;
+    transform: translateY(-50%);
+}
+
+.who-is-a-champion2 button::before {
+    left: 10px;
+}
+
+.who-is-a-champion2 button::after {
+    right: 10px;
+}
+
+.who-is-a-champion2 button:hover {
+    background-color: white;
+    color: #333;
+    border-color: #333;
+}
+@media (max-width: 768px) {
+    #who-is-a-champion2 {
+        padding: 60px 10px;
+        height: auto;
+    }
+    .who-is-a-champion2{
+        flex-direction: column;
+    }
+
+    .who-is-a-champion2 h1 {
+        font-size: 1.5rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 10px;
+    }
+
+}
+</style>
+<section id="dividing-section"></section>
+<section id="who-is-a-champion2">
+    <div class="who-is-a-champion2">
+        <h1>FOR CHAMPIONS BY CHAMPIONS</h1>
+        <a href=""><button>READ MORE</button></a>
+    </div>
+</section>
+<section id="dividing-section"></section>
+<section class="champions-club-section">
+    <h1 class="section-title">THE CHAMPIONS CLUB</h1>
+    <div class="champions-club-container">
+        <div class="champions-club-image">
+            <img src="{% static 'images/trophy.jpg' %}" alt="Trophy">
+        </div>
+        <div class="champions-club-content">
+            <h2>VISION</h2>
+            <p>We envision an <strong>exclusive social community</strong> of winners from different walks of life.</p>
+
+            <h2>BELIEF</h2>
+            <p>We at The Champions Club share a collective belief of <strong>"Strength Above All"</strong>, we believe in recognizing talent, appreciating achievements, and celebrating victories together.</p>
+
+            <h2>COMPANY</h2>
+            <p>The Champions Club is a privately held company with an exceptionally talented workforce that believes in quality over quantity. We are beyond corporate, we are <strong>family</strong>.</p>
+
+            <h2>RESOURCES</h2>
+            <p>With its vast service network, The Champions Club provides <strong>premier</strong> social media and lifestyle services to our esteemed community members. We also provide an array of <strong>premium</strong> educational content, high-quality business consultancy services, and more.</p>
+        </div>
+    </div>
+</section>
+<section id="dividing-section"></section>
+<style>
+   
+   .champions-club-section {
+    margin: 0 auto;
+    padding: 50px 20px;
+    box-sizing: border-box;
+    text-align: center;
+    max-width: 1400px;
+}
+
+.section-title {
+    font-size: 46px;
+    margin-bottom: 40px;
+    font-weight: 600;
+}
+
+.champions-club-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Ensures space between elements */
+    flex-wrap: wrap;
+}
+
+.champions-club-image {
+    max-width: 35%; /* Image takes 40% of the width */
+    flex-basis: 40%;
+    padding-right: 30px;
+    
+}
+
+.champions-club-image img {
+    width: 100%; /* Ensure image takes full width of its container */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover;
+}
+
+.champions-club-content {
+    max-width: 55%; /* Text content takes 55% of the width */
+    flex-basis: 55%;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.champions-club-content h2 {
+    font-size: 24px;
+    margin-top: 20px;
+    font-weight: 400;
+    color: #fff;
+}
+
+.champions-club-content p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #bbb;
+    font-weight: 400;
+    margin-top: 10px;
+}
+
+.champions-club-content strong {
+    color: #fff;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    .champions-club-container {
+        flex-direction: column; /* Stack elements vertically on smaller screens */
+    }
+
+    .champions-club-image,
+    .champions-club-content {
+        width: 100%; /* Full width for both image and content */
+        text-align: center;
+    }
+
+    .champions-club-content {
+        padding-left: 0;
+    }
+
+    .champions-club-image img {
+        width: 80%; /* Reduce image size on smaller screens */
+        margin: 0 auto; /* Center image horizontally */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .section-title {
+        font-size: 28px;
+    }
+
+    .champions-club-content h2 {
+        font-size: 22px;
+    }
+
+    .champions-club-content p {
+        font-size: 14px;
+    }
+
+    .champions-club-image img {
+        width: 100%; /* Full width for image on mobile */
+    }
+}
+
+</style>
+<section id="dividing-section">
+
+</section>
+<section id="who-is-a-champion3">
+    <div class="who-is-a-champion3">
+        <h1>WE MAKE NO EXCEPTIONS</h1>
+        <a href="{% url 'membership_portal' %}"><button>CHECK YOUR ELIGIBILITY</button></a>
+    </div>
+</section>
+<section id="dividing-section">
+
+</section>
+<style>
+        #who-is-a-champion3 {
+    height: 200px;
+    width: auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) 100%), url("{% static 'images/lightbackground.jpg'%}");
+    background-size: auto, cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    padding: 10px 20px;
+}
+#who-is-a-champion3 h1 {
+    margin-top:20px;
+    font-size: 48px;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+.who-is-a-champion3 {
+   
+    display: flex;
+    flex-direction: row;
+    gap:20px;
+    align-items: center;
+    margin: 30px auto;
+}
+    .who-is-a-champion3 button {
+    background-color: transparent;
+    width: 300px;
+    color: white;
+    
+    padding: 15px 45px;
+    border: 1px solid white;
+    margin-top: 0px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    
+}
+
+.who-is-a-champion3 button::before,
+.who-is-a-champion3 button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 2px;
+    background-color: white;
+    transform: translateY(-50%);
+}
+
+.who-is-a-champion3 button::before {
+    left: 10px;
+}
+
+.who-is-a-champion3 button::after {
+    right: 10px;
+}
+
+.who-is-a-champion3 button:hover {
+    background-color: white;
+    color: #333;
+    border-color: #333;
+}
+@media (max-width: 768px) {
+    #who-is-a-champion3 {
+        padding: 60px 10px;
+        height: auto;
+    }
+    .who-is-a-champion3{
+        flex-direction: column;
+    }
+
+    .who-is-a-champion3 h1 {
+        font-size: 1.5rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 10px;
+    }
+
+}
+</style>
+
+<section id="dividing-section">
+
+</section>
+        <footer id="footer" class="fade-in">
+
+
+            <div class="footer-content">
+
+                <div class="footer-section">
+                    <img src="{% static 'images/logo.png' %}" alt="">
+                 </div>
+                
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <a href="{% url 'support_request' %}" class="footer-link">Support</a>
+                    <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                    <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
+                    <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
+                    
+                    <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Company</h4>
+                    <a href="/about-us" class="footer-link">Become a Partner</a>
+                    <a href="{% url 'careers' %}" class="footer-link">Careers</a>
+                    
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">STAY CONNECTED</h4>
+                    <div class="social-media">
+                        <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
+                            <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
+                        </a>
+                        <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+
+                </div>
+                
+            </div>
+            <section id="dividing-section">
+
+            </section>
+            <div class="footer-bottom">
+                <div class="trademark">The Champions Club</div>
+                <div class="copyright">Copyright © & Trademark ® 2024 The Champions Club™ - All Rights Reserved.</div>
+            </div>
+        </footer>
+<style>
+    
+.footer-section button{
+    background-color: transparent;
+    color: white;
+    padding: 15px 45px;
+    border: 1px solid white;
+    margin-left: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.footer-section button::before,
+.footer-section button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 1px;
+    background-color: white;
+    transform: translateY(-50%);
+}
+.footer-section button::before {
+    left: 10px;
+}
+
+.footer-section button::after {
+    right: 10px;
+}
+.footer-section button:hover {
+    background-color: white;
+    color: #333;
+    border-color: #333;
+}
+
+
+
+
+
+
+#footer {
+    background-color: #000;
+    padding: 50px 100px;
+    color: #f4f4f4;
+    font-family: 'Roboto', sans-serif;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    
+    padding-bottom: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin: 10px;
+    margin-left: 100px;
+}
+
+.footer-title {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #f4f4f4;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.footer-link {
+    display: block;
+    color: #f4f4f4;
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #999;
+}
+
+.social-media {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-icon {
+    color: #f4f4f4;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+    color: #999;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.trademark {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    #footer{
+        padding:0;
+    }
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-section {
+        margin-bottom: 20px;
+        margin-left: 0;
+    }
+
+    .social-media {
+        justify-content: center;
+    }
+}
+#footer img{
+    height: 150px;
+    margin:0 auto;
+}
+#dividing-section{
+        background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+        height: 1px;
+    }
+</style>
+</body>
+</html>

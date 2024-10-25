@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | Membership Payment</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            color: #ffcc00;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .benefits-list {
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .benefits-list h2 {
+            color: #ffcc00;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .benefits-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .benefits-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+            font-size: 1.1rem;
+        }
+
+        .benefits-list li:last-child {
+            border-bottom: none;
+        }
+
+        .benefits-list li::before {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: #ffcc00;
+            margin-right: 10px;
+        }
+
+        .terms {
+            max-width: 800px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .terms label {
+            display: block;
+            font-size: 1rem;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .terms input {
+            margin-right: 10px;
+        }
+
+        .payment-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .payment-button .razorpay-button {
+            background-color: #ffcc00;
+            color: #000;
+            font-size: 1.2rem;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: auto;
+        }
+
+        .payment-button .razorpay-button:disabled {
+            background-color: #555;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .payment-button .razorpay-button:hover:enabled {
+            background-color: #e6b800;
+        }
+
+        button {
+            background-color: transparent;
+            color: white;
+            padding: 15px 45px;
+            border: 1px solid white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        button::before,
+        button::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 1px;
+            background-color: white;
+            transform: translateY(-50%);
+        }
+
+        button::before {
+            left: 10px;
+        }
+
+        button::after {
+            right: 10px;
+        }
+        .razorpay-payment-button {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Congratulations!</h1>
+    <p>You have been shortlisted to join The Champions Club. Unlock exclusive benefits by completing your membership payment of ${{ amount }}.</p>
+
+    <div class="benefits-list">
+        <h2>Unlock These Benefits:</h2>
+        <ul>
+            <li>Exclusive access to a network of top achievers.</li>
+            <li>Invitation to exclusive events and webinars.</li>
+            <li>20-30% discount on all podcasts and courses.</li>
+            <li>Additional discounts on rewatching podcasts.</li>
+            <li>A prestigious Champions Membership Card.</li>
+        </ul>
+    </div>
+
+    <div class="terms">
+        <label>
+            <input type="checkbox" class="terms-checkbox" required>
+            I agree to the <a href="#" style="color:#ffcc00;">Terms and Conditions</a>, <a href="#" style="color:#ffcc00;">Refund Policy</a>, and <a href="#" style="color:#ffcc00;">Privacy Policy</a>.
+        </label>
+        <label>
+            <input type="checkbox" class="terms-checkbox" required>
+            I agree to receive emails about events and notifications.
+        </label>
+        <label>
+            <input type="checkbox" class="terms-checkbox" required>
+            I agree to renew my membership annually before the due date. If I don't, my membership will be terminated until renewed. If not renewed within 12 months, my profile will be demoted to Associate.
+        </label>
+    </div>
+
+    
+        <form action="{% url 'payment_success' %}" method="POST">
+            {% csrf_token %}
+            <script src="https://checkout.razorpay.com/v1/checkout.js"
+                data-key="{{ razorpay_key_id }}"
+                data-amount="{{ amount|floatformat:2 }}"
+                data-currency="{{ currency }}"
+                data-order_id="{{ razorpay_order_id }}"
+                data-buttontext="Pay ${{ amount }}"
+                data-name="The Champions Club"
+                data-description="Annual Membership"
+                data-image="{% static 'images/logo.png' %}"
+                data-prefill.name="{{ user.first_name }} {{ user.last_name }}"
+                data-prefill.email="{{ user.email }}"
+                data-theme.color="#000">
+                
+            </script>
+            
+            <button type="button" class="btn-custom" id="custom-pay-button">Pay Now</button>
+        </form>
+   
+
+    <script>
+        const checkboxes = document.querySelectorAll('.terms-checkbox');
+        const razorpayButton = document.querySelector('.btn-custom');
+
+        function updateButtonState() {
+            razorpayButton.disabled = !Array.from(checkboxes).every(checkbox => checkbox.checked);
+        }
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateButtonState);
+        });
+
+        updateButtonState(); // Initial check
+    </script>
+    <script>
+        document.getElementById('custom-pay-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.razorpay-payment-button').click();  // Trigger the hidden Razorpay button
+        });
+    </script>
+</body>
+
+</html>

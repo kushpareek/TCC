@@ -1,0 +1,1062 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ video.title }} - Video Streaming</title>
+    <style>
+        /* Hide the seek bar */
+        video::-webkit-media-controls-timeline {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ video.title }}</h1>
+    <video id="videoPlayer" controls controlslist="nodownload noplaybackrate">
+        <source src="{% url 'stream_video' video.id %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <script>
+        const videoPlayer = document.getElementById('videoPlayer');
+
+        // Start the video from the last watched time
+        videoPlayer.currentTime = {{ last_watched_time }};
+
+        // Function to update the last watched time on the server
+        function updateVideoTime() {
+            fetch('{% url "update_video_time" video.id %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ time: videoPlayer.currentTime })
+            });
+           
+        }
+
+        // Periodically update the last watched time every 15 seconds
+        setInterval(updateVideoTime, 1500); // 15000ms = 15 seconds
+
+        // Also update the last watched time when the video is paused
+        videoPlayer.onpause = updateVideoTime;
+        
+        // Mark the video as completed when it ends
+        videoPlayer.onended = function() {
+            fetch('{% url "complete_video" video.id %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ completed: true })
+            });
+        };
+    </script>
+</body>
+</html> {% endcomment %}
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>{{ video.title }} - Video Streaming</title>
+    <style>
+        /* Hide the seek bar */
+        video::-webkit-media-controls-timeline {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ video.title }}</h1>
+    <video id="videoPlayer" controls controlslist="nodownload noplaybackrate">
+        <source src="{% url 'stream_video' video.id %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <script>
+        const videoPlayer = document.getElementById('videoPlayer');
+
+        // Start the video from the last watched time
+        videoPlayer.currentTime = {{ last_watched_time }};
+
+        // Function to update the last watched time on the server
+        function updateVideoTime() {
+            fetch('{% url "update_video_time" video.id %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ time: videoPlayer.currentTime })
+            });
+           
+        }
+
+        // Periodically update the last watched time every 15 seconds
+        setInterval(updateVideoTime, 3500); // 15000ms = 15 seconds
+
+        // Also update the last watched time when the video is paused
+        videoPlayer.onpause = updateVideoTime;
+        
+        // Mark the video as completed when it ends
+        videoPlayer.onended = function() {
+            fetch('{% url "complete_video" video.id %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ completed: true })
+            });
+        };
+
+        // Detect screen sharing
+       
+    </script>
+</body>
+</html> {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>TCC | {{ video.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/play_video.css" %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static "css/navbar.css" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <style>
+        body, html {
+            
+        
+            
+            
+          
+        }
+        .navbar-profile-img {
+            width: 35px;             /* Adjust width as needed */
+            height: 35px;  
+                      /* Adjust height as needed */
+            border-radius: 50%;      /* Makes the image circular */
+            object-fit: cover;       /* Ensures the image covers the container without distortion */
+            vertical-align: middle;  /* Aligns the image vertically */
+        } 
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin:100px auto ;
+            max-width: 80%;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align:center;
+        }
+
+        .video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin:0 auto;
+            flex-direction: column;
+            width: 100%;
+            max-width: 100%; /* Set a max width for the video player */
+        }
+
+        .custom-video-player {
+            position: relative;
+            width: 100%; /* Full width of the container */
+            background-color: #000;
+        }
+
+        .custom-video-player video {
+            width: 100%;
+            height: auto;
+        }
+
+        .custom-controls {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .custom-video-player:hover .custom-controls {
+            opacity: 1;
+        }
+
+        .time {
+            color: white;
+        }
+
+        .branding {
+            color: #ffcc00;
+        }
+
+        #playPauseBtn {
+            font-size: 24px;
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        #playPauseBtn:hover {
+            color: #ffcc00;
+        }
+        @media (max-width: 768px) {
+            .video-container {
+                margin: 50px 0; /* Add 100px margin to the top and bottom */
+            }
+            h1{
+                margin-top:100px;
+            }
+   
+        }
+     
+    </style>
+    <section>
+    <nav class="top-navbar">
+        <!-- Logo on the left -->
+        <div class="logo">
+            <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+            THE CHAMPIONS CLUB
+        </div>
+
+        <!-- Menu Icon for Mobile -->
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <ul id="nav-links">
+            <li><a href="{% url 'home' %}">HOME</a></li>
+            <li><a href="{% url 'blog_list' %}">NEWS</a></li>
+            
+          
+    
+            <!-- Dropdown tab for Resources -->
+            <li class="dropdown">
+                <a href="#">RESOURCES</a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                    <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                </ul>
+            </li>
+
+
+
+            
+            <li><a href="{% url 'support_request' %}">CONTACT</a></li>
+            
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+            {% else %}
+            {% if registration.approved == 1 %}
+            {% if registration.membership_paid == 0 %}
+            <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li>
+            {% else %}
+            <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> DASHBOARD</a></li>
+            {% endif %}
+            {% else %}
+            <li class="dropdown">
+                <a href="#">
+                    {% if registration.profile_image %}
+                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                    {% else %}
+                        <i class="fa-solid fa-circle-user fa-xl"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'user_profile' %}">PROFILE</a></li>
+                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+                </ul>
+            </li>
+            
+            {% endif %}
+            {% endif %}
+           
+            <!-- <li>
+                <div class="toggle">
+                    <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                    <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                       </div>
+                </li> -->
+        </ul>
+    </nav>
+
+    <!-- Add your page content here -->
+
+    <script>
+        function toggleMenu() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.getElementById('nav-links');
+
+            menuIcon.classList.toggle('open');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+   
+
+
+
+<script>
+
+
+  // Toggle dropdown for mobile
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdownLinks = document.querySelectorAll('.dropdown > a');
+    
+    dropdownLinks.forEach(function(dropdownLink) {
+        dropdownLink.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            
+            const dropdown = this.parentElement; // Get the parent <li> element
+
+            // Toggle the 'show' class to show or hide the dropdown
+            dropdown.classList.toggle('show');
+
+            // Close any other open dropdowns
+            document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                if (otherDropdown !== dropdown) {
+                    otherDropdown.classList.remove('show');
+                }
+            });
+        });
+    });
+});
+
+
+   function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    const menuIcon = document.querySelector('.menu-icon');
+    navLinks.classList.toggle('show');
+    menuIcon.classList.toggle('open');
+}
+
+    </script>
+    </section>
+    <div class="main-content">
+        <!-- Video Section -->
+        <div class="video-section">
+            <div class="video-container">
+                
+                <div class="custom-video-player" id="videoPlayerContainer">
+                    <video id="courseVideo" class="video-js vjs-default-skin" preload="auto" controlslist="nodownload noplaybackrate">
+                        <source src="{% url 'stream_video' video.id %}?token={{ token }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="custom-controls">
+                        <!-- Your existing custom controls -->
+                        <div class="controls-row">
+                            <div class="left-controls">
+                                <button id="playPauseBtn">►</button>
+                                <div class="time" id="currentTime">0:00</div>
+                                <div class="time"> / </div>
+                                <div class="time" id="totalTime">0:00</div>
+                            </div>
+                            <div class="right-controls">
+                                <button id="fullScreenBtn">⤢</button>
+                                <div class="branding">The Champions Club</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h1>{{ video.title }}</h1>
+                <!-- Video Description -->
+                <p>{{ video.description }}</p>
+                <!-- Pay Button -->
+       
+
+                <!-- Comments Section -->
+                <div class="comments-section">
+                    <h2>Comments</h2>
+                    {% if comments %}
+                        {% for comment in comments %}
+                            <div class="comment">
+                                <p><strong>{{ comment.user.username }}</strong> - {{ comment.created_at|date:"M d, Y" }} <br> {{ comment.comment_text }}</p>
+                                
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No comments yet. Be the first to comment!</p>
+                    {% endif %}
+
+                    <!-- Comment Form -->
+                    {% if user.is_authenticated %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <textarea name="comment_text" rows="3" placeholder="Add a public comment..." required></textarea>
+                            <button type="submit" class="comment-submit-button">Comment</button>
+                        </form>
+                    {% else %}
+                        <p>Please <a href="{% url 'login' %}?next={{ request.path }}">login</a> to comment.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="sidebar">
+        <!-- Suggested Videos Section -->
+        <div class="suggested-videos">
+            <h2>Suggested Videos</h2>
+            {% for suggested_video in suggested_videos %}
+                <div class="suggested-video">
+                    <a href="{% url 'video_preview' suggested_video.id %}">
+                        <img src="{{ suggested_video.thumbnail.url }}" alt="{{ suggested_video.title }}">
+                        <div class="suggested-video-info">
+                            <p class="suggested-video-title">{{ suggested_video.title }}</p>
+                            <p class="suggested-video-duration">{{ suggested_video.duration }}</p>
+                        </div>
+                    </a> 
+                </div>
+            {% endfor %}
+        </div>
+    
+        <div class="explore-services">
+            <h2>Explore More Services</h2>
+            <div class="services-list">
+                {% for service in services %}
+                    <div class="service-item">
+                        <a href="{{ service.url }}">
+                            <img src="{{ service.image_url }}" alt="{{ service.title }}">
+                            <div class="service-info">
+                                <p class="service-title">{{ service.title }}</p>
+                                <p class="service-description">{{ service.description }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>
+</main>
+    
+    <style>
+        /* ... existing styles ... */
+        .sidebar {
+            flex: 1;
+            max-width: 450px;
+        }
+        
+        /* Move suggested videos into the sidebar */
+        .suggested-videos {
+            margin-bottom: 40px;
+        }
+        
+        /* Explore More Services Section */
+        .explore-services {
+            margin-top: 40px;
+        }
+        
+        .explore-services h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #ffcc00;
+        }
+        
+        .services-list {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .service-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .service-item a {
+            display: flex;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .service-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-right: 10px;
+            border-radius: 10px;
+        }
+        
+        .service-info {
+            flex: 1;
+        }
+        
+        .service-title {
+            font-size: 16px;
+            color: #fff;
+            margin: 0;
+        }
+        
+        .service-description {
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        /* Responsive Design Adjustments */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+        
+            .video-section {
+                margin-right: 0;
+            }
+        
+            .sidebar {
+                max-width: 100%;
+                margin-top: 40px;
+            }
+        }
+        /* General Styles */
+    body {
+        background-color: #000;
+        color: #fff;
+        margin: 0;
+        font-family: 'Montserrat', 'Roboto', sans-serif;
+    }
+    
+    main {
+        margin-top: 70px; /* Adjust if your navbar height is different */
+    }
+    
+    #dividing-section {
+        background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+        height: 1px;
+    }
+    
+    /* Main Content Area */
+    .main-content {
+        display: flex;
+        justify-content: center;
+        max-width: 100%;
+        margin: 30px auto 100px;
+        padding: 20px;
+    }
+    
+    /* Video Section */
+    .video-section {
+        flex: 3;
+        margin-right: 20px;
+    }
+    
+    .video-container h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .video-container{
+        width:100%;
+    }
+    .video-container p {
+        font-size: 16px;
+        margin-top: 20px;
+        line-height:1.5;
+        width:75%;
+        text-align:left;
+        background-color:#1a1a1a;
+        border-radius:10px;
+        padding:30px;
+    }
+    
+    .pay-button {
+        background-color: transparent;
+        color: white;
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin: 15px 0;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .pay-button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    
+    /* Custom Video Player Styles */
+    .custom-video-player {
+        position: relative;
+        width: 100%;
+       
+        background-color: #000;
+    }
+    
+    .custom-video-player video {
+        width: 100%;
+        height: auto;
+        border-radius:10px;
+        cursor: pointer;
+    }
+    
+    .custom-controls {
+        /* Your existing custom controls styles */
+    }
+    textarea{
+        width: 100%;
+        background-color: #0a0a0a;
+        height: 100px;
+        border-radius: 10px;
+        color:#fff;
+    }
+    form{
+        display:flex;
+    }
+    /* Comments Section */
+    .comments-section {
+        margin-top: 40px;
+        width:70%;
+    }
+    
+    .comments-section h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #ffcc00;
+    }
+    
+    .comment {
+        margin-bottom: 20px;
+    }
+    
+    .comment p {
+        margin: 5px 0;
+    }
+    
+    .comment-submit-button {
+        background-color: #ffcc00;
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        height: 40px;
+        margin: 10px;
+        border-radius:10px;
+    }
+    
+    .comment-submit-button:hover {
+        background-color: #d4ac0d;
+    }
+    
+    /* Suggested Videos */
+    .suggested-videos {
+        flex: 1;
+        max-width: 450px;
+    }
+    
+    .suggested-videos h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #ffcc00;
+    }
+    
+    .suggested-video {
+        
+        margin-bottom: 15px;
+    }
+    .suggested-video a{
+        display:flex;
+        text-decoration:none;
+    }
+    
+    .suggested-video img {
+        width: 150px;
+        height: 78px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+    
+    .suggested-video-info {
+        flex: 1;
+    }
+    
+    .suggested-video-title {
+        font-size: 16px;
+        color: #fff;
+        margin: 0;
+    }
+    
+    .suggested-video-duration {
+        font-size: 14px;
+        color: #aaa;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .main-content {
+            flex-direction: column;
+        }
+    
+        .video-section {
+            margin-right: 0;
+        }
+    
+        .suggested-videos {
+            max-width: 100%;
+            margin-top: 40px;
+        }
+    }
+    
+    </style>
+    <script>
+        const videoPlayer = document.getElementById('courseVideo');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const fullScreenBtn = document.getElementById('fullScreenBtn');
+        const currentTimeElem = document.getElementById('currentTime');
+        const totalTimeElem = document.getElementById('totalTime');
+        const progressBar = document.querySelector('.progress');
+        const progressBarContainer = document.querySelector('.progress-bar-container');
+        const controls = document.querySelector('.custom-controls');
+        let hideControlsTimeout;
+        let lastTap = 0;
+
+        // Start the video from the last watched time
+        videoPlayer.currentTime = {{ last_watched_time }};
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        videoPlayer.addEventListener('loadedmetadata', function() {
+            totalTimeElem.textContent = formatTime(videoPlayer.duration);
+        });
+
+        videoPlayer.addEventListener('timeupdate', function() {
+            currentTimeElem.textContent = formatTime(videoPlayer.currentTime);
+            const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+            progressBar.style.width = `${progress}%`;
+        });
+
+        function showControls() {
+            controls.style.opacity = '1';
+        }
+
+        function hideControls() {
+            controls.style.opacity = '0';
+        }
+
+        videoPlayer.addEventListener('play', function() {
+            showControls();
+            hideControlsTimeout = setTimeout(hideControls, 1000);
+        });
+
+        videoPlayer.addEventListener('pause', function() {
+            clearTimeout(hideControlsTimeout);
+            showControls();
+        });
+
+        controls.addEventListener('mousemove', function() {
+            showControls();
+            clearTimeout(hideControlsTimeout);
+            hideControlsTimeout = setTimeout(hideControls, 1000);
+        });
+
+        playPauseBtn.addEventListener('click', function() {
+            if (videoPlayer.paused) {
+                videoPlayer.play();
+                playPauseBtn.textContent = '❚❚';
+                showControls();
+            } else {
+                videoPlayer.pause();
+                playPauseBtn.textContent = '►';
+                hideControls();
+            }
+        });
+
+        fullScreenBtn.addEventListener('click', function() {
+            if (!document.fullscreenElement) {
+                document.getElementById('videoPlayerContainer').requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        videoPlayer.addEventListener('click', function() {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+
+            if (tapLength < 500 && tapLength > 0) {
+                if (!document.fullscreenElement) {
+                    document.getElementById('videoPlayerContainer').requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            } else {
+                if (videoPlayer.paused) {
+                    videoPlayer.play();
+                    playPauseBtn.textContent = '❚❚';
+                } else {
+                    videoPlayer.pause();
+                    playPauseBtn.textContent = '►';
+                }
+            }
+            lastTap = currentTime;
+        });
+
+    
+
+        // Update last watched time every 15 seconds
+        function updateVideoTime() {
+            fetch('{% url "update_video_time" video.id %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ time: videoPlayer.currentTime })
+            });
+        }
+
+        setInterval(updateVideoTime, 3500); // 3 seconds
+
+        // Update time when paused
+        videoPlayer.onpause = updateVideoTime;
+
+        // Mark the video as completed when it ends
+        videoPlayer.onended = function() {
+            fetch('{% url "complete_video" video.id %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ completed: true })
+            });
+        };
+    </script>
+         
+<section id="dividing-section">
+
+</section>
+        <footer id="footer" class="fade-in">
+
+
+            <div class="footer-content">
+
+                <div class="footer-section">
+                    <img src="{% static 'images/logo.png' %}" alt="">
+                 </div>
+                
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <a href="{% url 'support_request' %}" class="footer-link">Support</a>
+                    <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                    <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
+                    <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
+                    
+                    <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Company</h4>
+                    <a href="{% url 'register_partner' %}" class="footer-link">Become a Partner</a>
+                    <a href="{% url 'careers' %}" class="footer-link">Careers</a>
+                    
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">STAY CONNECTED</h4>
+                    <div class="social-media">
+                        <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
+                            <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
+                        </a>
+                        <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+
+                </div>
+                
+            </div>
+            <section id="dividing-section">
+
+            </section>
+            <div class="footer-bottom">
+                <div class="trademark">The Champions Club</div>
+                <div class="copyright">Copyright © & Trademark ® 2024 The Champions Club™ - All Rights Reserved.</div>
+            </div>
+        </footer>
+<style>
+    
+.footer-section button{
+    background-color: transparent;
+    color: white;
+    padding: 15px 45px;
+    border: 1px solid white;
+    margin-left: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.footer-section button::before,
+.footer-section button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 1px;
+    background-color: white;
+    transform: translateY(-50%);
+}
+.footer-section button::before {
+    left: 10px;
+}
+
+.footer-section button::after {
+    right: 10px;
+}
+.footer-section button:hover {
+    background-color: white;
+    color: #333;
+    border-color: #333;
+}
+
+
+
+
+
+
+#footer {
+    background-color: #000;
+    padding: 50px 100px;
+    color: #f4f4f4;
+    font-family: 'Roboto', sans-serif;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    
+    padding-bottom: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin: 10px;
+    margin-left: 100px;
+}
+
+.footer-title {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #f4f4f4;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.footer-link {
+    display: block;
+    color: #f4f4f4;
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #999;
+}
+
+.social-media {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-icon {
+    color: #f4f4f4;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+    color: #999;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.trademark {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    #footer{
+        padding:0;
+    }
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-section {
+        margin-bottom: 20px;
+        margin-left: 0;
+    }
+
+    .social-media {
+        justify-content: center;
+    }
+}
+#footer img{
+    height: 150px;
+    margin:0 auto;
+}
+#dividing-section{
+        background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+        height: 1px;
+    }
+</style>
+</body>
+</html>

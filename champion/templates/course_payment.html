@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>TCC | Payment for {{ course.title }}</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', 'Roboto', sans-serif;
+            background-color: #000;
+            color: #343a40;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-top: 50px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header, .footer {
+            text-align: center;
+            background-color: #000;
+            color: #fff;
+            padding: 15px 0;
+            border-radius: 8px;
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            margin-top: 20px;
+        }
+
+        .billing-info, .course-info, .total-amount, .refund-policy {
+            margin-bottom: 20px;
+        }
+
+        .billing-info h4, .course-info h4, .total-amount h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .billing-info p, .course-info p {
+            font-size: 1rem;
+            margin: 5px 0;
+        }
+
+        .total-amount {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .refund-policy {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .btn-custom {
+            margin:20px auto;
+            background-color: #000;
+            border: none;
+            font-weight: 600;
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+           
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-custom:hover {
+            background-color: #333;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Hide the default Razorpay button */
+        .razorpay-payment-button {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>The Champions Club</h1>
+            <p>Invoice for {{ course.title }}</p>
+        </div>
+
+        <div class="billing-info">
+            <h4>Billing Information</h4>
+            <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+
+        <div class="course-info">
+            <h4>Course Details</h4>
+            <p><strong>Course Title:</strong> {{ course.title }}</p>
+            <p><strong>Instructor:</strong> {{ course.instructor.get_full_name }}</p>
+            <p><strong>Category:</strong> {{ course.category.name }}</p>
+            <p><strong>Level:</strong> {{ course.get_level_display }}</p>
+        </div>
+
+        <div class="total-amount">
+            <h4>Total Amount: ${{ amount|floatformat:2 }}</h4>
+        </div>
+
+        <form action="{% url 'razorpay_callback' %}" method="POST">
+            {% csrf_token %}
+            <script
+                src="https://checkout.razorpay.com/v1/checkout.js"
+                data-key="{{ razorpay_key_id }}"
+                data-amount="{{ amount|floatformat:2 }}"
+                data-currency="{{ currency }}"
+                data-order_id="{{ razorpay_order_id }}"
+                data-name="The Champions Club"
+                data-description="Access to {{ course.title }}"
+                data-prefill.name="{{ user.first_name }} {{ user.last_name }}"
+                data-prefill.email="{{ user.email }}"
+                data-theme.color="#000"
+            ></script>
+            <!-- Custom Button -->
+            <button type="button" class="btn-custom" id="custom-pay-button">Pay Now</button>
+        </form>
+
+        <div class="refund-policy">
+            <h4>Refund Policy</h4>
+            <p>No refunds will be issued for consumed services. You are only eligible for refunds if there is a technical issue during payment or if the service is not provided to you. for more info visit <a href = "{% url 'refund_policy' %}">Refund Policy</a></p>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for choosing The Champions Club!</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('custom-pay-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.razorpay-payment-button').click();  // Trigger the hidden Razorpay button
+        });
+    </script>
+</body>
+</html>

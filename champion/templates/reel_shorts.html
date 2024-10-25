@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reel Shorts</title>
+    {% load static %}
+    <!-- Include Swiper CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <!-- Include Font Awesome for icons -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #000;
+            color: white;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Hide scrollbars to prevent double scroll */
+        }
+
+        .back-button {
+            display: inline-block;
+            margin: 20px auto;
+            width:max-content;
+            
+            color: #fff;
+           
+           
+            font-size: 16px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            position: absolute;
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            background-color: #333;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            position: relative;
+            flex-direction: column;
+        }
+
+        .video-container {
+            position: relative;
+            width: 20%;
+            height: 80%;
+            overflow: hidden;
+            border-radius:10px;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Add a wrapper to maintain 16:9 aspect ratio */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-wrapper::before {
+            content: "";
+            display: block;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+        }
+
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-title {
+            position: absolute;
+            bottom: 30px;
+            left: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+            z-index: 10;
+        }
+        {% comment %} @media (max-width:1000px){
+
+        } {% endcomment %}
+        
+        .branding {
+            position: absolute;
+            top: 0px;
+            left: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 10;
+            color: #fff;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+        }
+
+        .action-buttons {
+            position: absolute;
+            right: 20px;
+            top:16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            color: white;
+            z-index: 10;
+        }
+
+        .action-button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .action-button i {
+            font-size: 30px;
+        }
+
+        .action-button .label {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .action-button span {
+            display: block;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        @media (max-width: 1268px) {
+            .video-container {
+                position: relative;
+                width: 30%;
+                height: 90%;
+                overflow: hidden;
+                border-radius:10px;
+            }
+        }
+        @media (max-width: 1068px) {
+            .video-container {
+                position: relative;
+                width: 40%;
+                height: 90%;
+                overflow: hidden;
+                border-radius:10px;
+            }
+        }
+        @media (max-width: 700px){
+            .video-container {
+                position: relative;
+                width: 70%;
+                height: 90%;
+                overflow: hidden;
+                border-radius:10px;
+            }
+        }
+        /* Responsive Design */
+        @media (max-width: 668px) {
+            .video-container {
+                position: relative;
+                width: 90%;
+                height: 90%;
+                overflow: hidden;
+                border-radius:10px;
+            }
+            
+            .action-button i {
+                font-size: 26px;
+            }
+            .action-button .label,
+            .action-button span {
+                font-size: 12px;
+            }
+            .video-title {
+                font-size: 18px;
+                bottom: 20px;
+            }
+            .action-buttons {
+                bottom: 114px;
+                right: 0px;
+            }
+            .branding {
+                font-size: 16px;
+            }
+            .back-button {
+                display: inline-block;
+                margin: 20px auto;
+                width: max-content;
+                color: #fff;
+                font-size: 16px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+                cursor: pointer;
+                position: absolute;
+                z-index: 100;
+            }
+        }
+
+       
+    </style>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        /* Premium Sidebar styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            background-color: #1a1a1d;
+            color: #fff;
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 30px 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6); /* Premium shadow effect */
+        }
+    
+        /* Show the sidebar on desktop view */
+        @media (min-width: 1024px) {
+            .sidebar {
+                display: flex;
+            }
+            .swiper-container {
+                margin-left: 260px; /* Push the Swiper content to the right */
+            }
+        }
+    
+        /* Sidebar header with logo */
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 60px;
+            border-bottom: 1px solid #333; /* Divider for premium look */
+            padding-bottom: 20px;
+        }
+    
+        .sidebar-logo {
+            width: 200px;
+            height: auto;
+            transition: transform 0.3s ease; /* Smooth hover effect */
+        }
+    
+        .sidebar-logo:hover {
+            transform: scale(1.1); /* Slight hover effect */
+        }
+    
+        /* Sidebar Navigation */
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+        }
+    
+        .sidebar-nav ul li {
+            margin-bottom: 30px;
+        }
+    
+        .sidebar-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            border-radius: 10px;
+        }
+    
+        /* Icon styling with some space */
+        .sidebar-nav ul li a i {
+            margin-right: 15px;
+            font-size: 20px;
+            color: #ffcc00; /* Gold color for a premium look */
+        }
+    
+        .sidebar-nav ul li a:hover {
+            background-color: #ffcc00; /* Gold background on hover */
+            color: #1a1a1d; /* Text changes to sidebar background color */
+            transform: translateX(10px); /* Smooth hover effect */
+            box-shadow: 4px 4px 12px rgba(255, 204, 0, 0.4); /* Subtle shadow */
+        }
+    
+        /* Style the sidebar content with some space between items */
+        .sidebar-nav ul li a span {
+            font-family: 'Poppins', sans-serif; /* Premium font */
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+    
+        /* Responsive behavior for mobile */
+        @media (max-width: 1023px) {
+            .sidebar {
+                display: none;
+            }
+            .swiper-container {
+                margin-left: 0; /* Full width swiper for mobile view */
+            }
+        }
+    </style>
+    <style>
+        /* Visit Now Button Styling */
+        .visit-now-btn {
+            position: absolute;
+            bottom: 60px;
+            left: 20px;
+            text-decoration: none;
+        }
+    
+        .visit-now-button {
+            background-color: #ffcc00;
+            border: none;
+            color: #1a1a1d;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+    
+        .visit-now-button:hover {
+            background-color: #ffaa00;
+        }
+    
+        .visit-now-button i {
+            margin-right: 10px;
+        }
+    
+        .visit-now-button .label {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+    
+    
+    
+</head>
+<body>
+    <!-- Back Button -->
+    
+
+    <body>
+        <!-- Sidebar (Visible on Desktop) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" class="sidebar-logo">
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="{% url 'home' %}"><i class="fas fa-home"></i>&nbsp;  Home</a></li>
+                    <li><a href="{% url 'video_home' %}"><i class="fas fa-podcast"></i> &nbsp; Podcasts</a></li>
+                    <li><a href="{% url 'course_list' %}"><i class="fas fa-graduation-cap"></i>&nbsp;  Courses</a></li>
+                    <li><a href="{% url 'about' %}"><i class="fas fa-info-circle"></i>&nbsp;  About Us</a></li>
+                    <li><a href="{% url 'support_request' %}"><i class="fas fa-envelope"></i>&nbsp;  Contact</a></li>
+                    <li><a href="{% url 'associate_reg' %}"><i class="fas fa-sign-in"></i>&nbsp;  Join</a></li>
+                </ul>
+            </nav>
+        </aside>
+    
+        <!-- Existing content -->
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!-- Swiper content -->
+                {% for reel in reels %}
+                <div class="swiper-slide" data-reel-id="{{ reel.id }}">
+                    <div class="video-container">
+                        <!-- Video Wrapper for 16:9 Aspect Ratio -->
+                        <div class="video-wrapper">
+                            <video class="reel-video lazy-video" playsinline loop>
+                                <source data-src="{% if reel.is_compressed %}{{ reel.compressed_video.url }}{% else %}{{ reel.video.url }}{% endif %}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <!-- Branding -->
+                        <div class="branding"><a href="{% url 'reel_grid' %}" class="back-button">
+                            <i class="fas fa-arrow-left"></i> THE CHAMPIONS CLUB
+                        </a></div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <button class="action-button share-button" data-reel-id="{{ reel.id }}">
+                                <i class="fas fa-share"></i>
+                                <div class="label">Share</div>
+                            </button>
+                        </div>
+                        <div class="video-title">{{ reel.title }}</div>
+                        {% if reel.show_visit_now_button and reel.visit_now_url %}
+                <a href="{{ reel.visit_now_url }}" target="_blank" class="visit-now-btn">
+                    <button class="action-button visit-now-button">
+                        
+                        <div class="label">Visit Now</div>
+                    </button>
+                </a>
+                {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    
+        <div id="loader" class="loader">Loading more reels...</div>
+    </body>
+    
+    <!-- Include Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <!-- Font Awesome JS for icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+    <script>
+        let allReels = [];
+        document.querySelectorAll('.swiper-slide').forEach(slide => {
+            const reelId = slide.getAttribute('data-reel-id');
+            const title = slide.querySelector('.video-title').innerText;
+        
+            allReels.push({ id: parseInt(reelId), title: title });
+        });
+        var swiper = new Swiper('.swiper-container', {
+            direction: 'vertical',
+            slidesPerView: 1,
+            spaceBetween: 0,
+            mousewheel: true,
+            on: {
+                slideChange: function () {
+                    var activeSlide = swiper.slides[swiper.activeIndex];
+                    var reelVideo = activeSlide.querySelector('.reel-video');
+                    
+                    // Pause all other videos
+                    document.querySelectorAll('.reel-video').forEach(function(video) {
+                        video.pause();
+                    });
+
+                    // Play the active video
+                    if (reelVideo) {
+                        reelVideo.play();
+                    }
+                }
+            }
+        });
+        // Event delegation for share button clicks
+document.body.addEventListener('click', function (event) {
+    if (event.target.closest('.share-button')) {
+        const shareButton = event.target.closest('.share-button');
+        const reelId = shareButton.getAttribute('data-reel-id');
+
+        // Find the reel associated with the clicked share button
+        const reel = allReels.find(reel => reel.id === parseInt(reelId, 10));
+
+        if (reel) {
+            const shareData = {
+                title: reel.title || 'Check out this video!',
+                text: 'Check out this video from The Champions Club!',
+                url: `${window.location.origin}/reels/${reel.id}`,
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData)
+                    .then(() => console.log('Shared successfully!'))
+                    .catch((error) => console.error('Share failed:', error));
+            } else {
+                navigator.clipboard.writeText(shareData.url)
+                    .then(() => alert('Link copied to clipboard!'))
+                    .catch((error) => console.error('Could not copy text:', error));
+            }
+        }
+    }
+});
+
+        // Automatically scroll to the selected reel if available
+        document.addEventListener('DOMContentLoaded', function () {
+            const selectedReelId = "{{ selected_reel.id|default:'' }}"; // Get the selected reel ID from the backend
+
+            if (selectedReelId) {
+                const reelSlides = document.querySelectorAll('.swiper-slide');
+                let reelIndex = 0;
+
+                // Find the index of the selected reel (it should now be first)
+                reelSlides.forEach((slide, index) => {
+                    if (slide.getAttribute('data-reel-id') === selectedReelId) {
+                        reelIndex = index;
+                    }
+                });
+
+                // Scroll to the selected reel
+                swiper.slideTo(reelIndex, 0, false);  // Move instantly without animation
+            }
+        });
+        
+        // Tap-to-play and pause functionality
+        document.body.addEventListener('click', function (event) {
+            if (event.target.tagName === 'VIDEO') {
+                const video = event.target;
+                if (video.paused) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+            }
+        });
+        
+        // Lazy load videos and unload videos far from the viewport
+        const lazyVideos = document.querySelectorAll('.lazy-video');
+        const loadUnloadObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                const source = video.querySelector('source');
+                
+                // Load video when it's close to the viewport
+                if (entry.isIntersecting) {
+                    if (source && source.dataset.src) {
+                        source.src = source.dataset.src;
+                        video.load();  // Load the video
+                        
+                        // Play the video when it comes into view
+                        video.play().catch((error) => {
+                            console.log('Autoplay failed:', error);
+                        });
+                    }
+                } else {
+                    // Unload video when it's far from the viewport
+                    if (video.currentTime > 0 || video.paused === false) {
+                        video.pause();
+                        video.currentTime = 0;  // Reset the video to the start
+                    }
+                    if (source && source.src) {
+                        source.src = '';  // Unload the video source
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        lazyVideos.forEach(video => {
+            loadUnloadObserver.observe(video);
+        });
+        
+        // Function to load more reels dynamically when reaching the end
+        let isLoading = false;
+        let page = 2;
+        const loadMoreUrl = '/shorts/load_more/';  // Adjust this URL according to your route
+        
+        const loadMoreReels = () => {
+            isLoading = true;
+            document.getElementById('loader').style.display = 'block';
+        
+            fetch(`${loadMoreUrl}?page=${page}`)
+                .then(response => response.json())
+                .then(data => {
+                    const newReels = data.reels;
+                    const wrapper = document.querySelector('.swiper-wrapper');
+        
+                    newReels.forEach(reel => {
+                        const slide = document.createElement('div');
+                        slide.classList.add('swiper-slide');
+                        slide.innerHTML = `
+                            <div class="video-container">
+                                <div class="video-wrapper">
+                                    <video class="reel-video lazy-video" playsinline loop>
+                                        <source data-src="${reel.video_url}" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="branding">THE CHAMPIONS CLUB</div>
+                                <div class="action-buttons">
+                                    
+                                    <button class="action-button">
+                                        <i class="fas fa-share"></i>
+                                        <div class="label">Share</div>
+                                    </button>
+                                </div>
+                                <div class="video-title">${reel.title}</div>
+                            </div>
+                        `;
+                        wrapper.appendChild(slide);
+        
+                        // Observe new video for lazy loading and unloading
+                        const newVideo = slide.querySelector('.lazy-video');
+                        loadUnloadObserver.observe(newVideo);
+                    });
+        
+                    page += 1;
+                    isLoading = false;
+                    document.getElementById('loader').style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error loading more reels:', error);
+                    document.getElementById('loader').textContent = 'Error loading reels.';
+                });
+        };
+        
+        // Infinite scroll detection using Intersection Observer
+        const loader = document.getElementById('loader');
+        const infiniteScrollObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !isLoading) {
+                loadMoreReels();
+            }
+        }, { root: null, rootMargin: '0px', threshold: 1.0 });
+        
+        infiniteScrollObserver.observe(loader);
+    </script>
+</body>
+</html>

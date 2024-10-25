@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | Events</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <style>
+        body {
+            background-color: #000;
+            font-family: 'Montserrat', sans-serif;
+        }
+        #content{
+           
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            overflow: hidden;
+        }
+
+        h2 {
+            font-size: 3rem;
+            color: #ffcc00;
+            text-align: center;
+            position: relative;
+            bottom: 30px;
+            animation: fadeIn 2s ease-in-out forwards;
+            opacity: 0;
+        }
+
+     
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+      
+        
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+</head>
+<body>
+    <section>
+        <nav class="top-navbar">
+            <!-- Logo on the left -->
+            <div class="logo">
+                <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+                THE CHAMPIONS CLUB
+            </div>
+    
+            <!-- Menu Icon for Mobile -->
+            <div class="menu-icon" onclick="toggleMenu()">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+    
+            <!-- Navigation Links -->
+            <ul id="nav-links">
+                <li><a href="{% url 'home' %}">HOME</a></li>
+                <li><a href="{% url 'blog_list' %}">NEWS</a></li>
+                
+              
+        
+                <!-- Dropdown tab for Resources -->
+                <li class="dropdown">
+                    <a href="#">RESOURCES</a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                        <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                    </ul>
+                </li>
+    
+    
+    
+                
+                <li><a href="{% url 'support_request' %}">Contact</a></li>
+                
+                {% if not user.is_authenticated %}
+                <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+                {% else %}
+                {% if registration.approved == 1 %}
+                {% if registration.membership_paid == 0 %}
+                <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li>
+                {% else %}
+                <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> DASHBOARD</a></li>
+                {% endif %}
+                {% else %}
+                <li class="dropdown">
+                    <a href="#">
+                        {% if registration.profile_image %}
+                            <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                        {% else %}
+                            <i class="fa-solid fa-circle-user fa-xl"></i>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'user_profile' %}">PROFILE</a></li>
+                        <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+                    </ul>
+                </li>
+                
+                {% endif %}
+                {% endif %}
+               
+                <!-- <li>
+                    <div class="toggle">
+                        <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                        <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                           </div>
+                    </li> -->
+            </ul>
+        </nav>
+    
+        <!-- Add your page content here -->
+    
+        <script>
+            function toggleMenu() {
+                const menuIcon = document.querySelector('.menu-icon');
+                const navLinks = document.getElementById('nav-links');
+    
+                menuIcon.classList.toggle('open');
+                navLinks.classList.toggle('show');
+            }
+        </script>
+       
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+      </div>  
+    
+    
+    <script>
+    
+    
+      // Toggle dropdown for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        const dropdownLinks = document.querySelectorAll('.dropdown > a');
+        
+        dropdownLinks.forEach(function(dropdownLink) {
+            dropdownLink.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default link behavior
+                
+                const dropdown = this.parentElement; // Get the parent <li> element
+    
+                // Toggle the 'show' class to show or hide the dropdown
+                dropdown.classList.toggle('show');
+    
+                // Close any other open dropdowns
+                document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                    if (otherDropdown !== dropdown) {
+                        otherDropdown.classList.remove('show');
+                    }
+                });
+            });
+        });
+    });
+    
+    
+       function toggleMenu() {
+        const navLinks = document.getElementById('nav-links');
+        const menuIcon = document.querySelector('.menu-icon');
+        navLinks.classList.toggle('show');
+        menuIcon.classList.toggle('open');
+    }
+    
+        </script>
+        </section>
+    <section id="content"><h2 data-text="Events will be announced soon">Events will be announced soon</h2>
+        <div class="glass-platform"></div></section>
+    
+</body>
+</html>

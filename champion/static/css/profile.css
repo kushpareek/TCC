@@ -1,0 +1,233 @@
+/* profile.css */
+
+/* Base Styles */
+body{
+    background-color: #000;
+}
+/* Container to span full width */
+.container {
+   color: #fff;
+    
+    background-color: #000;
+}
+
+/* Header */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-align: center;
+    
+}
+
+/* Navigation Tabs */
+.nav-tabs {
+    border-bottom: 2px solid #444;
+    justify-content: center;
+}
+
+.nav-tabs .nav-item {
+    margin: 0 15px;
+}
+
+.nav-tabs .nav-link {
+    color: #bbbbbb;
+    font-weight: 600;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 15px;
+    transition: color 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link.active {
+    color: #fff;
+    background-color: #000;
+    border-bottom: 3px solid gray;
+}
+
+/* Tab Content */
+.tab-content {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.tab-pane {
+    padding: 20px;
+}
+
+/* Form Styles */
+.form-group label {
+    font-weight: 500;
+    color: #bbbbbb;
+}
+
+.form-control {
+    background-color: #333333;
+    color: #000;
+    border-color: #ffcc00;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.form-control:focus {
+    background-color: #333333;
+    color: #ffffff;
+    border-color: #ffcc00;
+    box-shadow: none;
+}
+/* CSS */
+.image-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.image-container img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid #ffcc00;
+    transition: opacity 0.3s ease;
+}
+
+.update-photo-form {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.update-photo-form .file-input {
+    display: none; /* Hide file input */
+}
+
+.update-photo-form .update-photo-btn {
+    
+    color: #121212;
+    font-weight: 600;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.image-container:hover .update-photo-form,
+.image-container:focus-within .update-photo-form {
+    opacity: 1; /* Show the update form on hover or focus */
+}
+
+.image-container:hover img,
+.image-container:focus-within img {
+    opacity: 0.4; /* Dim the image when the form is visible */
+}
+
+/* Button Styles */
+.btn {
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background-color: #fff;
+    border: none;
+    color: #121212;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #e6b800;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    color: #121212;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-warning {
+    background-color: #ff8800;
+    border: none;
+    color: #121212;
+}
+
+.btn-warning:hover {
+    background-color: #ff7700;
+}
+
+/* Course and Video Items */
+.course-item, .video-item {
+    background-color: #2c2c2c;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.course-item h3, .video-item h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffcc00;
+}
+
+.course-item p, .video-item p {
+    color: #bbbbbb;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+/* Profile Image Styles */
+.profile-image {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-image img {
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    border: 2px solid #ffcc00;
+    margin-bottom: 15px;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-image img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .nav-tabs .nav-item {
+        margin: 0 5px;
+    }
+
+    .nav-tabs .nav-link {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .tab-content {
+        padding: 15px;
+    }
+}

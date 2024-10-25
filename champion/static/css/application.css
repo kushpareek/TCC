@@ -1,0 +1,511 @@
+/* body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #000;
+    color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+   width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .navbar{
+    text-align: center;
+    background-color: black;
+    opacity: 0.5;
+    height: 8%;
+  }
+  .navbar h1{
+    font-size: 32px;
+    color: aliceblue;
+    padding: 1%;
+    letter-spacing:0.2cm;
+  }
+  
+  #regForm {
+    margin: 0 auto;
+    width: 100%;
+    padding: 2% 3%;
+    max-width: 600px;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: #f4f4f4;
+    text-transform: uppercase;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="number"],
+  textarea {
+    width: 80%;
+    padding: 15px;
+    margin: 2% 1%;
+    border: 1px solid #ddd;
+    background: #444;
+    color: #000;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  input[type="tel"]:focus,
+  input[type="number"]:focus,
+  textarea:focus {
+    border: 1px solid #ff6700;
+    box-shadow: 0 0 10px rgba(255, 103, 0, 0.1);
+    outline: none;
+  }
+  
+  .tab {
+    display: none;
+    animation: fadeSlideIn 0.5s ease-in-out forwards;
+  }
+  
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateX(20%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeSlideOut {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-20%);
+    }
+  }
+  .step {
+    height: 12px;
+    width: 12px;
+    margin: 0 5px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+    transition: background-color 0.3s ease;
+  }
+  
+  
+  .step.active {
+    opacity: 1;
+    background-color: #ff6700;
+  }
+  
+  .step.finish {
+    background-color: #28a745;
+  }
+  
+  button {
+      background-color: transparent;
+      color: white;
+      padding: 15px 45px;
+      border: 1px solid white;
+      
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 2;
+      position: relative;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  button:hover {
+      background-color: #fff;
+      color:#000;
+  }
+  
+  button::before,
+  button::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 20px;
+      height: 1px;
+      background-color: white;
+      transform: translateY(-50%);
+  }
+  button::before {
+      left: 10px;
+      
+  }
+  button::after{
+      right: 10px;
+  }
+  
+  #footer{
+    background-color: #000;
+    padding: 50px 20px;
+  
+    color: #333;
+  }
+  .trademark{
+    text-align: center;
+    padding: 10px;
+    color: #f4f4f4;
+    font-family: 'Roboto';
+    font-size: 1rem;
+  }
+  .copyright{
+    padding: 20px;
+    text-align: center;
+    font-family: 'Roboto';
+    font-weight: 400;
+  } */
+  /* General reset and styling */
+  
+ /* General reset */
+/* General reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #000;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.promo {
+  flex: 1;
+  background-color: #000;
+  padding: 0px 0px 0px 60px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.promo .logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.promo .logo img {
+  height: 300px;
+}
+
+.promo h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.promo ul {
+  list-style: none;
+  padding: 0;
+}
+
+.promo ul li {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.promo ul li i {
+  margin-right: 10px;
+  color: #ffcc00;
+}
+
+.registration-form {
+  flex: 1;
+  line-height: 1.5;
+  background-color: #000;
+  padding: 20px 0px 40px 40px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Scrollable form for desktop view */
+.scrollable-form {
+  overflow-y: auto;
+  padding-right: 20px;
+  height: 100%;
+}
+
+.registration-form h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.registration-form h3 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #ffcc00;
+}
+
+.form-section {
+  margin-bottom: 30px;
+  background-color: #1c1c1c;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* Section heading styling */
+.form-section h4 {
+  margin-top: 0px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #ffcc00;
+  font-weight: 600;
+}
+
+/* Flexbox for aligning the birthday input fields */
+.birthday-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.birthday-group .form-group {
+  flex: 1;
+}
+
+/* General input and select styling */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea,
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background-color: #2e2e2e;
+  color: #fff;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus,
+.form-control:focus {
+  background-color: #3a3a3a;
+  border-color: #ffcc00;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
+}
+
+/* Plan option styling */
+.plan-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #333;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.plan-option.selected {
+  border: 2px solid #ffcc00;
+}
+
+.plan-option input[type="radio"] {
+  margin-right: 10px;
+  transform: scale(1.3);
+  cursor: pointer;
+}
+
+.plan-option label {
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+/* Submit button styling */
+.submit-btn {
+  background-color: #ffcc00;
+  border: none;
+  padding: 15px 30px;
+  color: #000;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3);
+}
+
+.submit-btn:hover {
+  background-color: #e6b800;
+}
+
+/* Error message styling */
+.error {
+  color: #ff4d4d;
+  font-size: 0.9rem;
+}
+
+/* Messages Styling */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.alert.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert.info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.alert.warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .promo .logo img {
+    height: 250px;
+  }
+  .container {
+      flex-direction: column;
+      padding: 10px;
+      height: auto; /* Allow container to grow */
+  }
+
+  .promo,
+  .registration-form {
+      width: 100%;
+      padding: 10px;
+  }
+  .registration-form {
+    
+    overflow: visible;
+  }
+
+  .promo .logo img {
+      height: auto;
+      max-width: 100%;
+  }
+
+  .promo h2 {
+      font-size: 1.5rem;
+      text-align: center;
+  }
+
+  .promo ul li {
+      font-size: 1rem;
+  }
+
+  .registration-form h2 {
+      font-size: 1.8rem;
+  }
+
+  .registration-form h3 {
+      font-size: 1rem;
+  }
+
+  .form-section {
+      padding: 10px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea,
+  .form-control {
+      font-size: 0.9rem;
+      padding: 10px;
+  }
+
+  .submit-btn {
+      font-size: 1rem;
+      padding: 12px 20px;
+  }
+
+  /* Remove scrollable form on mobile */
+  .scrollable-form {
+      height: auto;
+      max-height: none;
+      overflow: visible; /* Allow form to expand naturally */
+  }
+}
+
+/* Further adjustments for smaller screens */
+@media (max-width: 480px) {
+  .promo h2 {
+      font-size: 1.3rem;
+  }
+
+  .registration-form h2 {
+      font-size: 1.5rem;
+  }
+
+  .registration-form h3 {
+      font-size: 0.9rem;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea,
+  .form-control {
+      font-size: 0.8rem;
+      padding: 8px;
+  }
+
+  .submit-btn {
+      font-size: 0.9rem;
+      padding: 10px;
+  }
+
+  /* Further removal of scrollable form behavior */
+  .scrollable-form {
+      height: auto;
+      overflow: visible;
+  }
+}

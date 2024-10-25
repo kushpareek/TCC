@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <title>TCC | Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include Bootstrap for styling -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    {% comment %} <link rel="stylesheet" href="{% static 'css/profile.css' %}"> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <style>
+        .top-navbar{
+            width:100%;
+        }
+        .navbar-profile-img {
+            width: 35px;             /* Adjust width as needed */
+            height: 35px;            /* Adjust height as needed */
+            border-radius: 50%;      /* Makes the image circular */
+            object-fit: cover;       /* Ensures the image covers the container without distortion */
+            vertical-align: middle;  /* Aligns the image vertically */
+        }
+    </style>
+    <section>
+    <nav class="top-navbar">
+        <!-- Logo on the left -->
+        <div class="logo">
+            <img src="{% static 'images/android.png' %}" alt="The Champions Club Logo"> <!-- Add your logo image -->
+            THE CHAMPIONS CLUB
+        </div>
+
+        <!-- Menu Icon for Mobile -->
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <ul id="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'blog_list' %}">News</a></li>
+            
+          
+    
+            <!-- Dropdown tab for Resources -->
+            <li class="dropdown">
+                <a href="#">Resources</a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                    <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                </ul>
+            </li>
+
+
+
+            
+            <li><a href="{% url 'support_request' %}">Contact</a></li>
+            
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> Login</a></li>
+            {% else %}
+            {% if registration.approved == 1 %}
+            {% if registration.membership_paid == 0 %}
+            <li><a href="{% url 'champions_dashboard' %} ">Buy Membership Today</a></li>
+            {% else %}
+            <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> Dashboard</a></li>
+            {% endif %}
+            {% else %}
+            <li class="dropdown">
+                <a href="#">
+                    {% if registration.profile_image %}
+                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                    {% else %}
+                        <i class="fa-solid fa-circle-user fa-xl"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'user_profile' %}">Profile</a></li>
+                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </li>
+            
+            {% endif %}
+            {% endif %}
+           
+            <!-- <li>
+                <div class="toggle">
+                    <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                    <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                       </div>
+                </li> -->
+        </ul>
+    </nav>
+
+    <!-- Add your page content here -->
+
+    <script>
+        function toggleMenu() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.getElementById('nav-links');
+
+            menuIcon.classList.toggle('open');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+   
+
+
+<script>
+
+
+  // Toggle dropdown for mobile
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdownLinks = document.querySelectorAll('.dropdown > a');
+    
+    dropdownLinks.forEach(function(dropdownLink) {
+        dropdownLink.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            
+            const dropdown = this.parentElement; // Get the parent <li> element
+
+            // Toggle the 'show' class to show or hide the dropdown
+            dropdown.classList.toggle('show');
+
+            // Close any other open dropdowns
+            document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                if (otherDropdown !== dropdown) {
+                    otherDropdown.classList.remove('show');
+                }
+            });
+        });
+    });
+});
+
+
+   function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    const menuIcon = document.querySelector('.menu-icon');
+    navLinks.classList.toggle('show');
+    menuIcon.classList.toggle('open');
+}
+
+    </script>
+    </section>
+    <section id="dividing-section">
+
+    </section>
+    <div class="container mt-5">
+        <!-- Profile Header -->
+        <div class="profile-header text-center">
+            <div class="image-container">
+                <img src="{% if registration.profile_image %}{{ registration.profile_image.url }}{% else %}{% static 'images/default_profile.png' %}{% endif %}" alt="Profile Image" class="profile-img">
+                <form class="update-photo-form" action="{% url 'user_profile' %}" method="POST" enctype="multipart/form-data" class="upload-form">
+                    {% csrf_token %}
+                    <input type="file" name="profile_image" id="profileImageInput" class="d-none">
+                    <button type="button" class="btn upload-btn" id="triggerFileInput">Update Photo</button>
+                    <button type="submit" class="btn submit-btn d-none">Submit</button>
+                </form>
+            </div>
+            <!-- User's Name and Badge -->
+    <div class="user-info">
+        
+        <div class="badge-container">
+            <h1 class="mt-3">{{ user.first_name }} {{ user.last_name }}</h1>
+            <img src="{% static badge_image %}" alt="{{ current_tier }} Badge" class="badge-img">
+            {% comment %} <span class="badge-name">{{ current_tier }}</span> {% endcomment %}
+        </div>
+        <p class="lead">Associate Member</p>
+    </div>
+        </div>
+    
+        <!-- Progress Bar Section -->
+        <section class="progress-section my-5">
+            <div class="progress-container">
+                <h5> Total Spent ${{total_spent}}</h5>
+                <div class="progress-bar">
+                    <div class="progress-fill " style="width: {{ percentage_spent }}%;" data-tooltip="Total Spent: ${{ total_spent }}"></div>
+                </div>
+                
+                <ul class="progress-steps">
+                    <li class="step bronze">
+                        <div class="step-circle">
+                            <img src="{% static 'images/1.png' %}" alt="Bronze Badge">
+                            <span class="step-name">BRONZE</span>
+                        </div>
+                    </li>
+                    <li class="step silver">
+                        <div class="step-circle">
+                            <img src="{% static 'images/2.png' %}" alt="Silver Badge">
+                            <span class="step-name">SILVER</span>
+                        </div>
+                    </li>
+                    <li class="step gold">
+                        <div class="step-circle">
+                            <img src="{% static 'images/4.png' %}" alt="Gold Badge">
+                            <span class="step-name">GOLD</span>
+                        </div>
+                    </li>
+                    <li class="step platinum">
+                        <div class="step-circle">
+                            <img src="{% static 'images/6.png' %}" alt="Platinum Badge">
+                            <span class="step-name">PLATINUM</span>
+                        </div>
+                    </li>
+                    <li class="step titanium">
+                        <div class="step-circle">
+                            <img src="{% static 'images/5.png' %}" alt="Titanium Badge">
+                            <span class="step-name">TITANIUM</span>
+                        </div>
+                    </li>
+                    <li class="step emerald">
+                        <div class="step-circle">
+                            <img src="{% static 'images/7.png' %}" alt="Emerald Badge">
+                            <span class="step-name">EMERALD</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <style>
+            
+            .tooltip {
+                position: relative;
+            
+              }
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 0;
+                position: absolute;
+                z-index: 1;
+                bottom: 150%;
+                left: 50%;
+                margin-left: -60px;
+              }
+              
+              .tooltip .tooltiptext::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: black transparent transparent transparent;
+              }
+              
+              .tooltip:hover .tooltiptext {
+                visibility: visible;
+              }
+            /* Adjustments for Mobile View */
+            @media (max-width: 768px) {
+                .container {
+                    margin-top:100px !important;
+                    padding: 15px;
+                }
+                .section-title {
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                }
+            }
+            @media (max-width: 768px) {
+               
+                .image-container img {
+                    width: 150px;
+                    height: 150px;
+                }
+                .update-photo-form .update-photo-btn {
+                    padding: 8px 16px;
+                }
+                .badge-img {
+                    width: 70px;
+                    height: 70px;
+                }
+                .badge-name {
+                    font-size: 20px;
+                }
+                .user-info h1 {
+                    font-size: 28px;
+                }
+            }
+            /* Responsive Design */
+@media (max-width: 768px) {
+    .progress-steps {
+        justify-content: center;
+    }
+
+    .step {
+        flex: 0 0 45%;
+        margin-bottom: 20px;
+    }
+
+    .step-circle img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .step-name {
+        font-size: 12px;
+    }
+}
+/* Adjustments for Mobile View */
+@media (max-width: 768px) {
+    .info-grid {
+        flex-direction: column;
+    }
+
+    .info-grid div {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .info-grid p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .courses-grid, .videos-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .course-card, .video-card {
+        padding: 20px;
+    }
+
+    .course-card h3, .video-card h3 {
+        font-size: 18px;
+    }
+
+    .course-card p, .video-card p {
+        font-size: 14px;
+    }
+}
+/* Adjustments for Mobile View */
+@media (max-width: 768px) {
+    .settings-card {
+        padding: 20px;
+    }
+
+    .settings-card h4 {
+        font-size: 20px;
+    }
+}
+
+
+
+            /* Profile Header */
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.badge-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.badge-img {
+    width: 70px;
+    height: 70px;
+    
+    filter: drop-shadow(0 0 2px #f1c40f);
+}
+
+.badge-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: #f1c40f;
+}
+
+@media (max-width: 768px) {
+    .badge-container h1{
+        font-size:36px;
+    }
+    .badge-img {
+        width: 90px;
+        height: 90px;
+    }
+    .badge-name {
+        font-size: 20px;
+    }
+}
+
+            li{
+                list-style-type: none;
+            }
+            /* Progress Bar Section */
+.progress-section {
+    margin-bottom: 50px;
+}
+
+.progress-container {
+    position: relative;
+    width: 100%;
+}
+
+.progress-bar {
+    position: relative;
+    width: 100%;
+    height: 10px;
+    background-color: #2c2c2c;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C);
+    transition: width 0.5s ease;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    position: relative;
+}
+
+.step {
+    text-align: center;
+    position: relative;
+    flex: 1;
+}
+
+.step-circle {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+}
+
+.step-circle img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+    
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.step.active .step-circle img {
+    
+    transform: scale(1.1);
+}
+
+.step-name {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.step.active .step-name {
+    color: #f1c40f;
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .progress-steps {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .step {
+        flex: 0 0 30%;
+        margin-bottom: 20px;
+    }
+
+    .step-circle img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .step-name {
+        font-size: 12px;
+    }
+}
+
+        </style>        
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Progress Steps Activation
+                const steps = document.querySelectorAll('.progress-steps .step');
+                const totalSpent = {{ total_spent }};
+                const tierThresholds = [0, 1001, 2501, 5001, 10001, 15001];
+            
+                steps.forEach((step, index) => {
+                    if (totalSpent >= tierThresholds[index]) {
+                        step.classList.add('active');
+                    }
+                });
+            });
+            
+        </script>
+    <style>
+        /* Personal Information Section Styles */
+/* Personal Information Section Styles */
+/* Personal Information Section Styles */
+.personal-info-section {
+    padding: 50px 30px;
+    background-color: #000;
+    border-radius: 12px;
+    margin-bottom: 50px;
+    border: 1px solid #333;
+    position: relative;
+    overflow: hidden;
+}
+
+.personal-info-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.09), transparent 50%);
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+.section-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    color: #fff;
+    position: relative;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -15px;
+    width: 60px;
+    height: 3px;
+    background: #ffd700;
+    border-radius: 5px;
+}
+
+.info-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.info-item {
+    flex: 1;
+    min-width: 250px;
+}
+
+.info-item p {
+    display: flex;
+    align-items: center;
+    background-color: #111;
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: #e0e0e0;
+    font-size: 16px;
+    position: relative;
+    border: 1px solid #222;
+}
+
+.info-item strong {
+    color: #aaa;
+    font-weight: 500;
+    width: 100px;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+.info-item span {
+    flex-grow: 1;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+.edit-btn, .save-btn, .cancel-btn {
+    background: none;
+    border: none;
+    color: #ffd700;
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 10px;
+    transition: color 0.3s;
+}
+
+.edit-btn:hover, .save-btn:hover, .cancel-btn:hover {
+    color: #ffd700;
+}
+
+#phoneForm {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#phoneForm .form-control {
+    background-color: #111;
+    color: #fff;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 5px;
+    flex-grow: 1;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+#phoneForm .form-control:focus {
+    border-color: #ffd700;
+    background-color: #222;
+    outline: none;
+}
+
+.save-btn, .cancel-btn {
+    font-size: 16px;
+}
+
+.save-btn i, .cancel-btn i {
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    .info-grid {
+        flex-direction: column;
+    }
+}
+
+
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    // Phone Number Edit
+    const editPhoneBtn = document.getElementById('editPhoneBtn');
+    const phoneDisplay = document.getElementById('phoneDisplay');
+    const phoneForm = document.getElementById('phoneForm');
+    const phoneInput = document.getElementById('phoneInput');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+    editPhoneBtn.addEventListener('click', function () {
+        phoneDisplay.style.display = 'none';
+        editPhoneBtn.style.display = 'none';
+        phoneForm.style.display = 'flex';
+        phoneInput.focus();
+    });
+
+    cancelEditBtn.addEventListener('click', function () {
+        phoneForm.style.display = 'none';
+        phoneDisplay.style.display = 'inline';
+        editPhoneBtn.style.display = 'inline';
+    });
+});
+
+
+    </script>
+        <!-- Personal Information Section -->
+        <section class="personal-info-section my-5">
+            <h2 class="section-title">Personal Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <p><strong>Username</strong><span>{{ user.username }}</span></p>
+                </div>
+                <div class="info-item">
+                    <p><strong>Email</strong><span>{{ user.email }}</span></p>
+                </div>
+                <div class="info-item">
+                    <p>
+                        <strong>Phone</strong>
+                        <span id="phoneDisplay">{{ registration.phone }}</span>
+                        <button id="editPhoneBtn" class="edit-btn"><i class="fas fa-pencil-alt"></i></button>
+                    </p>
+                    <form id="phoneForm" action="{% url 'user_profile' %}" method="POST" style="display: none;">
+                        {% csrf_token %}
+                        <input type="text" id="phoneInput" name="phone" value="{{ registration.phone }}" class="form-control">
+                        <button type="submit" class="save-btn"><i class="fas fa-check"></i></button>
+                        <button type="button" id="cancelEditBtn" class="cancel-btn"><i class="fas fa-times"></i></button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+        
+        <section class="blogs-section my-5">
+            <h2 class="section-title">Purchased Blogs</h2>
+            <div class="cards-grid">
+                {% if purchased_blogs %}
+                    {% for blog in purchased_blogs %}
+                        <div class="card blog-card">
+                            <div class="card-image">
+                                <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+                            </div>
+                            <div class="card-content">
+                                <h3>{{ blog.title }}</h3>
+                                <p>{{ blog.category }}</p>
+                                <a href="{% url 'blog_detail' blog.slug %}" class="btn">Read Blog</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>You haven't purchased any blogs yet.</p>
+                {% endif %}
+            </div>
+        </section>
+<style>
+    /* Blogs Section Styles */
+.blogs-section {
+    padding: 50px 0;
+    background-color: #000;
+    color: #fff;
+}
+
+
+
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background-color: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #222;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+}
+
+.card-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+
+
+.card-content {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-content h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #fff;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+.card-content p {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 15px;
+    flex: 1;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+.card-content .btn {
+    align-self: flex-start;
+    background: #ffd700;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.card-content .btn:hover {
+    background-color: #ffd700;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card-image {
+        height: 200px;
+    }
+}
+
+
+
+</style>        
+        <!-- Enrolled Courses Section -->
+        <section class="courses-section my-5">
+            <h2 class="section-title">Enrolled Courses</h2>
+            <div class="courses-grid">
+                {% for enrollment in enrollments %}
+                    <div class="course-card">
+                        <h3>{{ enrollment.course.title }}</h3>
+                        <p>{{ enrollment.course.description|truncatewords:20 }}</p>
+                        <a href="{% url 'course_content' enrollment.course.id %}" class="btn">View Course</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    
+        <!-- Watched Videos Section -->
+        <section class="videos-section my-5">
+            <h2 class="section-title">Watched Videos</h2>
+            <div class="videos-grid">
+                {% for status in watched_videos %}
+                    <div class="video-card">
+                        <h3>{{ status.video.title }}</h3>
+                        <p>Last Watched: {{ status.last_watched_time }}</p>
+                        <a href="{% url 'video_play' status.video.id %}" class="btn">Watch Again</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+    
+        <!-- Settings Section -->
+        <section class="settings-section my-5">
+            <h2 class="section-title">Settings</h2>
+            <div class="settings-card">
+                <!-- Account Information -->
+                <div class="settings-item">
+                    <div class="settings-item-info">
+                        <h4>Password</h4>
+                        <p>••••••••</p>
+                    </div>
+                    <div class="settings-item-action">
+                        <button class="edit-button" onclick="togglePasswordEdit()">Edit <i class="fas fa-pencil-alt"></i></button>
+                    </div>
+                </div>
+        
+                <!-- Password Change Form -->
+                <form action="{% url 'user_profile' %}" method="POST" id="password-form" class="settings-form d-none">
+                    {% csrf_token %}
+                    {{ password_form.as_p }}
+                    <button type="submit" class="btn save-btn">Save Changes</button>
+                    <button type="button" class="btn cancel-btn" onclick="togglePasswordEdit()">Cancel</button>
+                </form>
+            </div>
+        </section>
+        
+    </div>
+    <script>
+        function togglePasswordEdit() {
+    const form = document.getElementById('password-form');
+    form.classList.toggle('d-none');
+}
+
+    </script>
+    <!-- Custom Styles -->
+    <style>
+       /* General Settings Section Styles */
+.settings-section {
+    padding: 50px 0;
+    background-color: #000;
+    color: #fff;
+}
+
+.section-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #ffd700;
+    text-transform: uppercase;
+    
+}
+
+/* Settings Card */
+.settings-card {
+    background-color: #111;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.settings-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Settings Item Layout */
+.settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    
+}
+
+.settings-item:last-child {
+    border-bottom: none;
+}
+
+.settings-item-info h4 {
+    font-size: 20px;
+    margin: 0;
+    color: #ffd700;
+    font-weight: 500;
+}
+
+.settings-item-info p {
+    color: #aaa;
+    margin: 5px 0 0;
+    font-size: 16px;
+}
+
+.settings-item-action {
+    text-align: right;
+}
+
+.edit-button {
+    background: transparent;
+    color: #ffd700;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.edit-button i {
+    margin-left: 5px;
+}
+
+.edit-button:hover {
+    color: #fff;
+}
+
+/* Form Styles */
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 20px;
+}
+
+.save-btn,
+.cancel-btn {
+    background-color: #ffd700;
+    color: #000;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    width: max-content;
+}
+
+.save-btn:hover,
+.cancel-btn:hover {
+    background-color: #e6c200;
+}
+
+.cancel-btn {
+    background-color: #444;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.cancel-btn:hover {
+    background-color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .settings-card {
+        padding: 15px;
+    }
+
+    .settings-item-info h4 {
+        font-size: 18px;
+    }
+
+    .edit-button {
+        font-size: 14px;
+    }
+
+    .save-btn,
+    .cancel-btn {
+        font-size: 13px;
+        padding: 8px 16px;
+    }
+}
+
+        /* Responsive Design */
+        
+        /* General Styles */
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+    
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 20px;
+        }
+    
+        .section-title {
+            font-size: 28px;
+            font-weight: 400;
+            
+            
+            padding-bottom: 10px;
+            letter-spacing: 1px;
+        }
+    
+        /* Profile Header */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .image-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .image-container img {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 2px solid #ffcc00;
+            transition: opacity 0.3s ease;
+        }
+        
+        .update-photo-form {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+           
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .update-photo-form .file-input {
+            display: none; /* Hide file input */
+        }
+        
+        .update-photo-form .update-photo-btn {
+            
+            color: #121212;
+            font-weight: 600;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .image-container:hover .update-photo-form,
+        .image-container:focus-within .update-photo-form {
+            opacity: 1; /* Show the update form on hover or focus */
+        }
+        
+        .image-container:hover img,
+        .image-container:focus-within img {
+            opacity: 0.4; /* Dim the image when the form is visible */
+        }
+        
+    
+       
+        .step.active .step-circle::before {
+            background-color: #ff9900;
+        }
+    
+        /* Personal Information Section */
+        .personal-info-section {
+            margin-bottom: 50px;
+        }
+    
+        .info-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+    
+        .info-grid div {
+            width: 48%;
+        }
+    
+        .info-grid p {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+    
+        .form-control {
+            background-color: #111;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+    
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            background-color: #ffd700;
+            color: #fff;
+            padding: 12px 25px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+    
+        .btn:hover {
+            background-color: #ffd700;
+        }
+    
+        /* Courses and Videos Sections */
+        .courses-grid, .videos-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+    
+        .course-card, .video-card {
+            background-color: #000;
+            padding: 25px;
+            border: 1px solid #111;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+    
+        .course-card:hover, .video-card:hover {
+            transform: translateY(-10px);
+        }
+    
+        .course-card h3, .video-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+    
+        .course-card p, .video-card p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+    
+        /* Settings Section */
+        .settings-card {
+            background-color: #000;
+            padding: 25px;
+            border-radius: 10px;
+        }
+    
+        .settings-card h4 {
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+    </style>
+    
+    <!-- Custom Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Profile Image Upload
+            const fileInput = document.getElementById('profileImageInput');
+            const triggerFileInput = document.getElementById('triggerFileInput');
+            const submitBtn = document.querySelector('.submit-btn');
+    
+            triggerFileInput.addEventListener('click', function () {
+                fileInput.click();
+            });
+    
+            fileInput.addEventListener('change', function () {
+                if (fileInput.files.length > 0) {
+                    submitBtn.click();
+                }
+            });
+    
+            // Progress Steps Activation
+            const steps = document.querySelectorAll('.progress-steps .step');
+            const totalSpent = {{ total_spent }};
+            const tierThresholds = [0, 1001, 2501, 5001, 10001, 15001];
+    
+            steps.forEach((step, index) => {
+                if (totalSpent >= tierThresholds[index]) {
+                    step.classList.add('active');
+                }
+            });
+        });
+    </script>
+     
+<section id="dividing-section">
+
+</section>
+        <footer id="footer" class="fade-in">
+
+
+            <div class="footer-content">
+
+                <div class="footer-section">
+                    <img src="{% static 'images/logo.png' %}" alt="">
+                 </div>
+                
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <a href="{% url 'support_request' %}" class="footer-link">Support</a>
+                    <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                    <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
+                    <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
+                    
+                    <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Company</h4>
+                    <a href="{% url 'register_partner' %}" class="footer-link">Become a Partner</a>
+                    <a href="{% url 'careers' %}" class="footer-link">Careers</a>
+                    
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">STAY CONNECTED</h4>
+                    <div class="social-media">
+                        <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
+                            <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
+                        </a>
+                        <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+
+                </div>
+                
+            </div>
+            <section id="dividing-section">
+
+            </section>
+            <div class="footer-bottom">
+                <div class="trademark">The Champions Club</div>
+                <div class="copyright">Copyright © & Trademark ® 2024 The Champions Club™ - All Rights Reserved.</div>
+            </div>
+        </footer>
+<style>
+    
+.footer-section button{
+    background-color: transparent;
+    color: white;
+    padding: 15px 45px;
+    border: 1px solid white;
+    margin-left: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.footer-section button::before,
+.footer-section button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 1px;
+    background-color: white;
+    transform: translateY(-50%);
+}
+.footer-section button::before {
+    left: 10px;
+}
+
+.footer-section button::after {
+    right: 10px;
+}
+.footer-section button:hover {
+    background-color: white;
+    color: #333;
+    border-color: #333;
+}
+
+
+
+
+
+
+#footer {
+    background-color: #000;
+    padding: 50px 100px;
+    color: #f4f4f4;
+    font-family: 'Roboto', sans-serif;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    
+    padding-bottom: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin: 10px;
+    margin-left: 100px;
+}
+
+.footer-title {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #f4f4f4;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.footer-link {
+    display: block;
+    color: #f4f4f4;
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #999;
+}
+
+.social-media {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-icon {
+    color: #f4f4f4;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+    color: #999;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.trademark {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    #footer{
+        padding:0;
+    }
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-section {
+        margin-bottom: 20px;
+        margin-left: 0;
+    }
+
+    .social-media {
+        justify-content: center;
+    }
+}
+#footer img{
+    height: 150px;
+    margin:0 auto;
+}
+#dividing-section{
+        background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+        height: 1px;
+    }
+</style>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

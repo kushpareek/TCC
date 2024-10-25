@@ -1,0 +1,338 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>{{ video.title }} - Payment</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', 'Roboto', sans-serif;
+            background-color: #000;
+            color: #343a40;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-top: 50px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header, .footer {
+            text-align: center;
+            background-color: #000;
+            color: #fff;
+            padding: 15px 0;
+            border-radius: 8px;
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            margin-top: 20px;
+        }
+
+        .billing-info, .course-info, .total-amount, .refund-policy, .disclaimer {
+            margin-bottom: 20px;
+        }
+
+        .billing-info h4, .course-info h4, .total-amount h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .billing-info p, .course-info p {
+            font-size: 1rem;
+            margin: 5px 0;
+        }
+
+        .total-amount {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .refund-policy, .disclaimer {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .btn-custom {
+            margin: 20px auto;
+            background-color: #000;
+            border: none;
+            font-weight: 600;
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-custom:hover {
+            background-color: #333;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Hide the default Razorpay button */
+        .razorpay-payment-button {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Pay to Watch Full Video</h1>
+            <p>To access the full video, please complete your payment below.</p>
+        </div>
+
+        <div class="video-info">
+            <h4>Video Information</h4>
+            <p><strong>Title:</strong> {{ video.title }}</p>
+            <p><strong>Description:</strong> {{ video.description }}</p>
+            <p><strong>Price:</strong> ₹{{ amount|floatformat:2 }}</p>
+        </div>
+
+        <div class="user-info">
+            <h4>User Information</h4>
+            <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+
+        <div class="payment-info">
+            <h4>Complete Your Payment</h4>
+            <form action="{% url 'razorpay_return' %}" method="POST">
+                {% csrf_token %}
+                <script
+                    src="https://checkout.razorpay.com/v1/checkout.js"
+                    data-key="{{ razorpay_key_id }}"
+                    data-amount="{{ amount|floatformat:2 }}"
+                    data-currency="{{ currency }}"
+                    data-order_id="{{ razorpay_order_id }}"
+                    data-buttontext="Pay with Razorpay"
+                    data-name="The Champions Club"
+                    data-description="Access to {{ video.title }}"
+                    data-image="{% static 'images/logo.png' %}"
+                    data-prefill.name="{{ user.first_name }} {{ user.last_name }}"
+                    data-prefill.email="{{ user.email }}"
+                    data-theme.color="#F37254"
+                ></script>
+                <!-- Custom Button -->
+                <button type="button" class="btn-custom" id="custom-pay-button">Pay Now</button>
+            </form>
+        </div>
+
+        <div class="disclaimer">
+            <h4>Disclaimer</h4>
+            <p>You can play and pause the video, but you cannot rewind or rewatch the video. Once the video is completed, the product has been consumed, and the service has been finished. In order to watch again, the customer is required to pay again. Returning customers will get a 10% discount.</p>
+        </div>
+
+        <div class="refund-policy">
+            <h4>Refund Policy</h4>
+            <p>No refunds will be issued for consumed services. You are only eligible for refunds if there is a technical issue during payment or if the service is not provided to you.</p>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for choosing The Champions Club!</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('custom-pay-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.razorpay-payment-button').click();  // Trigger the hidden Razorpay button
+        });
+    </script>
+</body>
+</html> {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | {{ video.title }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', 'Roboto', sans-serif;
+            background-color: #000;
+            color: #343a40;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-top: 50px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header, .footer {
+            text-align: center;
+            background-color: #000;
+            color: #fff;
+            padding: 15px 0;
+            border-radius: 8px;
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            margin-top: 20px;
+        }
+
+        .billing-info, .course-info, .total-amount, .refund-policy, .disclaimer {
+            margin-bottom: 20px;
+        }
+
+        .billing-info h4, .course-info h4, .total-amount h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .billing-info p, .course-info p {
+            font-size: 1rem;
+            margin: 5px 0;
+        }
+
+        .total-amount {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .refund-policy, .disclaimer {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .btn-custom {
+            margin: 20px auto;
+            background-color: #000;
+            border: none;
+            font-weight: 600;
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-custom:hover {
+            background-color: #333;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Hide the default Razorpay button */
+        .razorpay-payment-button {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Pay to Watch Full Video</h1>
+            <p>To access the full video, please complete your payment below.</p>
+        </div>
+
+        <div class="video-info">
+            <h4>Video Information</h4>
+            <p><strong>Title:</strong> {{ video.title }}</p>
+            <p><strong>Description:</strong> {{ video.description }}</p>
+            <p><strong>Original Price:</strong> ${{ video.price|floatformat:2 }}</p>
+            {% if discount %}
+                <p><strong>Discount:</strong> 10% (Returning Customer Discount)</p>
+            {% endif %}
+            <p><strong>Final Price:</strong> ${{ amount|floatformat:2 }}</p>
+        </div>
+
+        <div class="user-info">
+            <h4>User Information</h4>
+            <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+        </div>
+
+        <div class="payment-info">
+            <h4>Complete Your Payment</h4>
+            <form action="{% url 'razorpay_return' %}" method="POST">
+                {% csrf_token %}
+                <script
+                    src="https://checkout.razorpay.com/v1/checkout.js"
+                    data-key="{{ razorpay_key_id }}"
+                    data-amount="{{ amount|floatformat:2 }}"
+                    data-currency="{{ currency }}"
+                    data-order_id="{{ razorpay_order_id }}"
+                    data-buttontext="Pay with Razorpay"
+                    data-name="The Champions Club"
+                    data-description="Access to {{ video.title }}"
+                    data-image="{% static 'images/logo.png' %}"
+                    data-prefill.name="{{ user.first_name }} {{ user.last_name }}"
+                    data-prefill.email="{{ user.email }}"
+                    data-theme.color="#F37254"
+                ></script>
+                <!-- Custom Button -->
+                <button type="button" class="btn-custom" id="custom-pay-button">Pay Now</button>
+            </form>
+        </div>
+
+        <div class="disclaimer">
+            <h4>Disclaimer</h4>
+            <p>You can play and pause the video, but you cannot rewind or rewatch the video. Once the video is completed, the product has been consumed, and the service has been finished. In order to watch again, the customer is required to pay again. Returning customers will get a 10% discount.</p>
+        </div>
+
+        <div class="refund-policy">
+            <h4>Refund Policy</h4>
+            <p>No refunds will be issued for consumed services. You are only eligible for refunds if there is a technical issue during payment or if the service is not provided to you.</p>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for choosing The Champions Club!</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('custom-pay-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.razorpay-payment-button').click();  // Trigger the hidden Razorpay button
+        });
+    </script>
+</body>
+</html>

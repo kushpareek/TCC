@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>TCC | Donate</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 120px 20px 80px 20px;
+            background-image: url('{% static "images/donation-hero-dark.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            background: rgba(0, 0, 0, 0.6);
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Content Section */
+        .content {
+            background-color: #111;
+            padding: 40px 30px;
+            margin-top: -80px;
+            border-radius: 8px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+            position: relative;
+            z-index: 2;
+        }
+
+        .donation-amount {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #f1c40f;
+        }
+
+        .btn-custom {
+            display: block;
+            width: 100%;
+            background-color: #f1c40f;
+            border: none;
+            color: #000;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            margin: 30px 0;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #d4ac0d;
+        }
+
+        /* Footer Section */
+        .footer {
+            text-align: center;
+            color: #777;
+            padding: 40px 20px;
+            background-color: #000;
+            margin-top: 60px;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .footer a {
+            color: #f1c40f;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .footer a:hover {
+            color: #d4ac0d;
+        }
+
+        /* Hide the default Razorpay button */
+        .razorpay-payment-button {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 767px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .content {
+                padding: 30px 20px;
+                margin-top: -60px;
+            }
+
+            .donation-amount {
+                font-size: 1.5rem;
+            }
+
+            .btn-custom {
+                font-size: 1rem;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Empower the Champions of Tomorrow</h1>
+            <p>Your contribution fuels dreams and ignites potential.</p>
+        </div>
+
+        <!-- Content Section -->
+        <div class="content">
+            <p class="donation-amount">Donation Amount: ${{ amount|floatformat:2 }}</p>
+
+            <p style="font-size: 1.1rem; line-height: 1.6;">
+                Thank you for choosing to support <strong>Champions Club</strong>. Your generous donation will directly impact the lives of aspiring champions, providing them with the resources and opportunities they need to excel. Together, we're building a brighter future.
+            </p>
+
+            <!-- Payment Button -->
+            <form action="{% url 'razorpay_donation_callback' %}" method="POST">
+                {% csrf_token %}
+                <script
+                    src="https://checkout.razorpay.com/v1/checkout.js"
+                    data-key="{{ razorpay_key_id }}"
+                    data-amount="{{ amount|floatformat:2 }}"
+                    data-currency="{{ currency }}"
+                    data-order_id="{{ razorpay_order_id }}"
+                    data-buttontext="Pay with Razorpay"
+                    data-name="Champions Club"
+                    data-description="Donation"
+                    data-image="{% static 'images/logo.png' %}"
+                    data-prefill.name="{{ name }}"
+                    data-prefill.email="{{ email }}"
+                    data-theme.color="#f1c40f"
+                ></script>
+                <!-- Custom Button -->
+                <button type="button" class="btn-custom" id="custom-pay-button">Proceed to Donate</button>
+            </form>
+
+            <p style="font-size: 0.9rem; color: #999; text-align: center; margin-top: 20px;">
+                <i class="fas fa-lock"></i> Secure payment powered by Razorpay. All transactions are encrypted.
+            </p>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>Follow us on:</p>
+            <p>
+                <a href="https://facebook.com/championsclub" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com/championsclub" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://instagram.com/championsclub" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://linkedin.com/company/championsclub" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </p>
+            <p>Champions Club © {{ current_year }}. All rights reserved.</p>
+        </div>
+    </div>
+
+    <!-- JavaScript to Trigger Razorpay Checkout -->
+    <script>
+        document.getElementById('custom-pay-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.razorpay-payment-button').click();
+        });
+    </script>
+</body>
+</html>

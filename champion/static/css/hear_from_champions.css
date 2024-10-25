@@ -1,0 +1,67 @@
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #ffcc00;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.champions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.champion-card {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.champion-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(255, 204, 0, 0.5);
+}
+
+.champion-card img {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.champion-card h3 {
+    margin: 10px 0;
+    font-size: 24px;
+    color: #ffcc00;
+}
+
+.champion-card .designation {
+    font-style: italic;
+    margin-bottom: 15px;
+    color: #ddd;
+}
+
+.champion-card .testimonial {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #ccc;
+}

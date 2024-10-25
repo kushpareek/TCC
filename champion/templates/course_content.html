@@ -1,0 +1,922 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>{{ course.title }} - Course Content</title>
+    <link rel="stylesheet" href="{% static 'css/courses.css' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the page */
+        body {
+            background-color: #000;
+            color: #fff;
+            max-width:1200px;
+            margin:100px auto;
+            font-family: 'Montserrat', 'Roboto', sans-serif;
+        }
+        .course-content-container {
+            display: flex;
+            gap: 2rem;
+        }
+        .video-container {
+            flex: 2;
+        }
+        h1, h4 {
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom:7%;
+            color:white;
+            font-size: 3rem;
+            font-weight: 700;
+        }
+        p, .list-group-item {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            color: #cccccc;
+        }
+        .card {
+            background-color: #1e1e1e;
+            border: none;
+        }
+        .card-header {
+            background-color: #000;
+            color: #f5f5f5;
+            border-bottom: white 1px solid;
+        }
+        .btn-primary {
+            background-color: #ffcc00;
+            border: none;
+            color: #121212;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background-color: #e6b800;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+            color: #121212;
+            font-weight: 600;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .list-group-item {
+            background-color: #1e1e1e;
+            border: none;
+        }
+        .list-group-item a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+        .list-group-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>{{ course.title }} - Course Content</h1>
+        <div class="course-content-container">
+            <!-- Video Player Section -->
+            <div class="video-container">
+                {% if current_lesson %}
+                    <video controls id="courseVideo" class="w-100" autoplay controls controlslist="nodownload noplaybackrate">
+                        <source src="{% url 'stream_lesson' current_lesson.id %}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="d-flex justify-content-between mt-3">
+                        {% if previous_lesson %}
+                            <a href="?lesson_id={{ previous_lesson.id }}" class="btn btn-secondary" id="prevBtn">Previous</a>
+                        {% else %}
+                            <button class="btn btn-secondary" disabled>Previous</button>
+                        {% endif %}
+                        {% if next_lesson %}
+                            <a href="?lesson_id={{ next_lesson.id }}" class="btn btn-primary" id="nextBtn">Next</a>
+                        {% else %}
+                            <button class="btn btn-primary" disabled>Next</button>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>No lessons available for this course.</p>
+                {% endif %}
+            </div>
+
+            <!-- Syllabus Accordion Section -->
+            <div id="syllabusAccordion" class="syllabus-container">
+                {% for section in sections %}
+                <div class="card mb-3">
+                    <div class="card-header" id="heading{{ section.id }}">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link text-left text-decoration-none text-light" type="button" data-toggle="collapse" data-target="#collapse{{ section.id }}" aria-expanded="true" aria-controls="collapse{{ section.id }}">
+                                {{ section.title }}
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapse{{ section.id }}" class="collapse" aria-labelledby="heading{{ section.id }}" data-parent="#syllabusAccordion">
+                        <div class="card-body">
+                            <ol class="list-group list-group-flush">
+                                {% for lesson in section.lessons.all %}
+                                <li class="list-group-item">
+                                    <a href="?lesson_id={{ lesson.id }}">{{ lesson.title }}</a>
+                                </li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('courseVideo');
+            const nextBtn = document.getElementById('nextBtn');
+
+            video.addEventListener('ended', function() {
+                if (nextBtn) {
+                    nextBtn.click();  // Automatically click the Next button when the video ends
+                }
+            });
+        });
+    </script>
+</body>
+</html> {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>TCC | {{ course.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/courses.css' %}">
+    <link rel="stylesheet" href="{% static 'css/course_content.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+</head>
+<body>
+    <section>
+        <nav class="top-navbar">
+            <!-- Logo on the left -->
+            <div class="logo">
+                <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+                THE CHAMPIONS CLUB
+            </div>
+    
+            <!-- Menu Icon for Mobile -->
+            <div class="menu-icon" onclick="toggleMenu()">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+    
+            <!-- Navigation Links -->
+            <ul id="nav-links">
+                <li><a href="{% url 'home' %}">HOME</a></li>
+                <li><a href="{% url 'blog_list' %}">NEWS</a></li>
+                
+              
+        
+                <!-- Dropdown tab for Resources -->
+                <li class="dropdown">
+                    <a href="#">RESOURCES</a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                        <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                    </ul>
+                </li>
+    
+    
+    
+                
+                <li><a href="{% url 'support_request' %}">CONTACT</a></li>
+                
+                {% if not user.is_authenticated %}
+                <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+                {% else %}
+                {% if registration.approved == 1 %}
+                {% if registration.membership_paid == 0 %}
+                <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li>
+                {% else %}
+                <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> DASHBOARD</a></li>
+                {% endif %}
+                {% else %}
+                <li class="dropdown">
+                    <a href="#">
+                        {% if registration.profile_image %}
+                            <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                        {% else %}
+                            <i class="fa-solid fa-circle-user fa-xl"></i>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'user_profile' %}">PROFILE</a></li>
+                        <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+                    </ul>
+                </li>
+                
+                {% endif %}
+                {% endif %}
+               
+                <!-- <li>
+                    <div class="toggle">
+                        <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                        <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                           </div>
+                    </li> -->
+            </ul>
+        </nav>
+    
+        <!-- Add your page content here -->
+    
+        <script>
+            function toggleMenu() {
+                const menuIcon = document.querySelector('.menu-icon');
+                const navLinks = document.getElementById('nav-links');
+    
+                menuIcon.classList.toggle('open');
+                navLinks.classList.toggle('show');
+            }
+        </script>
+       
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+      </div>  
+    
+    
+    <script>
+    
+    
+      // Toggle dropdown for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        const dropdownLinks = document.querySelectorAll('.dropdown > a');
+        
+        dropdownLinks.forEach(function(dropdownLink) {
+            dropdownLink.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default link behavior
+                
+                const dropdown = this.parentElement; // Get the parent <li> element
+    
+                // Toggle the 'show' class to show or hide the dropdown
+                dropdown.classList.toggle('show');
+    
+                // Close any other open dropdowns
+                document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                    if (otherDropdown !== dropdown) {
+                        otherDropdown.classList.remove('show');
+                    }
+                });
+            });
+        });
+    });
+    
+    
+       function toggleMenu() {
+        const navLinks = document.getElementById('nav-links');
+        const menuIcon = document.querySelector('.menu-icon');
+        navLinks.classList.toggle('show');
+        menuIcon.classList.toggle('open');
+    }
+    
+        </script>
+        </section>
+    <div class="container mt-5">
+        <h1>{{ course.title }} - Course Content</h1>
+        <div class="course-content-container">
+            <!-- Video Player or Quiz Section -->
+            <div class="video-container">
+                {% if current_lesson %}
+                <!-- Video Player Section -->
+                <div class="custom-video-player" id="videoPlayerContainer">
+                    <video id="courseVideo" class="video-js vjs-default-skin" preload="auto">
+                        <source src="{% url 'stream_lesson' current_lesson.id %}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="custom-controls">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar">
+                                <div class="progress"></div>
+                            </div>
+                        </div>
+                        <div class="controls-row">
+                            <div class="left-controls">
+                                {% if previous_lesson %}
+                                <a href="?lesson_id={{ previous_lesson.id }}" id="prevBtn"><button id="prevBtn">&#10094;</button></a>
+                                {% endif %}
+                                <button id="playPauseBtn">►</button>
+                                {% if next_lesson %}
+                                <a href="?lesson_id={{ next_lesson.id }}" id="nextBtn"> <button id="nextBtn">&#10095;</button></a>
+                                {% endif %}
+                                <div class="time" id="currentTime">0:00</div>
+                                <div class="time"> / </div>
+                                <div class="time" id="totalTime">0:00</div>
+                            </div>
+                            <div class="right-controls">
+                                <button id="fullScreenBtn">⤢</button>
+                                <div class="branding">The Champions Club</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Description and Transcript Section -->
+                <div class="lesson-details mt-4">
+                    <h3>Description</h3>
+                    <p>{{ current_lesson.description|safe }}</p>
+        
+                    <h3>Transcript</h3>
+                    {% if current_lesson.transcript %}
+                        <p>{{ current_lesson.transcript|safe }}</p>
+                    {% else %}
+                        <p>No transcript available.</p>
+                    {% endif %}
+                     <!-- Comments Section -->
+                     <style>
+                        .navbar-profile-img {
+                            width: 35px;             /* Adjust width as needed */
+                            height: 35px;  
+                                      /* Adjust height as needed */
+                            border-radius: 50%;      /* Makes the image circular */
+                            object-fit: cover;       /* Ensures the image covers the container without distortion */
+                            vertical-align: middle;  /* Aligns the image vertically */
+                        }
+                        /* Styles scoped to the comments and reviews section */
+                        .comments-reviews-section {
+                            color: #fff;
+                            font-family: Arial, sans-serif;
+                        }
+                    
+                        .comments-reviews-section h3 {
+                            color: #ffcc00;
+                            font-size: 24px;
+                            margin-bottom: 20px;
+                            border-bottom: 2px solid #ffcc00;
+                            padding-bottom: 10px;
+                        }
+                    
+                        .comments-reviews-section ul {
+                            list-style: none;
+                            padding: 0;
+                            margin: 0;
+                        }
+                    
+                        .comments-reviews-section li {
+                            background-color: #1a1a1a;
+                            margin-bottom: 15px;
+                            padding: 15px;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+                        }
+                    
+                        .comments-reviews-section li strong {
+                            color: #ffcc00;
+                            font-size: 18px;
+                        }
+                    
+                        .comments-reviews-section li p {
+                            font-size: 16px;
+                            color: #ddd;
+                        }
+                    
+                        .comments-reviews-section li small {
+                            color: #888;
+                            font-size: 14px;
+                            display: block;
+                            margin-top: 10px;
+                        }
+                    
+                        .comments-reviews-section form {
+                            margin-top: 20px;
+                        }
+                    
+                        .comments-reviews-section textarea {
+                            width: 100%;
+                            background-color: #111;
+                            color: #fff;
+                            border: 1px solid #333;
+                            border-radius: 8px;
+                            padding: 10px;
+                            font-size: 16px;
+                            margin-bottom: 10px;
+                            resize: none;
+                        }
+                    
+                        .comments-reviews-section button {
+                            background-color: #ffcc00;
+                            border: none;
+                            color: #000;
+                            margin-bottom:20px;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            font-weight: bold;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            transition: background-color 0.3s ease;
+                        }
+                    
+                        .comments-reviews-section button:hover {
+                            background-color: #e6b800;
+                        }
+                    
+                        .comments-reviews-section .star-rating {
+                            display: flex;
+                            flex-direction: row-reverse;
+                            justify-content: flex-end;
+                            gap: 5px;
+                            margin-bottom: 10px;
+                        }
+                    
+                        .comments-reviews-section .star-rating input {
+                            display: none;
+                        }
+                    
+                        .comments-reviews-section .star-rating label {
+                            font-size: 24px;
+                            color: #555;
+                            cursor: pointer;
+                            transition: color 0.2s;
+                        }
+                    
+                        .comments-reviews-section .star-rating label:hover,
+                        .comments-reviews-section .star-rating label:hover ~ label,
+                        .comments-reviews-section .star-rating input:checked ~ label {
+                            color: #ffcc00;
+                        }
+                    
+                        .comments-reviews-section .star-rating input:checked + label:hover,
+                        .comments-reviews-section .star-rating input:checked ~ label:hover,
+                        .comments-reviews-section .star-rating label:hover ~ input:checked ~ label {
+                            color: #e6b800;
+                        }
+                     .prevent-select{
+                            -webkit-user-select: none; /* Safari */
+                            -ms-user-select: none; /* IE 10 and IE 11 */
+                            user-select: none !important; /* Standard syntax */
+                          }
+                    </style>
+                    
+                    <div class="comments-reviews-section">
+                       
+                    
+                        <!-- Reviews Section -->
+                        <h3>Reviews</h3>
+                        <ul>
+                            {% for review in reviews %}
+                            <li>
+                                <strong>{{ review.user.username }}</strong> rated {{ review.rating }} stars
+                                <p>{{ review.review_text }}</p>
+                                <small>Reviewed on {{ review.created_at }}</small>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    
+                        <form method="post">
+                            {% csrf_token %}
+                            <label for="rating">Your Rating:</label>
+                            <div class="star-rating">
+                                <input type="radio" name="rating" value="5" id="star5"><label for="star5">&#9733;</label>
+                                <input type="radio" name="rating" value="4" id="star4"><label for="star4">&#9733;</label>
+                                <input type="radio" name="rating" value="3" id="star3"><label for="star3">&#9733;</label>
+                                <input type="radio" name="rating" value="2" id="star2"><label for="star2">&#9733;</label>
+                                <input type="radio" name="rating" value="1" id="star1"><label for="star1">&#9733;</label>
+                            </div>
+                            <textarea name="review_text" rows="4" placeholder="Add a review..." required></textarea>
+                            <button type="submit" name="submit_review" class="btn btn-primary mt-2">Submit Review</button>
+                        </form>
+                    </div>
+                    
+                </div>
+        
+                {% elif current_quiz %}
+        <!-- Quiz Section -->
+        <div class="quiz-container">
+            {% if quiz_already_submitted and not quiz_submitted %}
+                <p>You have already submitted this quiz. Do you want to resubmit?</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="submit_quiz" class="btn btn-primary">Start Quiz Again</button>
+                </form>
+            {% elif quiz_submitted %}
+                <h3>Quiz Results:</h3>
+                <ul>
+                    {% for result in quiz_results.values %}
+                        <li>
+                            Question: {{ result.question.text }}<br>
+                            Your Answer: {{ result.selected_option.text }}<br>
+                            {% if result.correct %}
+                                <span style="color: green;">Correct!</span>
+                            {% else %}
+                                <span style="color: red;">Incorrect.</span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3>{{ current_quiz.title }}</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for question in quiz_questions %}
+                    <div class="question">
+                        <p style="user-select: none !important;">{{ question.text }}</p>
+                        <ol>
+                            {% for option in question.answers.all %}
+                            <li style="user-select: none !important;">
+                                <label>
+                                    <input type="radio"  name="question_{{ question.id }}" value="{{ option.id }}">
+                                    {{ option.text }}
+                                </label>
+                            </li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                    {% endfor %}
+                    <button type="submit" name="submit_quiz" class="btn btn-primary">Submit Quiz</button>
+                </form>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No lessons or quizzes available for this course.</p>
+    {% endif %}
+</div>
+            <!-- Syllabus Accordion Section -->
+            <div id="syllabusAccordion" class="syllabus-container">
+                {% for section in sections %}
+                <div class="card mb-3">
+                    <div class="card-header" id="heading{{ section.id }}">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link text-left text-decoration-none text-light" type="button" data-toggle="collapse" data-target="#collapse{{ section.id }}" aria-expanded="true" aria-controls="collapse{{ section.id }}">
+                                {{ section.title }}
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapse{{ section.id }}" class="collapse" aria-labelledby="heading{{ section.id }}" data-parent="#syllabusAccordion">
+                        <div class="card-body">
+                            <ol class="list-group list-group-flush">
+                                {% for lesson in section.lessons.all %}
+                                <li class="list-group-item">
+                                    <a href="?lesson_id={{ lesson.id }}">{{ lesson.title }}</a>
+                                </li>
+                                {% endfor %}
+                                {% for quiz in section.quizzes.all %}
+                                <li class="list-group-item">
+                                    <a href="?quiz_id={{ quiz.id }}">{{ quiz.title }}</a>
+                                </li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+        
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom Video Player JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('courseVideo');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const fullScreenBtn = document.getElementById('fullScreenBtn');
+            const currentTimeElem = document.getElementById('currentTime');
+            const totalTimeElem = document.getElementById('totalTime');
+            const progressBar = document.querySelector('.progress');
+            const progressBarContainer = document.querySelector('.progress-bar-container');
+            const controls = document.querySelector('.custom-controls');
+            let hideControlsTimeout;
+            let lastTap = 0;
+
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            video.addEventListener('loadedmetadata', function() {
+                totalTimeElem.textContent = formatTime(video.duration);
+            });
+
+            video.addEventListener('timeupdate', function() {
+                currentTimeElem.textContent = formatTime(video.currentTime);
+                const progress = (video.currentTime / video.duration) * 100;
+                progressBar.style.width = `${progress}%`;
+            });
+
+            function showControls() {
+                controls.style.opacity = '1';
+            }
+
+            function hideControls() {
+                controls.style.opacity = '0';
+            }
+
+            video.addEventListener('play', function() {
+                showControls();
+                hideControlsTimeout = setTimeout(hideControls, 1000);
+            });
+
+            video.addEventListener('pause', function() {
+                clearTimeout(hideControlsTimeout);
+                showControls();
+            });
+
+            controls.addEventListener('mousemove', function() {
+                showControls();
+                clearTimeout(hideControlsTimeout);
+                hideControlsTimeout = setTimeout(hideControls, 1000);
+            });
+
+            playPauseBtn.addEventListener('click', function() {
+                if (video.paused) {
+                    video.play();
+                    playPauseBtn.textContent = '❚❚';
+                    showControls();
+                } else {
+                    video.pause();
+                    playPauseBtn.textContent = '►';
+                    hideControls();
+                }
+            });
+
+            fullScreenBtn.addEventListener('click', function() {
+                if (!document.fullscreenElement) {
+                    videoPlayerContainer.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+
+            video.addEventListener('click', function() {
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTap;
+
+                if (tapLength < 500 && tapLength > 0) {
+                    toggleFullScreen();
+                } else {
+                    if (video.paused) {
+                        video.play();
+                        playPauseBtn.textContent = '❚❚';
+                    } else {
+                        video.pause();
+                        playPauseBtn.textContent = '►';
+                    }
+                }
+
+                lastTap = currentTime;
+            });
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', function() {
+                    const prevLesson = prevBtn.getAttribute('href');
+                    if (prevLesson) window.location.href = prevLesson;
+                });
+            }
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', function() {
+                    const nextLesson = nextBtn.getAttribute('href');
+                    if (nextLesson) window.location.href = nextLesson;
+                });
+            }
+
+            progressBarContainer.addEventListener('click', function(e) {
+                const rect = progressBarContainer.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left;
+                const newTime = (offsetX / rect.width) * video.duration;
+                video.currentTime = newTime;
+            });
+        });
+    </script>
+    <section id="dividing-section">
+
+    </section>
+            <footer id="footer" class="fade-in">
+    
+    
+                <div class="footer-content">
+    
+                    <div class="footer-section">
+                        <img src="{% static 'images/logo.png' %}" alt="">
+                     </div>
+                    
+                    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Quick Links</h4>
+                        <a href="{% url 'support_request' %}" class="footer-link">Support</a>
+                        <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                        <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
+                        <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
+                        
+                        <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
+                    </div>
+    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Company</h4>
+                        <a href="/about-us" class="footer-link">Become a Partner</a>
+                        <a href="{% url 'careers' %}" class="footer-link">Careers</a>
+                        
+                    </div>
+    
+                    <div class="footer-section">
+                        <h4 class="footer-title">STAY CONNECTED</h4>
+                        <div class="social-media">
+                            <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
+                                <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
+                            </a>
+                            <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+    
+                    </div>
+                    
+                </div>
+                <section id="dividing-section">
+    
+                </section>
+                <div class="footer-bottom">
+                    <div class="trademark">The Champions Club</div>
+                    <div class="copyright">Copyright © & Trademark ® 2024 The Champions Club™ - All Rights Reserved.</div>
+                </div>
+            </footer>
+    <style>
+        body{
+            margin:0;
+            padding:0;
+            width:100%; 
+        }
+    .footer-section button{
+        background-color: transparent;
+        color: white;
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-left: 15px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .footer-section button::before,
+    .footer-section button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 1px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    .footer-section button::before {
+        left: 10px;
+    }
+    
+    .footer-section button::after {
+        right: 10px;
+    }
+    .footer-section button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    
+    
+    
+    
+    
+    
+    #footer {
+        background-color: #000;
+        padding: 50px 100px;
+        color: #f4f4f4;
+        font-family: 'Roboto', sans-serif;
+    }
+    
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+        
+        padding-bottom: 20px;
+    }
+    
+    .footer-section {
+        flex: 1;
+        min-width: 200px;
+        margin: 10px;
+        margin-left: 100px;
+    }
+    
+    .footer-title {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: #f4f4f4;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+    
+    .footer-link {
+        display: block;
+        color: #f4f4f4;
+        text-decoration: none;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+    
+    .footer-link:hover {
+        color: #999;
+    }
+    
+    .social-media {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+    }
+    
+    .social-icon {
+        color: #f4f4f4;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+    }
+    
+    .social-icon:hover {
+        color: #999;
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .trademark {
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+    
+    .copyright {
+        font-size: 0.8rem;
+        color: #666;
+    }
+    
+    @media (max-width: 768px) {
+        #footer{
+            padding:0;
+        }
+        .footer-content {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+    
+        .footer-section {
+            margin-bottom: 20px;
+            margin-left: 0;
+        }
+    
+        .social-media {
+            justify-content: center;
+        }
+    }
+    #footer img{
+        height: 150px;
+        margin:0 auto;
+    }
+    #dividing-section{
+            background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+            height: 1px;
+        }
+    </style>
+</body>
+</html>

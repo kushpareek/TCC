@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | Donate</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons (Optional) -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <style>
+        /* Luxury Color Palette */
+        :root {
+            --primary-bg: #000;
+            --gold: #D4AF37;
+            --white: #fafafa;
+            --dark: #111;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--white);
+            position: relative;
+        }
+
+        /* Full-screen hero background with overlay */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("{% static 'images/luxury-bg.jpg' %}") center/cover no-repeat;
+            filter: brightness(0.3);
+            z-index: -2;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 100%);
+            z-index: -1;
+        }
+
+        /* Luxurious form container */
+        .container {
+            background-color: rgba(17, 17, 17, 0.95);
+            padding: 60px 50px;
+            max-width: 550px;
+            width: 90%;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+            text-align: center;
+            border: 1px solid var(--gold);
+            margin: 100px auto; /* Centers the container and adds top & bottom spacing */
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Logo */
+        .logo {
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            width: 150px;
+        }
+
+        /* Premium Typography */
+        h1 {
+            font-size: 36px;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: var(--white);
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        /* Luxurious Quick Donation Buttons */
+        .quick-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .quick-buttons button {
+            background-color: var(--gold);
+            color: var(--primary-bg);
+            font-size: 18px;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+            margin: 10px;
+        }
+
+        .quick-buttons button:hover {
+            background-color: #C69D33;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Luxurious Form */
+        form {
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-size: 16px;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--gold);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: #ccc;
+        }
+
+        input:focus {
+            border-color: #C69D33;
+            box-shadow: 0 0 10px #C69D33;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--gold);
+            color: var(--primary-bg);
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #C69D33;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Subtle Call-to-Action */
+        .note {
+            margin-top: 30px;
+            font-size: 16px;
+            color: var(--white);
+        }
+
+        .note a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .note a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: var(--gold);
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .footer a:hover {
+            color: #C69D33;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 40px 30px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            .quick-buttons button {
+                width: 50px;
+                height: 50px;
+                font-size: 16px;
+                margin: 5px;
+            }
+
+            .submit-btn {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="background"></div>
+<div class="overlay"></div>
+
+<div class="container">
+    <!-- Logo -->
+    <div class="logo">
+        <img src="{% static 'images/logo.png' %}" alt="Champions Club Logo">
+    </div>
+
+    <h1>Donate to the Champions Club</h1>
+    <p>Join an elite group of individuals driving excellence and success. Your contributions make the difference.</p>
+
+    <!-- Quick Donation Buttons -->
+    <div class="quick-buttons">
+        <button type="button" onclick="setAmount(5)">$5</button>
+        <button type="button" onclick="setAmount(10)">$10</button>
+        <button type="button" onclick="setAmount(25)">$25</button>
+        <button type="button" onclick="setAmount(100)">$100</button>
+        <button type="button" onclick="setAmount(500)">$500</button>
+    </div>
+
+    <!-- Donation Form -->
+    <form method="POST" id="razorpayForm">
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+            <label for="amount">Donation Amount (USD):</label>
+            <input type="number" name="amount" id="amount" required placeholder="Enter amount">
+        {% else %}
+            <label for="name">Your Name:</label>
+            <input type="text" name="name" id="name" required placeholder="Enter your name">
+            <label for="email">Your Email:</label>
+            <input type="email" name="email" id="email" required placeholder="Enter your email">
+            <label for="amount">Donation Amount (USD):</label>
+            <input type="number" name="amount" id="amount" required placeholder="Enter amount">
+        {% endif %}
+        <button type="submit" class="submit-btn">Donate Now</button>
+    </form>
+
+    <!-- Call to Action Note -->
+    <div class="note">
+        <p>If you'd like to donate an exceptional amount, please <a href="{% url 'exceptional_donation' %}">click here</a>.</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Follow us on:
+            <a href="https://facebook.com/championsclub" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/championsclub" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com/championsclub" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://linkedin.com/company/championsclub" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </p>
+        <p>Champions Club © {{ current_year }}. All rights reserved.</p>
+    </div>
+</div>
+
+<script>
+    function setAmount(amount) {
+        document.getElementById('amount').value = amount;
+    }
+</script>
+
+</body>
+</html>

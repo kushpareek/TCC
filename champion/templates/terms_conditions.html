@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | Terms & Conditions</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #000;
+            color: #e0e0e0;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-top: 30px;
+        }
+
+        p, ul {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #cfcfcf;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        a {
+            color: #ffcc00;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #e6b800;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <style>
+        .top-navbar{
+            width:100%;
+        }
+    </style>
+    <section>
+    <nav class="top-navbar">
+        <!-- Logo on the left -->
+        <div class="logo">
+            <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+            THE CHAMPIONS CLUB
+        </div>
+
+        <!-- Menu Icon for Mobile -->
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <ul id="nav-links">
+            <li><a href="{% url 'home' %}">HOME</a></li>
+            <li><a href="{% url 'blog_list' %}">NEWS</a></li>
+            
+          
+    
+            <!-- Dropdown tab for Resources -->
+            <li class="dropdown">
+                <a href="#">RESOURCES</a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                    <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                </ul>
+            </li>
+
+
+
+            
+            <li><a href="{% url 'support_request' %}">CONTACT</a></li>
+            
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+            {% else %}
+            {% if registration.approved == 1 %}
+            {% if registration.membership_paid == 0 %}
+            <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li>
+            {% else %}
+            <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> DASHBOARD</a></li>
+            {% endif %}
+            {% else %}
+            <li class="dropdown">
+                <a href="#">
+                    {% if registration.profile_image %}
+                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                    {% else %}
+                        <i class="fa-solid fa-circle-user fa-xl"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'user_profile' %}">PROFILE</a></li>
+                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+                </ul>
+            </li>
+            
+            {% endif %}
+            {% endif %}
+           
+            <!-- <li>
+                <div class="toggle">
+                    <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                    <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                       </div>
+                </li> -->
+        </ul>
+    </nav>
+
+    <!-- Add your page content here -->
+
+    <script>
+        function toggleMenu() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.getElementById('nav-links');
+
+            menuIcon.classList.toggle('open');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+   
+<div class="progress-container">
+    <div class="progress-bar" id="myBar"></div>
+  </div>  
+
+
+<script>
+
+
+  // Toggle dropdown for mobile
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdownLinks = document.querySelectorAll('.dropdown > a');
+    
+    dropdownLinks.forEach(function(dropdownLink) {
+        dropdownLink.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            
+            const dropdown = this.parentElement; // Get the parent <li> element
+
+            // Toggle the 'show' class to show or hide the dropdown
+            dropdown.classList.toggle('show');
+
+            // Close any other open dropdowns
+            document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                if (otherDropdown !== dropdown) {
+                    otherDropdown.classList.remove('show');
+                }
+            });
+        });
+    });
+});
+
+
+   function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    const menuIcon = document.querySelector('.menu-icon');
+    navLinks.classList.toggle('show');
+    menuIcon.classList.toggle('open');
+}
+
+    </script>
+    </section>
+    <div class="container mt-5">
+        <h1>Terms & Conditions</h1>
+        <p>Welcome to The Champions Club! We appreciate your trust in choosing us as your partner in education and personal growth. By accessing or using our services, you agree to comply with and be bound by the following terms and conditions. These terms outline the rules and regulations for the use of our website and services, reflecting our commitment to providing a safe, secure, and enriching environment for all our users. Please read them carefully before using our services.</p>
+
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing and using our website, you accept and agree to be bound by these terms and conditions. The Champions Club reserves the right to update, amend, or modify these terms at any time without prior notice. Your continued use of our services following any changes signifies your acceptance of the updated terms. If you do not agree to these terms, please do not use our website or services.</p>
+
+        <h2>2. Use of Services</h2>
+        <p>The Champions Club offers a wide range of online educational content, including but not limited to video courses, interactive materials, webinars, and other resources. Our content is designed to provide users with high-quality learning experiences that are accessible anytime, anywhere. All content is provided for personal use only and may not be shared, distributed, or used for commercial purposes without our explicit permission. Unauthorized use of our content may result in legal action and the termination of your account.</p>
+
+        <h2>3. Payment and Pricing</h2>
+        <p>All prices for courses and content are clearly listed on our website and are subject to change at our discretion. Payment is required before access to any paid content, and we offer multiple payment options to ensure a smooth and secure transaction process. Once a video is completed, the product has been consumed, and the service has been rendered. To watch the video again, customers are required to pay the full price again. However, we value our returning customers and are pleased to offer a 10% discount on subsequent purchases of the same content.</p>
+
+        <h2>4. Refund Policy</h2>
+        <p>Due to the digital nature of our products, we are unable to offer refunds once a purchase has been completed. We encourage you to review the course content and ensure that it meets your needs before making a purchase. If you encounter any issues with our services or believe there has been an error in your transaction, please contact our support team. We are committed to addressing your concerns and finding a satisfactory resolution.</p>
+
+        <h2>5. Intellectual Property</h2>
+        <p>All content provided by The Champions Club, including but not limited to videos, text, graphics, logos, and other materials, are the property of The Champions Club or its licensors. Our content is protected by copyright, trademark, and other intellectual property laws. Unauthorized use, reproduction, or distribution of our content is strictly prohibited and may result in legal action. We are committed to protecting our intellectual property and ensuring that our users have access to genuine, high-quality educational resources.</p>
+
+        <h2>6. User Conduct</h2>
+        <p>As a member of The Champions Club community, you are expected to use our services in a manner that is respectful, responsible, and in accordance with these terms and conditions. You agree not to engage in any activity that may harm, disrupt, or interfere with the operation of our website or the experience of other users. This includes, but is not limited to, engaging in fraudulent activities, distributing malware, spamming, or attempting to gain unauthorized access to our systems. Any violation of these rules may result in the suspension or termination of your account and potential legal action.</p>
+
+        <h2>7. Limitation of Liability</h2>
+        <p>The Champions Club strives to provide accurate, reliable, and high-quality content. However, we do not warrant or guarantee that our services will be free from errors, interruptions, or inaccuracies. By using our services, you agree that The Champions Club, its affiliates, and its employees shall not be held liable for any direct, indirect, incidental, or consequential damages resulting from your use of our website or services. This includes, but is not limited to, damages for loss of profits, data, or other intangible losses arising from your use or inability to use our services.</p>
+
+        <h2>8. Changes to Terms</h2>
+        <p>We reserve the right to modify these terms and conditions at any time. Any changes will be effective immediately upon posting on our website. We encourage you to review these terms periodically to stay informed of any updates. Your continued use of our services following any changes constitutes your acceptance of the new terms. If you do not agree with any changes to these terms, you must discontinue your use of our services immediately.</p>
+
+        <h2>9. Governing Law</h2>
+        <p>These terms and conditions are governed by and construed in accordance with the laws of [Your Country/State]. Any disputes arising from or related to these terms will be subject to the exclusive jurisdiction of the courts of [Your Country/State]. By using our services, you agree to submit to the jurisdiction of these courts and waive any objection to such jurisdiction or venue.</p>
+
+        <h2>10. Contact Us</h2>
+        <p>If you have any questions or concerns about these terms and conditions, or if you require assistance with any aspect of our services, please do not hesitate to <a href="#">contact us</a>. Our dedicated support team is here to help and ensure that your experience with The Champions Club is positive, secure, and rewarding. We value your trust and are committed to providing you with the highest level of service and support.</p>
+    </div>
+    <section id="dividing-section">
+
+    </section>
+            <footer id="footer">
+    
+    
+                <div class="footer-content">
+    
+                    <div class="footer-section">
+                        <img src="{% static 'images/logo.png' %}" alt="">
+                     </div>
+                    
+                    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Quick Links</h4>
+                        <a href="{% url 'support_request' %}" class="footer-link">Support</a>
+                        <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                        <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
+                        <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
+                        
+                        <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
+                    </div>
+    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Company</h4>
+                        <a href="/about-us" class="footer-link">Become a Partner</a>
+                        <a href="{% url 'careers' %}" class="footer-link">Careers</a>
+                        
+                    </div>
+    
+                    <div class="footer-section">
+                        <h4 class="footer-title">STAY CONNECTED</h4>
+                        <div class="social-media">
+                            <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
+                                <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
+                            </a>
+                            <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+    
+                    </div>
+                    
+                </div>
+                <section id="dividing-section">
+    
+                </section>
+                <div class="footer-bottom">
+                    <div class="trademark">The Champions Club</div>
+                    <div class="copyright">Copyright © & Trademark ® 2024 The Champions Club™ - All Rights Reserved.</div>
+                </div>
+            </footer>
+    <style>
+        .navbar-profile-img {
+            width: 35px;             /* Adjust width as needed */
+            height: 35px;  
+                      /* Adjust height as needed */
+            border-radius: 50%;      /* Makes the image circular */
+            object-fit: cover;       /* Ensures the image covers the container without distortion */
+            vertical-align: middle;  /* Aligns the image vertically */
+        }
+    .footer-section button{
+        background-color: transparent;
+        color: white;
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-left: 15px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .footer-section button::before,
+    .footer-section button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 1px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    .footer-section button::before {
+        left: 10px;
+    }
+    
+    .footer-section button::after {
+        right: 10px;
+    }
+    .footer-section button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    
+    
+    
+    
+    
+    
+    #footer {
+        background-color: #000;
+        padding: 50px 100px;
+        color: #f4f4f4;
+        font-family: 'Roboto', sans-serif;
+    }
+    
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+        
+        padding-bottom: 20px;
+    }
+    
+    .footer-section {
+        flex: 1;
+        min-width: 200px;
+        margin: 10px;
+        margin-left: 100px;
+    }
+    
+    .footer-title {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: #f4f4f4;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+    
+    .footer-link {
+        display: block;
+        color: #f4f4f4;
+        text-decoration: none;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+    
+    .footer-link:hover {
+        color: #999;
+    }
+    
+    .social-media {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+    }
+    
+    .social-icon {
+        color: #f4f4f4;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+    }
+    
+    .social-icon:hover {
+        color: #999;
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .trademark {
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+    
+    .copyright {
+        font-size: 0.8rem;
+        color: #666;
+    }
+    
+    @media (max-width: 768px) {
+        #footer{
+            padding:0;
+        }
+        .footer-content {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+    
+        .footer-section {
+            margin-bottom: 20px;
+            margin-left: 0;
+        }
+    
+        .social-media {
+            justify-content: center;
+        }
+    }
+    #footer img{
+        height: 150px;
+        margin:0 auto;
+    }
+    #dividing-section{
+            background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+            height: 1px;
+        }
+    </style>
+</body>
+</html>

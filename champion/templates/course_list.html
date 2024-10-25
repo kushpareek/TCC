@@ -1,0 +1,1095 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load custom_filters %}
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Added viewport meta tag -->
+    <title>TCC | Courses</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Include external CSS files -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+</head>
+<body>
+    <section>
+        <nav class="top-navbar">
+            <!-- Logo on the left -->
+            <div class="logo">
+                <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+                THE CHAMPIONS CLUB
+            </div>
+    
+            <!-- Menu Icon for Mobile -->
+            <div class="menu-icon" onclick="toggleMenu()">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+    
+            <!-- Navigation Links -->
+            <ul id="nav-links">
+                <li><a href="{% url 'home' %}">HOME</a></li>
+                <li><a href="{% url 'blog_list' %}">NEWS</a></li>
+                
+              
+        
+                <!-- Dropdown tab for Resources -->
+                <li class="dropdown">
+                    <a href="#">RESOURCES</a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                        <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                    </ul>
+                </li>
+    
+    
+    
+                
+                <li><a href="{% url 'support_request' %}">CONTACT</a></li>
+                
+                {% if not user.is_authenticated %}
+                <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+                {% else %}
+                {% if registration.approved == 1 %}
+                {% if registration.membership_paid == 0 %}
+                <li><a href="{% url 'champions_dashboard' %} ">BUY MEMEBERSHIP TODAY</a></li>
+                {% else %}
+                <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> DASHBOARD</a></li>
+                {% endif %}
+                {% else %}
+                <li class="dropdown">
+                    <a href="#">
+                        {% if registration.profile_image %}
+                            <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                        {% else %}
+                            <i class="fa-solid fa-circle-user fa-xl"></i>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'user_profile' %}">PROFILE</a></li>
+                        <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+                    </ul>
+                </li>
+                
+                {% endif %}
+                {% endif %}
+               
+                <!-- <li>
+                    <div class="toggle">
+                        <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                        <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                           </div>
+                    </li> -->
+            </ul>
+        </nav>
+    
+        <!-- Add your page content here -->
+    
+        <script>
+            function toggleMenu() {
+                const menuIcon = document.querySelector('.menu-icon');
+                const navLinks = document.getElementById('nav-links');
+    
+                menuIcon.classList.toggle('open');
+                navLinks.classList.toggle('show');
+            }
+        </script>
+       
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+      </div>  
+    
+    
+    <script>
+    
+    
+      // Toggle dropdown for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        const dropdownLinks = document.querySelectorAll('.dropdown > a');
+        
+        dropdownLinks.forEach(function(dropdownLink) {
+            dropdownLink.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default link behavior
+                
+                const dropdown = this.parentElement; // Get the parent <li> element
+    
+                // Toggle the 'show' class to show or hide the dropdown
+                dropdown.classList.toggle('show');
+    
+                // Close any other open dropdowns
+                document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                    if (otherDropdown !== dropdown) {
+                        otherDropdown.classList.remove('show');
+                    }
+                });
+            });
+        });
+    });
+    
+    
+       function toggleMenu() {
+        const navLinks = document.getElementById('nav-links');
+        const menuIcon = document.querySelector('.menu-icon');
+        navLinks.classList.toggle('show');
+        menuIcon.classList.toggle('open');
+    }
+    
+        </script>
+        <style>
+            .top-navbar{
+                width:98%;
+            }
+            .navbar-profile-img {
+                width: 35px;             /* Adjust width as needed */
+                height: 35px;  
+                          /* Adjust height as needed */
+                border-radius: 50%;      /* Makes the image circular */
+                object-fit: cover;       /* Ensures the image covers the container without distortion */
+                vertical-align: middle;  /* Aligns the image vertically */
+            }
+        </style>
+        </section>
+    <section id="dividing-section">
+
+    </section>
+ 
+    <section id="courses-hero">
+        <div class="courses-hero-container">
+            <div class="courses-hero-content">
+                <h1>Explore Our Courses</h1>
+                <p>Unlock your potential with expert-led courses across a range of fields. From technology to business, we have something for everyone. Discover your passion and start your learning journey today!</p>
+                <div class="cta-buttons">
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="dividing-section">
+
+    </section>
+<style>
+    #courses-hero {
+    background: url("{% static 'images/Courses-back.png' %}");
+    background-repeat: no-repeat;
+    
+    background-size: cover;
+    filter: brightness(70%); /* Black background */
+    color: #fff; /* White text */
+    height: 40vh; /* Full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 50px;
+}
+
+.courses-hero-container {
+    max-width: 1400px;
+    width: 100%;
+}
+
+.courses-hero-content {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1400px;
+}
+
+.courses-hero-content h1 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.courses-hero-content p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: #ddd; /* Softer white */
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+
+
+.explore-link {
+    display: inline-flex;
+    align-items: center;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.explore-link svg {
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+}
+
+.explore-link:hover {
+    color: #007bff;
+}
+
+.explore-link:hover svg {
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .courses-hero-content h1 {
+        font-size: 36px;
+    }
+
+    .courses-hero-content p {
+        font-size: 16px;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+
+    .cta-buttons button, .cta-buttons a {
+        width: 100%;
+    }
+}
+
+</style>      
+    <!-- Carousel and Other Content -->
+     <section id="Course-container">
+    <div class="container my-5">
+        <h1 class="text-center mb-5">Our Courses</h1>
+
+        {% for category, courses in courses_by_category %}
+        <div class="category-section">
+            <h2>{{ category.name }}</h2>
+            <div class="carousel-container">
+                <div class="carousel" aria-roledescription="carousel">
+                    <div class="carousel__nav">
+                        <button id="prevBtn{{ category.id }}" aria-label="Previous slide" aria-controls="carousel__track{{ category.id }}">
+                            <span class="icon-arrow-left">&#10094;</span>
+                        </button>
+                        <button id="nextBtn{{ category.id }}" aria-label="Next slide" aria-controls="carousel__track{{ category.id }}">
+                            <span class="icon-arrow-right">&#10095;</span>
+                        </button>
+                    </div>
+                    <div class="carousel__track-container" role="region" aria-live="polite">
+                        <ul class="carousel__track" id="carousel__track{{ category.id }}">
+                            {% for course in courses %}
+                            <li class="carousel__slide" tabindex="0" aria-hidden="false" aria-label="Slide {{ forloop.counter }} of {{ courses|length }}" role="group">
+                                <img class="carousel__slide-image" src="{{ course.image.url }}" alt="{{ course.title }}">
+                                <p class="carousel__slide-caption">{{ course.title }}</p>
+                                <div class="carousel__slide-content">
+                                    <h3>{{ course.title }}</h3>
+                                    <p>{{ course.description|truncatewords:20 }}</p>
+                                    
+                                    <p><strong>Level:</strong> {{ course.get_level_display }}</p>
+                                    {% if request.user.is_authenticated and request.user.registration.membership_paid %}
+                                    <p>
+                                        <strong>Price:</strong> <span style="text-decoration: line-through;">${{ course.price }}</span>
+                                        <strong>Champions Price:</strong> ${{ course.price|floatformat:2|mul:0.75|floatformat:2 }}
+                                    </p>
+                                    {% else %}
+                                    <p><strong>Price:</strong> ${{ course.price }}</p>
+                                    {% endif %}
+                                    <a href="{% url 'course_detail' course.id %}"><button>Learn More</button></a>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+    <!-- JavaScript for Carousel -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% for category in categories %}
+            const slides{{ category.id }} = document.querySelectorAll('#carousel__track{{ category.id }} .carousel__slide');
+            const track{{ category.id }} = document.querySelector('#carousel__track{{ category.id }}');
+            const prevButton{{ category.id }} = document.getElementById('prevBtn{{ category.id }}');
+            const nextButton{{ category.id }} = document.getElementById('nextBtn{{ category.id }}');
+            let currentIndex{{ category.id }} = 0;
+            let slideWidth{{ category.id }} = 0;
+
+            const updateDimensions{{ category.id }} = () => {
+                const trackWidth = track{{ category.id }}.offsetWidth;
+                const slidesToShow = window.innerWidth >= 768 ? 2.75 : 1;
+                slideWidth{{ category.id }} = trackWidth / slidesToShow;
+
+                slides{{ category.id }}.forEach(slide => {
+                    slide.style.flex = `0 0 ${slideWidth{{ category.id }}}px`;
+                });
+
+                updateSlidePosition{{ category.id }}();
+            };
+
+            const updateSlidePosition{{ category.id }} = () => {
+                track{{ category.id }}.style.transform = `translateX(-${currentIndex{{ category.id }} * (slideWidth{{ category.id }} + 24)}px)`;
+            };
+
+            const goToNextSlide{{ category.id }} = () => {
+                if (currentIndex{{ category.id }} < slides{{ category.id }}.length - 1) {
+                    currentIndex{{ category.id }}++;
+                    updateSlidePosition{{ category.id }}();
+                    updateButtons{{ category.id }}();
+                }
+            };
+
+            const goToPrevSlide{{ category.id }} = () => {
+                if (currentIndex{{ category.id }} > 0) {
+                    currentIndex{{ category.id }}--;
+                    updateSlidePosition{{ category.id }}();
+                    updateButtons{{ category.id }}();
+                }
+            };
+
+            const updateButtons{{ category.id }} = () => {
+                prevButton{{ category.id }}.disabled = currentIndex{{ category.id }} === 0;
+                nextButton{{ category.id }}.disabled = currentIndex{{ category.id }} >= slides{{ category.id }}.length - Math.ceil(window.innerWidth >= 768 ? 2.75 : 1);
+            };
+
+            prevButton{{ category.id }}.addEventListener('click', goToPrevSlide{{ category.id }});
+            nextButton{{ category.id }}.addEventListener('click', goToNextSlide{{ category.id }});
+
+            window.addEventListener('resize', updateDimensions{{ category.id }});
+
+            updateDimensions{{ category.id }}();
+            {% endfor %}
+        });
+    </script>
+
+    <!-- Styles -->
+    <style>
+        
+        /* Base Styles */
+        .container {
+            padding: 0% 2%;
+        }
+        p{
+            color:#fff;
+        }
+        body {
+            background-color: black;
+            font-family: 'Roboto', sans-serif;
+            color: #fff;
+            margin: 0;
+             /* Adjust for fixed navbar */
+        }
+
+       
+        /* Carousel Styles */
+        .carousel-container {
+            margin-bottom: 50px;
+        }
+
+        .carousel {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel__nav {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+            grid-column: 1 / -1;
+            padding: 1.5rem;
+        }
+
+        .carousel__nav button {
+            color: white;
+            display: flex;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 32px;
+            border: 1px solid white;
+            background: none;
+            cursor: pointer;
+        }
+
+        .carousel__nav button:hover {
+            color: #000;
+            background-color: #fff;
+        }
+
+        .carousel__nav button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .carousel__nav button:disabled:hover {
+            color: white;
+            background-color: black;
+        }
+
+        .carousel__track {
+            display: flex;
+            gap: 1.5rem;
+            transition: transform 400ms linear;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .carousel__track-container {
+            grid-column: 1 / -1;
+            padding: 1rem 0;
+            overflow: hidden;
+        }
+
+        .carousel__slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            outline: none;
+            padding: 0.5rem 0;
+        }
+
+        .carousel__slide-image {
+            height: 400px;
+            display: block;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .carousel__slide-caption {
+            text-align: left;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .carousel__slide-content {
+            opacity: 1;
+            margin-top: 4rem;
+            transition: opacity 250ms linear;
+        }
+
+        .carousel__slide.active .carousel__slide-content {
+            opacity: 1;
+        }
+
+        .carousel__slide:focus-visible {
+            outline: 1px solid #007bff;
+        }
+
+        .carousel__slide-content h3 {
+            margin: 0.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .carousel__slide-content p {
+            color:#fff;
+            margin: 0.5rem 0;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .carousel__slide-content button {
+            background-color: transparent;
+            color: white;
+            padding: 15px 45px;
+            border: 1px solid white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .carousel__slide-content button:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: 600;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        button {
+            background: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            letter-spacing: 0.05rem;
+        }
+
+        img {
+            border-radius: 4px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+            /* Navbar adjustments */
+            .top-navbar {
+                padding: 0 0%;
+                height: 80px;
+            }
+
+            .menu-icon {
+                display: block;
+                margin-right: 10px;
+                cursor: pointer;
+                width: 30px;
+                height: 25px;
+                position: relative;
+                display: flex;
+                justify-content: space-around;
+                flex-direction: column;
+                z-index: 5;
+                transition: transform 0.3s ease;
+            }
+
+            .menu-icon div {
+                width: 100%;
+                height: 4px;
+                background-color: #fff;
+                transition: all 0.3s ease;
+            }
+
+            .menu-icon.open .bar1 {
+                transform: rotate(40deg);
+                background-color: #fff;
+            }
+
+            .menu-icon.open .bar2 {
+                opacity: 0;
+            }
+
+            .menu-icon.open .bar3 {
+                transform: rotate(-40deg);
+                background-color: #fff;
+            }
+
+            #nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                background-color: #000;
+                height: 100vh;
+                width: 100%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+                z-index: 4;
+            }
+
+            #nav-links.show {
+                transform: translateX(0);
+            }
+
+            #nav-links li {
+                margin: 20px 0;
+            }
+
+            .dropdown-content {
+                position: static;
+                display: none;
+                box-shadow: none;
+                padding: 0;
+            }
+
+            .dropdown.show .dropdown-content {
+                display: block;
+            }
+
+            /* Carousel adjustments */
+            .carousel__nav {
+                padding: 0.5rem;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .carousel__nav button {
+                width: 30px;
+                height: 30px;
+            }
+
+            .carousel__slide {
+                min-width: 100%;
+                padding: 0.5rem;
+            }
+
+            .carousel__slide-image {
+                height: 200px;
+            }
+
+            .carousel__slide-content h3 {
+                font-size: 1.2rem;
+            }
+
+            .carousel__slide-content p {
+                font-size: 0.9rem;
+            }
+
+            .carousel__slide-caption {
+                font-size: 0.9rem;
+            }
+
+            .carousel__slide-content {
+                margin-top: 2rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .menu-icon {
+                display: none; /* Hidden on desktop */
+            }
+
+            #nav-links {
+                position: static;
+                transform: none;
+                background-color: transparent;
+                flex-direction: row;
+                justify-content: flex-end;
+                height: auto;
+                width: auto;
+                opacity: 1;
+            }
+
+            #nav-links li {
+                margin: 0 20px;
+            }
+
+            #nav-links a {
+                font-size: 16px;
+            }
+
+            #nav-links a:hover {
+                color: #111;
+                background-color: #ffcc00;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #000;
+                top: 45px;
+                padding: 8px 0;
+                min-width: 155px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+                z-index: 1000;
+            }
+
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            .carousel {
+                grid-template-columns: repeat(12, 1fr);
+            }
+
+            .carousel__track {
+                width: calc(100% + (100% / 12));
+                margin-left: calc(100% / 12);
+            }
+
+            .carousel__slide {
+                min-width: calc((100% / 2.75) - (24px / 2.75));
+            }
+        }
+    </style>
+    <section id="FAQ">
+        <div class="accordion">
+            <h1>FAQ</h1>
+           
+            <p>Course-Related Questions and Queries</p>
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion1">
+                <label for="accordion1" class="accordion-item-title"><span class="icon"></span>What types of courses are available?</label>
+                <div class="accordion-item-desc">We offer a wide range of courses spanning multiple fields, including technology, business, finance, health, and more. Whether you're a beginner or an expert, our curriculum is designed to suit every skill level.</div>
+            </div>
+        
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion2">
+                <label for="accordion2" class="accordion-item-title"><span class="icon"></span>Are these courses self-paced?</label>
+                <div class="accordion-item-desc">Yes, all of our courses are self-paced, allowing you to learn at your own speed. This flexibility enables you to balance your studies with other commitments, making it ideal for professionals and students alike.</div>
+            </div>
+        
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion3">
+                <label for="accordion3" class="accordion-item-title"><span class="icon"></span>Do I get a certificate after completing a course?</label>
+                <div class="accordion-item-desc">Yes, upon successful completion of any course, you will receive a certificate that you can share with potential employers or add to your professional profile.</div>
+            </div>
+        
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion4">
+                <label for="accordion4" class="accordion-item-title"><span class="icon"></span>Are there any prerequisites for joining the courses?</label>
+                <div class="accordion-item-desc">Most of our beginner courses do not require any prior knowledge. However, advanced courses may have prerequisites that are clearly outlined in the course descriptions.</div>
+            </div>
+        
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion5">
+                <label for="accordion5" class="accordion-item-title"><span class="icon"></span>How do I access course materials?</label>
+                <div class="accordion-item-desc">Once you enroll in a course, you’ll gain access to all the necessary course materials, including video lectures, readings, quizzes, and assignments, through your student dashboard.</div>
+            </div>
+    
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion6">
+                <label for="accordion6" class="accordion-item-title"><span class="icon"></span>Are there any live sessions included in the courses?</label>
+                <div class="accordion-item-desc">Some of our premium courses include live sessions with instructors, while others may offer pre-recorded content with occasional live Q&A sessions. Course descriptions will provide details on what is included.</div>
+            </div>
+    
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion7">
+                <label for="accordion7" class="accordion-item-title"><span class="icon"></span>What kind of support will I get during the course?</label>
+                <div class="accordion-item-desc">You will have access to a support system including peer discussions, instructor assistance, and a dedicated support team to help you with any technical or content-related questions.</div>
+            </div>
+    
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion8">
+                <label for="accordion8" class="accordion-item-title"><span class="icon"></span>How long will I have access to the course materials?</label>
+                <div class="accordion-item-desc">After enrolling, you’ll have lifetime access to the course materials, allowing you to revisit the content whenever you need it, even after completing the course.</div>
+            </div>
+    
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion9">
+                <label for="accordion9" class="accordion-item-title"><span class="icon"></span>What if I want a refund?</label>
+                <div class="accordion-item-desc">We offer No refunds. Only special cases will be refunded. Please refer to our refund policy for more details.</div>
+            </div>
+    
+        </div>
+    </section>
+    
+    
+    <style>
+        #FAQ{
+    background-color: #000;
+    padding: 20px 30px;
+   
+}
+.accordion {
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    font-family: "Roboto", sans-serif;
+    max-width: 900px;
+    min-width: 320px;
+    margin: 20px auto;
+    padding: 0 50px;
+}
+.accordion hr{
+    margin-bottom: 20px;
+}
+.accordion p{
+    margin: 0 auto;
+    color: #999;
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+.accordion h1 {
+    margin-bottom: 60px;
+    font-size: 3em;
+    font-weight: 600;
+    font-family: 'Montserrat';
+    text-align: center;
+    color:#f4f4f4;
+}
+.accordion-item {
+    margin-top: 30px;
+    border-bottom: 1px solid #333;
+   
+    color: #ddd;
+    background: #000;
+    
+}
+.accordion-item .accordion-item-title {
+    position: relative;
+    margin: 0;
+    display: flex;
+    width: 100%;
+    font-size: 20px;
+    font-weight: 400;
+    cursor: pointer;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    padding: 14px 20px;
+    box-sizing: border-box;
+    align-items: center;
+}
+.accordion-item .accordion-item-desc {
+    display: none;
+    font-size: 18px;
+    margin-top: 10px;
+    line-height: 22px;
+    font-weight: 300;
+    color: #999;
+    
+    padding: 10px 20px 20px;
+    box-sizing: border-box;
+}
+.accordion-item input[type="checkbox"] {
+    position: absolute;
+    height: 0;
+    width: 0;
+    opacity: 0;
+}
+.accordion-item input[type="checkbox"]:checked ~ .accordion-item-desc {
+    display: block;
+}
+.accordion-item
+    input[type="checkbox"]:checked
+    ~ .accordion-item-title
+    .icon:after {
+    content: "-";
+    font-size: 20px;
+}
+.accordion-item input[type="checkbox"] ~ .accordion-item-title .icon:after {
+    content: "+";
+    font-size: 20px;
+}
+.accordion-item:first-child {
+    margin-top: 0;
+}
+.accordion-item .icon {
+    margin-left: 14px;
+}
+
+@media screen and (max-width: 767px) {
+    .accordion {
+        padding: 0 16px;
+    }
+    .accordion h1 {
+        font-size: 22px;
+    }
+}
+
+    </style>
+    <section id="dividing-section">
+
+    </section>
+            <footer id="footer" class="fade-in">
+    
+    
+                <div class="footer-content">
+    
+                    <div class="footer-section">
+                        <img src="{% static 'images/logo.png' %}" alt="">
+                     </div>
+                    
+                    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Quick Links</h4>
+                        <a href="{% url 'support_request' %}" class="footer-link">Support</a>
+                        <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                        <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
+                        <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
+                        
+                        <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
+                    </div>
+    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Company</h4>
+                        <a href="/about-us" class="footer-link">Become a Partner</a>
+                        <a href="{% url 'careers' %}" class="footer-link">Careers</a>
+                        
+                    </div>
+    
+                    <div class="footer-section">
+                        <h4 class="footer-title">STAY CONNECTED</h4>
+                        <div class="social-media">
+                            <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
+                                <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
+                            </a>
+                            <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+    
+                    </div>
+                    
+                </div>
+                <section id="dividing-section">
+    
+                </section>
+                <div class="footer-bottom">
+                    <div class="trademark">The Champions Club</div>
+                    <div class="copyright">Copyright © & Trademark ® 2024 The Champions Club™ - All Rights Reserved.</div>
+                </div>
+            </footer>
+    <style>
+        
+    .footer-section button{
+        background-color: transparent;
+        color: white;
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-left: 15px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .footer-section button::before,
+    .footer-section button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 1px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    .footer-section button::before {
+        left: 10px;
+    }
+    
+    .footer-section button::after {
+        right: 10px;
+    }
+    .footer-section button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    
+    
+    
+    
+    
+    
+    #footer {
+        background-color: #000;
+        padding: 50px 100px;
+        color: #f4f4f4;
+        font-family: 'Roboto', sans-serif;
+    }
+    
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+        
+        padding-bottom: 20px;
+    }
+    
+    .footer-section {
+        flex: 1;
+        min-width: 200px;
+        margin: 10px;
+        margin-left: 100px;
+    }
+    
+    .footer-title {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: #f4f4f4;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+    
+    .footer-link {
+        display: block;
+        color: #f4f4f4;
+        text-decoration: none;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+    
+    .footer-link:hover {
+        color: #999;
+    }
+    
+    .social-media {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+    }
+    
+    .social-icon {
+        color: #f4f4f4;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+    }
+    
+    .social-icon:hover {
+        color: #999;
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .trademark {
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+    
+    .copyright {
+        font-size: 0.8rem;
+        color: #666;
+    }
+    
+    @media (max-width: 768px) {
+        #footer{
+            padding:0;
+        }
+        .footer-content {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+    
+        .footer-section {
+            margin-bottom: 20px;
+            margin-left: 0;
+        }
+    
+        .social-media {
+            justify-content: center;
+        }
+    }
+    #footer img{
+        height: 150px;
+        margin:0 auto;
+    }
+    #dividing-section{
+            background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+            height: 1px;
+        }
+    </style>
+</body>
+</html>

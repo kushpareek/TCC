@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | Our Champions</title>
+    <link rel="stylesheet" href="{% static 'css/hear_from_champions.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <h1>Hear from Our Champions</h1>
+        <div class="champions-grid">
+            {% for champion in champions %}
+            <div class="champion-card">
+                <img src="{{ champion.image.url }}" alt="{{ champion.user.username }}">
+                <h3>{{ champion.user.get_full_name }}</h3>
+                <p class="designation">{{ champion.designation }}</p>
+                <p class="testimonial">{{ champion.testimonial }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

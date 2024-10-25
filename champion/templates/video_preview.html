@@ -1,0 +1,678 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | {{ video.title }} - Preview</title>
+    <link rel="stylesheet" href="{% static 'css/play_video.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <style>
+        .navbar-profile-img {
+            width: 35px;             /* Adjust width as needed */
+            height: 35px;  
+                      /* Adjust height as needed */
+            border-radius: 50%;      /* Makes the image circular */
+            object-fit: cover;       /* Ensures the image covers the container without distortion */
+            vertical-align: middle;  /* Aligns the image vertically */
+        }
+    </style>
+    <!-- Navbar Section -->
+    <header>
+        <nav class="top-navbar">
+            <div class="logo">
+                <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> 
+                THE CHAMPIONS CLUB
+            </div>
+
+            <div class="menu-icon" onclick="toggleMenu()">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+
+            <ul id="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'blog_list' %}">News</a></li>
+                <li class="dropdown">
+                    <a href="#">Resources</a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                        <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'support_request' %}">Contact</a></li>
+                {% if not user.is_authenticated %}
+                <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> Login</a></li>
+                {% else %}
+                    {% if registration.approved == 1 %}
+                        {% if registration.membership_paid == 0 %}
+                        <li><a href="{% url 'champions_dashboard' %}">Buy Membership Today</a></li>
+                        {% else %}
+                        <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> Dashboard</a></li>
+                        {% endif %}
+                    {% else %}
+                    <li class="dropdown">
+                        <a href="#">
+                            {% if registration.profile_image %}
+                                <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                            {% else %}
+                                <i class="fa-solid fa-circle-user fa-xl"></i>
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-content">
+                            <li class="dropdown-link"><a href="{% url 'user_profile' %}">Profile</a></li>
+                            <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <section id="dividing-section">
+
+    </section>
+
+    <!-- Video Container Section -->
+    <main>
+        <div class="main-content">
+            <!-- Video Section -->
+            <div class="video-section">
+                <div class="video-container">
+                    
+                    <div class="custom-video-player" id="videoPlayerContainer">
+                        <video id="courseVideo" class="video-js vjs-default-skin" preload="auto" controlslist="nodownload noplaybackrate">
+                            <source src="{{ video.preview_file.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="custom-controls">
+                            <!-- Your existing custom controls -->
+                            <div class="controls-row">
+                                <div class="left-controls">
+                                    <button id="playPauseBtn">►</button>
+                                    <div class="time" id="currentTime">0:00</div>
+                                    <div class="time"> / </div>
+                                    <div class="time" id="totalTime">0:00</div>
+                                </div>
+                                <div class="right-controls">
+                                    <button id="fullScreenBtn">⤢</button>
+                                    <div class="branding">The Champions Club</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h1>{{ video.title }} - Preview</h1>
+                    <!-- Video Description -->
+                    <p>{{ video.description }}</p>
+                    <!-- Pay Button -->
+                    <a href="{% url 'video_payment' video.id %}"><button class="pay-button">Pay to Watch Full Video</button></a>
+
+                    <!-- Comments Section -->
+                    <div class="comments-section">
+                        <h2>Comments</h2>
+                        {% if comments %}
+                            {% for comment in comments %}
+                                <div class="comment">
+                                    <p><strong>{{ comment.user.username }}</strong> - {{ comment.created_at|date:"M d, Y" }} <br> {{ comment.comment_text }}</p>
+                                    
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No comments yet. Be the first to comment!</p>
+                        {% endif %}
+
+                        <!-- Comment Form -->
+                        {% comment %} {% if user.is_authenticated %}
+                            <form method="post">
+                                {% csrf_token %}
+                                <textarea name="comment_text" rows="3" placeholder="Add a public comment..." required></textarea>
+                                <button type="submit" class="comment-submit-button">Comment</button>
+                            </form>
+                        {% else %}
+                            <p>Please <a href="{% url 'login' %}?next={{ request.path }}">login</a> to comment.</p>
+                        {% endif %} {% endcomment %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suggested Videos Section -->
+            <div class="suggested-videos">
+                <h2>Suggested Videos</h2>
+                {% for suggested_video in suggested_videos %}
+                    <div class="suggested-video">
+                        <a href="{% url 'video_preview' suggested_video.id %}">
+                            <img src="{{ suggested_video.thumbnail.url }}" alt="{{ suggested_video.title }}">
+                            <div class="suggested-video-info">
+                                <p class="suggested-video-title">{{ suggested_video.title }}</p>
+                                <p class="suggested-video-duration">{{ suggested_video.duration }}</p>
+                            </div>
+                        </a> 
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+<style>
+    /* General Styles */
+body {
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+}
+
+main {
+    margin-top: 70px; /* Adjust if your navbar height is different */
+}
+
+#dividing-section {
+    background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+    height: 1px;
+}
+
+/* Main Content Area */
+.main-content {
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    margin: 30px auto 100px;
+    padding: 20px;
+}
+
+/* Video Section */
+.video-section {
+    flex: 3;
+    margin-right: 20px;
+}
+
+.video-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.video-container{
+    width:100%;
+}
+.video-container p {
+    font-size: 16px;
+    margin-top: 20px;
+    line-height:1.5;
+    width:75%;
+    text-align:left;
+    background-color:#1a1a1a;
+    border-radius:10px;
+    padding:30px;
+}
+
+.pay-button {
+    background-color: transparent;
+    color: white;
+    padding: 15px 45px;
+    border: 1px solid white;
+    margin: 15px 0;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.pay-button:hover {
+    background-color: white;
+    color: #333;
+    border-color: #333;
+}
+
+/* Custom Video Player Styles */
+.custom-video-player {
+    position: relative;
+    width: 100%;
+   
+    background-color: #000;
+}
+
+.custom-video-player video {
+    width: 100%;
+    height: auto;
+    border-radius:10px;
+    cursor: pointer;
+}
+
+.custom-controls {
+    /* Your existing custom controls styles */
+}
+textarea{
+    width: 100%;
+    background-color: #0a0a0a;
+    height: 100px;
+    border-radius: 10px;
+    color:#fff;
+}
+form{
+    display:flex;
+}
+/* Comments Section */
+.comments-section {
+    margin-top: 40px;
+    width:70%;
+}
+
+.comments-section h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #ffcc00;
+}
+
+.comment {
+    margin-bottom: 20px;
+}
+
+.comment p {
+    margin: 5px 0;
+}
+
+.comment-submit-button {
+    background-color: #ffcc00;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    height: 40px;
+    margin: 10px;
+    border-radius:10px;
+}
+
+.comment-submit-button:hover {
+    background-color: #d4ac0d;
+}
+
+/* Suggested Videos */
+.suggested-videos {
+    flex: 1;
+    max-width: 450px;
+}
+
+.suggested-videos h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #ffcc00;
+}
+
+.suggested-video {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.suggested-video a{
+    display:flex;
+    text-decoration:none;
+}
+
+.suggested-video img {
+    width: 150px;
+    height: 78px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.suggested-video-info {
+    flex: 1;
+}
+
+.suggested-video-title {
+    font-size: 16px;
+    color: #fff;
+    margin: 0;
+}
+
+.suggested-video-duration {
+    font-size: 14px;
+    color: #aaa;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .main-content {
+        flex-direction: column;
+    }
+
+    .video-section {
+        margin-right: 0;
+    }
+
+    .suggested-videos {
+        max-width: 100%;
+        margin-top: 40px;
+    }
+}
+
+</style>
+    <!-- Scripts -->
+    <script>
+        // Toggle mobile menu
+        function toggleMenu() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.getElementById('nav-links');
+            menuIcon.classList.toggle('open');
+            navLinks.classList.toggle('show');
+        }
+
+        // Video Player Script (same as before)
+    </script>
+    <script>
+        const videoPlayer = document.getElementById('courseVideo');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const fullScreenBtn = document.getElementById('fullScreenBtn');
+        const currentTimeElem = document.getElementById('currentTime');
+        const totalTimeElem = document.getElementById('totalTime');
+        const progressBar = document.querySelector('.progress');
+        const progressBarContainer = document.querySelector('.progress-bar-container');
+        const controls = document.querySelector('.custom-controls');
+        let hideControlsTimeout;
+        let lastTap = 0;
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        videoPlayer.addEventListener('loadedmetadata', function() {
+            totalTimeElem.textContent = formatTime(videoPlayer.duration);
+        });
+
+        videoPlayer.addEventListener('timeupdate', function() {
+            currentTimeElem.textContent = formatTime(videoPlayer.currentTime);
+            const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+            progressBar.style.width = `${progress}%`;
+        });
+
+        function showControls() {
+            controls.style.opacity = '1';
+        }
+
+        function hideControls() {
+            controls.style.opacity = '0';
+        }
+
+        videoPlayer.addEventListener('play', function() {
+            showControls();
+            hideControlsTimeout = setTimeout(hideControls, 1000);
+        });
+
+        videoPlayer.addEventListener('pause', function() {
+            clearTimeout(hideControlsTimeout);
+            showControls();
+        });
+
+        controls.addEventListener('mousemove', function() {
+            showControls();
+            clearTimeout(hideControlsTimeout);
+            hideControlsTimeout = setTimeout(hideControls, 1500);
+        });
+
+        playPauseBtn.addEventListener('click', function() {
+            if (videoPlayer.paused) {
+                videoPlayer.play();
+                playPauseBtn.textContent = '❚❚';
+                showControls();
+            } else {
+                videoPlayer.pause();
+                playPauseBtn.textContent = '►';
+                hideControls();
+            }
+        });
+
+        fullScreenBtn.addEventListener('click', function() {
+            if (!document.fullscreenElement) {
+                document.getElementById('videoPlayerContainer').requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        videoPlayer.addEventListener('click', function() {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+
+            if (tapLength < 500 && tapLength > 0) {
+                if (!document.fullscreenElement) {
+                    document.getElementById('videoPlayerContainer').requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            } else {
+                if (videoPlayer.paused) {
+                    videoPlayer.play();
+                    playPauseBtn.textContent = '❚❚';
+                } else {
+                    videoPlayer.pause();
+                    playPauseBtn.textContent = '►';
+                }
+            }
+            lastTap = currentTime;
+        });
+
+        progressBarContainer.addEventListener('click', function(e) {
+            const rect = progressBarContainer.getBoundingClientRect();
+            const offsetX = e.clientX - rect.left;
+            const newTime = (offsetX / rect.width) * videoPlayer.duration;
+            videoPlayer.currentTime = newTime;
+        });
+    </script>
+         
+<section id="dividing-section">
+
+</section>
+        <footer id="footer" >
+
+
+            <div class="footer-content">
+
+                <div class="footer-section">
+                    <img src="{% static 'images/logo.png' %}" alt="">
+                 </div>
+                
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <a href="{% url 'support_request' %}" class="footer-link">Support</a>
+                    <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                    <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
+                    <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
+                    
+                    <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Company</h4>
+                    <a href="{% url 'register_partner' %}" class="footer-link">Become a Partner</a>
+                    <a href="{% url 'careers' %}" class="footer-link">Careers</a>
+                    
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">STAY CONNECTED</h4>
+                    <div class="social-media">
+                        <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
+                            <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
+                        </a>
+                        <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+
+                </div>
+                
+            </div>
+            <section id="dividing-section">
+
+            </section>
+            <div class="footer-bottom">
+                <div class="trademark">The Champions Club</div>
+                <div class="copyright">Copyright © & Trademark ® 2024 The Champions Club™ - All Rights Reserved.</div>
+            </div>
+        </footer>
+<style>
+    
+.footer-section button{
+    background-color: transparent;
+    color: white;
+    padding: 15px 45px;
+    border: 1px solid white;
+    margin-left: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.footer-section button::before,
+.footer-section button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 1px;
+    background-color: white;
+    transform: translateY(-50%);
+}
+.footer-section button::before {
+    left: 10px;
+}
+
+.footer-section button::after {
+    right: 10px;
+}
+.footer-section button:hover {
+    background-color: white;
+    color: #333;
+    border-color: #333;
+}
+
+
+
+
+
+
+#footer {
+    background-color: #000;
+    padding: 50px 100px;
+    color: #f4f4f4;
+    font-family: 'Roboto', sans-serif;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    
+    padding-bottom: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin: 10px;
+    margin-left: 100px;
+}
+
+.footer-title {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #f4f4f4;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.footer-link {
+    display: block;
+    color: #f4f4f4;
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #999;
+}
+
+.social-media {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-icon {
+    color: #f4f4f4;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+    color: #999;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.trademark {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    #footer{
+        padding:0;
+    }
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-section {
+        margin-bottom: 20px;
+        margin-left: 0;
+    }
+
+    .social-media {
+        justify-content: center;
+    }
+}
+#footer img{
+    height: 150px;
+    margin:0 auto;
+}
+#dividing-section{
+        background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+        height: 1px;
+    }
+</style>
+</body>
+</html>

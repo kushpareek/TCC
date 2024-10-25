@@ -1,0 +1,742 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champion's Dashboard</title>
+    
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>THE CHAMPIONS CLUB</h1>
+    </nav>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Welcome, {{ user.first_name }} {{ user.last_name }}!</h2>
+            
+            {% if registration.profile_image %}
+                <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="profile-img-circle">
+            {% endif %}
+
+            {% if registration.discord_id and registration.telegram_username %}
+            <div class="social-links">
+                <h3>Exclusive Links</h3>
+                <p><a href="https://discord.com/invite/your-channel" target="_blank"><i class="fab fa-discord"></i> Join our Discord Channel</a></p>
+                <p><a href="https://t.me/your-group" target="_blank"><i class="fab fa-telegram-plane"></i> Join our Telegram Group</a></p>
+            </div>
+            {% endif %}
+            
+            <div class="welcome-message">
+                <p>Welcome to The Champions Club! You are now part of an exclusive group of achievers. Here, we celebrate your accomplishments and unique traits.</p>
+                <p>Welcome to the inner circle! We are excited to have you join our online communities. These channels are your gateway to connect with fellow champions, share your insights, and gain inspiration. Please keep these links private and do not share them with anyone outside the club.</p>
+            </div>
+        
+            <h3>Connect with Us</h3>
+            
+            {% if form %}
+                <p>Please update your Discord ID and Telegram username to join our exclusive social channels. Connect with other champions and be part of the community!</p>
+            {% else %}
+                <p>Thank you for updating your details. You can now join our exclusive channels. Please keep these links confidential—these are for champions only!</p>
+            {% endif %}
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content">
+            <h1>Dashboard</h1>
+
+            <div class="dashboard-section">
+                <h2>Your Achievements</h2>
+                <p>{{ registration.achievements }}</p>
+                <p>Your achievements define you as a champion. Keep striving for excellence, and remember that your hard work does not go unnoticed.</p>
+            </div>
+
+            <div class="dashboard-section">
+                <h2>Your Unique Trait</h2>
+                <p>{{ registration.unique_trait }}</p>
+                <p>Your unique trait is what sets you apart from the rest. Embrace it, and let it guide you on your journey to greatness.</p>
+            </div>
+
+            <!-- Social Media Form -->
+            <div class="dashboard-section">
+                <h2>Update Your Details</h2>
+                {% if form %}
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">Update Details</button>
+                    </form>
+                {% else %}
+                    <p><i class="fab fa-discord"></i> {{ registration.discord_id }}</p>
+                    <p><i class="fab fa-telegram-plane"></i> {{ registration.telegram_username }}</p>
+                {% endif %}
+            </div>
+        </div>
+        
+    </div>
+    <footer id="footer">
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+    {% endif %}
+    <div class="trademark">The Champions Club</div>
+    <div class="copyright">Copyright &copy; 2024 The Champions Club - All Rights Reserved.</div>
+    </footer>
+</body>
+</html> {% endcomment %}
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champion's Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+   
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            {% if registration.profile_image %}
+            <img src="{{ registration.profile_image.url }}" alt="Profile Image">
+            {% endif %}
+            <div class="info">
+                <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                <p>Email: {{ user.email }}</p>
+                <p>Phone: {{ registration.phone }}</p>
+            </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="content">
+            <!-- Bio Section -->
+            <div class="card">
+                <h3>Bio</h3>
+                <p>{{ registration.bio }}</p>
+            </div>
+
+            <!-- Personality Section -->
+            <div class="card">
+                <h3>Personality</h3>
+                <ul>
+                    <li><i class="fas fa-check"></i>{{ registration.personality_traits }}</li>
+                </ul>
+            </div>
+
+            <!-- Skills Section -->
+            <div class="card">
+                <h3>Skills</h3>
+                <ul>
+                    
+                    <li><i class="fas fa-check"></i>{{ registration.skills }}</li>
+                   
+                </ul>
+            </div>
+
+            <!-- Motivations Section -->
+            <div class="card">
+                <h3>Motivations</h3>
+                <ul>
+                    
+                    <li><i class="fas fa-check"></i>{{ registration.motivations }}</li>
+                    
+                </ul>
+            </div>
+
+            <!-- Goals Section -->
+            <div class="card">
+                <h3>Goals</h3>
+                <ul>
+                    
+                    <li><i class="fas fa-check"></i>{{ registration.goals }}</li>
+                    
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Why You Are Champion</h3>
+                <ul>
+                    
+                    <li><i class="fas fa-check"></i>{{ registration.champion_reason }}</li>
+                    
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Achievements</h3>
+                <ul>
+                    
+                    <li><i class="fas fa-check"></i>{{ registration.achievements }}</li>
+                    
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Unique Trait</h3>
+                <ul>
+                    
+                    <li><i class="fas fa-check"></i>{{ registration.unique_trait }}</li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html> {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <title>TCC | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 260px;
+            background-color: #000;
+            height: 100%;
+            position: fixed;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-right: 1px solid #333;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 15px 20px;
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 1.1rem;
+            width: 100%;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar a.active,
+        .sidebar a:hover {
+            background-color: #ffcc00;
+            color: #000;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 40px;
+            width: calc(95% - 260px);
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .profile-header {
+            background-color: #000;
+            padding: 30px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .profile-header img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 30px;
+            border: 2px solid #ffcc00;
+        }
+
+        .profile-header .info {
+            flex-grow: 1;
+            min-width: 200px;
+        }
+
+        .profile-header .info h2 {
+            margin: 0;
+            font-size: 2rem;
+            color: #ffcc00;
+        }
+
+        .profile-header .info p {
+            margin: 5px 0;
+            color: #b5b5b5;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            background-color: #000;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .section h3 {
+            margin-top: 0;
+            font-size: 1.8rem;
+            color: #ffcc00;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .section p,
+        .section ul li {
+            margin-bottom: 15px;
+            color: #b5b5b5;
+            font-size: 1.1rem;
+        }
+
+        .section ul {
+            padding-left: 20px;
+        }
+
+        .form-grid {
+            
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #b5b5b5;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 90%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #1a1a1a;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .form-group textarea {
+            width: 90%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #1a1a1a;
+            color: #fff;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin-top: 15px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #444;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #ffcc00;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        footer {
+            background-color: #111;
+            color: #b5b5b5;
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #333;
+            margin-top: 30px;
+            border-radius: 0 0 15px 15px;
+        }
+
+        footer a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 90%;
+                height: auto;
+                position: relative;
+                top: 0;
+                transform: translateY(0);
+                border-right: none;
+                border-bottom: 1px solid #333;
+                padding: 10px 10px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+            }
+
+            .sidebar a {
+                padding: 10px 10px;
+                font-size: 1rem;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+                width: 90%;
+            }
+
+            .profile-header {
+                padding: 20px;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-header img {
+                margin-bottom: 20px;
+                margin-right: 0;
+            }
+
+            .profile-header .info {
+                min-width: 0;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .sidebar a.active,
+            .sidebar a:hover {
+                background-color: #ffcc00;
+                color: #000;
+            }
+
+            .sidebar a {
+                display: block;
+                padding: 15px 5px;
+                color: #e0e0e0;
+                text-decoration: none;
+                font-size: 1.1rem;
+                width: 80%;
+                margin: 2px;
+                text-align: center;
+                transition: background-color 0.3s ease, color 0.3s ease;
+                border-radius: 10px;
+                margin-bottom: 10px;
+            }
+
+            .section h3 {
+                font-size: 1.6rem;
+                padding-bottom: 10px;
+                margin-bottom: 15px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-header .info h2 {
+                font-size: 1.5rem;
+            }
+
+            .section h3 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+   
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="active" onclick="showContent('PersonalInfo')">Personal Info</a>
+        <a href="#" onclick="showContent('Courses')">My Library</a>
+        <a href="#" onclick="showContent('Settings')">Settings</a>
+        <a href="#" onclick="showContent('PrivacySettings')">Privacy Settings</a> <!-- New Tab -->
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+        <!-- Profile Header -->
+        <div class="profile-header">
+            {% if registration.profile_image %}
+            <img src="{{ registration.profile_image.url }}" alt="Profile Image">
+            {% endif %}
+            <div class="info">
+                <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                <p>{{ registration.designation }}</p>
+                <p>{{ user.email }}</p>
+                <p>{{ registration.phone }}</p>
+            </div>
+        </div>
+
+        <!-- Personal Info Section -->
+        <div id="PersonalInfo" class="section">
+            <h3>Bio</h3>
+            <p>{{ registration.bio }}</p>
+            <h3>Personality</h3>
+            <ul>
+                <li>{{ registration.personality_traits }}</li>
+            </ul>
+            <h3>Skills</h3>
+            <ul>
+                <li>{{ registration.skills }}</li>
+            </ul>
+            <h3>Motivations</h3>
+            <ul>
+                <li>{{ registration.motivations }}</li>
+            </ul>
+            <h3>Goals</h3>
+            <ul>
+                <li>{{ registration.goals }}</li>
+            </ul>
+            <h3>Achievements</h3>
+            <ul>
+                <li>{{ registration.achievements }}</li>
+            </ul>
+        </div>
+
+        <!-- Courses Section -->
+        <div id="Courses" class="section" style="display:none;">
+            <h3>Courses Enrolled In</h3>
+            <div class="courses-list">
+                {% for enrollment in enrollments %}
+                <div class="course-item">
+                    <h4>{{ enrollment.course.title }}</h4>
+                    <p>{{ enrollment.course.description|truncatewords:50 }}</p>
+                    <a href="{% url 'course_content' enrollment.course.id %}" class="btn btn-primary">Go to Course</a>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <h3>Last Watched Videos</h3>
+            <div class="videos-list">
+                {% for status in watched_videos %}
+                <div class="video-item">
+                    <h4>{{ status.video.title }}</h4>
+                    <p>Last Watched: {{ status.last_watched_time }}</p>
+                    <a href="{% url 'video_play' status.video.id %}" class="btn btn-secondary">Watch Remaining</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="Settings" class="section" style="display:none;">
+            <h3>Profile Settings</h3>
+            <form method="post" class="form-grid">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ form.first_name.value|default:user.first_name }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ form.last_name.value|default:user.last_name }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ form.email.value|default:user.email }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone" name="phone" value="{{ form.phone.value|default:registration.phone }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" name="bio">{{ form.bio.value|default:registration.bio }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="designation">Designation</label>
+                    <input type="text" id="designation" name="designation" value="{{ form.designation.value|default:registration.designation }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="personality_traits">Personality Traits</label>
+                    <textarea id="personality_traits" name="personality_traits">{{ form.personality_traits.value|default:registration.personality_traits }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="skills">Skills</label>
+                    <textarea id="skills" name="skills">{{ form.skills.value|default:registration.skills }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="motivations">Motivations</label>
+                    <textarea id="motivations" name="motivations">{{ form.motivations.value|default:registration.motivations }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="goals">Goals</label>
+                    <textarea id="goals" name="goals">{{ form.goals.value|default:registration.goals }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="achievements">Achievements</label>
+                    <textarea id="achievements" name="achievements">{{ form.achievements.value|default:registration.achievements }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="is_public">Activate Public Profile</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="is_public" {% if registration.is_public %}checked{% endif %}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div style="grid-column: span 2;">
+                    <button type="submit" name="update_info" style="width: 100%; background-color: #ffcc00; color: #000; padding: 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">Update Information</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Privacy Settings Section -->
+        <div id="PrivacySettings" class="section" style="display:none;">
+            <h3>Privacy Settings</h3>
+            <form method="post" action="{% url 'change_password' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="current_password">Current Password</label>
+                    <input type="password" id="current_password" name="current_password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="new_password">New Password</label>
+                    <input type="password" id="new_password" name="new_password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Confirm New Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                </div>
+
+                <button type="submit" style="width: 20%; background-color: #ffcc00; color: #000; padding: 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">Change Password</button>
+            </form>
+
+           
+
+            <form method="post" action="{% url 'delete_account' %}">
+                {% csrf_token %}
+                <div class="delete-account-section">
+                    <p style="color: #ff0000; font-weight: 600; margin-bottom: 15px; max-width:90%">
+                        Please note that once you deactivate your account, your data will be retained for 90 days. During this period, you can reactivate your account by logging in. After 90 days, all your data will be permanently removed from our database, and you will not be able to rejoin as a champion.
+                    </p>
+                    <p style="color: #b5b5b5; font-weight: 400; margin-bottom: 15px;max-width:90%">
+                        If you proceed with deactivation, your account will be immediately disabled. You can contact support within the 90-day period if you wish to recover your account. After the retention period, all your data will be irrevocably deleted.
+                    </p>
+                    <button type="submit" style="width: 20%; background-color: red; color: #fff; padding: 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; margin-top: 20px;">
+                        Deactivate Account
+                    </button>
+                </div>
+            </form>
+            
+        </div>
+
+    </div>
+
+    <script>
+        function showContent(section) {
+            document.querySelectorAll('.section').forEach(div => div.style.display = 'none');
+            document.getElementById(section).style.display = 'block';
+
+            document.querySelectorAll('.sidebar a').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`.sidebar a[onclick="showContent('${section}')"]`).classList.add('active');
+        }
+    </script>
+
+</body>
+
+</html>
+

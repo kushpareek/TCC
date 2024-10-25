@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>{% block title %}Reels{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/reels.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% block content %}{% endblock %}
+    <script src="{% static 'js/reels.js' %}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

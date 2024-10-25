@@ -1,0 +1,313 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Form</title>
+    <link rel="stylesheet" href="{% static 'css/application.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;1,400&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    {% load crispy_forms_tags %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <nav class="navbar">
+        <h1>THE CHAMPIONS CLUB</h1>
+    </nav>
+    <form id="regForm" action="" method="post">
+        {% csrf_token %}
+        
+        <!-- Step 1: Personal Information -->
+        <div class="tab">
+            <h3>Personal Information</h3>
+            {{ form.first_name|as_crispy_field }}
+            {{ form.last_name|as_crispy_field }}
+            {{ form.email|as_crispy_field }}
+            {{ form.phone|as_crispy_field }}
+        </div>
+        <!-- Step 2: Birthday -->
+        <div class="tab">
+            <h3>Birthday</h3>
+            {{ form.day|as_crispy_field }}
+            {{ form.month|as_crispy_field }}
+            {{ form.year|as_crispy_field }}
+        </div>
+        <!-- Step 3: Achievements -->
+        <div class="tab">
+            <h3>Your Achievements</h3>
+            {{ form.champion_reason|as_crispy_field }}
+            {{ form.achievements|as_crispy_field }}
+            {{ form.unique_trait|as_crispy_field }}
+        </div>
+        <!-- Step 4: Login Info -->
+        <div class="tab">
+            <h3>Login Info</h3>
+            {{ form.username|as_crispy_field }}
+            {{ form.password|as_crispy_field }}
+        </div>
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+        </div>
+        <!-- Step Indicators -->
+        <div style="text-align:center;margin-top:30px;">
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+        </div>
+    </form>
+    <footer id="footer" class="fade-in">
+        <div class="trademark">The Champions Club</div>
+        <div class="copyright">&copy; 2024 The Champions Club - All Rights Reserved.</div>
+    </footer>
+    <script>
+    var currentTab = 0;
+    showTab(currentTab);
+
+    function showTab(n) {
+        var x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+        if (n == 0) {
+            document.getElementById("prevBtn").style.display = "none";
+        } else {
+            document.getElementById("prevBtn").style.display = "inline";
+        }
+        if (n == (x.length - 1)) {
+            document.getElementById("nextBtn").innerHTML = "Submit";
+        } else {
+            document.getElementById("nextBtn").innerHTML = "Next";
+        }
+        fixStepIndicator(n);
+    }
+
+    function nextPrev(n) {
+        var x = document.getElementsByClassName("tab");
+        if (n == 1 && !validateForm()) return false;
+        x[currentTab].classList.add("fadeSlideOut");
+        setTimeout(function() {
+            x[currentTab].style.display = "none";
+            currentTab = currentTab + n;
+            if (currentTab >= x.length) {
+                document.getElementById("regForm").submit();
+                return false;
+            }
+            showTab(currentTab);
+        }, 500);
+    }
+
+    function validateForm() {
+        var x, y, i, valid = true;
+        x = document.getElementsByClassName("tab");
+        y = x[currentTab].getElementsByTagName("input");
+        for (i = 0; i < y.length; i++) {
+            if (y[i].value == "") {
+                y[i].className += " invalid";
+                valid = false;
+            }
+        }
+        if (valid) {
+            document.getElementsByClassName("step")[currentTab].className += " finish";
+        }
+        return valid;
+    }
+
+    function fixStepIndicator(n) {
+        var i, x = document.getElementsByClassName("step");
+        for (i = 0; i < x.length; i++) {
+            x[i].className = x[i].className.replace(" active", "");
+        }
+        x[n].className += " active";
+    }
+    </script>
+</body>
+</html> {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load crispy_forms_tags %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | Join Now</title>
+    <link rel="stylesheet" href="{% static 'css/application.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <style>
+        /* Styling for the entire form section */
+        .password-requirements {
+            margin-top: 15px;
+            list-style: none;
+            padding: 0;
+        }
+        .password-requirements li {
+            font-size: 0.9rem;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .password-requirements li.valid {
+            color: #28a745;
+        }
+        .password-requirements li i {
+            margin-right: 10px;
+        }
+        .alert-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+    </style>
+    <div class="container">
+        <!-- Left Side: Promotional Content -->
+        <div class="promo">
+            <div class="logo">
+                <img src="{% static 'images/logo.png' %}" alt="The Champions Club">
+            </div>
+            <h2>UNLOCK ACCESS TO</h2>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> Live calls and AMAs with Experts</li>
+                <li><i class="fas fa-check-circle"></i> 24/7 Support and on-demand guidance</li>
+                <li><i class="fas fa-check-circle"></i> Over 18 Modern Wealth Creation Methods</li>
+                <li><i class="fas fa-check-circle"></i> 7+ Distinct Campuses</li>
+                <li><i class="fas fa-check-circle"></i> 1000+ Professionally made Video lessons</li>
+            </ul>
+        </div>
+
+        <!-- Right Side: Registration Form -->
+        <div class="registration-form">
+            <div class="scrollable-form">
+                <h2>JOIN THE CHAMPIONS CLUB</h2>
+                <h3>BE WHERE YOU BELONG</h3>
+
+                <!-- Render messages if they exist -->
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="alert {{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Warning message for weak password -->
+                <div id="password-warning" class="alert-warning" style="display: none;">
+                    Your password is too weak. Please ensure it meets all the criteria.
+                </div>
+
+                <form id="regForm" action="" method="post">
+                    {% csrf_token %}
+                    <div class="form-section">
+                        <h4>Personal Information</h4>
+                        {{ form.first_name|as_crispy_field }}
+                        {{ form.last_name|as_crispy_field }}
+                        {{ form.email|as_crispy_field }}
+                        {{ form.phone|as_crispy_field }}
+                    </div>
+                    <div class="form-section">
+                        <h4>Birthday</h4>
+                        <div class="birthday-group">
+                            <div class="form-group">
+                                {{ form.day|as_crispy_field }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.month|as_crispy_field }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.year|as_crispy_field }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h4>Your Achievements</h4>
+                        {{ form.champion_reason|as_crispy_field }}
+                        {{ form.achievements|as_crispy_field }}
+                        {{ form.unique_trait|as_crispy_field }}
+                    </div>
+                    <div class="form-section">
+                        <h4>Login Info</h4>
+                        {{ form.username|as_crispy_field }}
+                        {{ form.password|as_crispy_field }}
+                        
+                        <!-- Password validation feedback -->
+                        <ul class="password-requirements">
+                            <li id="length" class="invalid"><i class="fas fa-times-circle"></i> At least 8 characters</li>
+                            <li id="uppercase" class="invalid"><i class="fas fa-times-circle"></i> At least 1 uppercase letter</li>
+                            <li id="special" class="invalid"><i class="fas fa-times-circle"></i> At least 1 special character</li>
+                        </ul>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submitBtn">Join Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const passwordInput = document.querySelector('input[name="password"]');
+        const submitBtn = document.getElementById('submitBtn');
+        const passwordWarning = document.getElementById('password-warning');
+
+        const lengthCheck = document.getElementById('length');
+        const uppercaseCheck = document.getElementById('uppercase');
+        const specialCheck = document.getElementById('special');
+
+        const updateCheck = (condition, element) => {
+            if (condition) {
+                element.classList.add('valid');
+                element.classList.remove('invalid');
+                element.querySelector('i').classList.replace('fa-times-circle', 'fa-check-circle');
+            } else {
+                element.classList.add('invalid');
+                element.classList.remove('valid');
+                element.querySelector('i').classList.replace('fa-check-circle', 'fa-times-circle');
+            }
+        };
+
+        passwordInput.addEventListener('input', () => {
+            const value = passwordInput.value;
+
+            // Check if the password is at least 8 characters long
+            updateCheck(value.length >= 8, lengthCheck);
+
+            // Check if the password contains an uppercase letter
+            updateCheck(/[A-Z]/.test(value), uppercaseCheck);
+
+            // Check if the password contains a special character
+            updateCheck(/[!@#$%^&*(),.?":{}|<>]/.test(value), specialCheck);
+
+            // Hide the warning message when typing
+            passwordWarning.style.display = 'none';
+        });
+
+        document.getElementById('regForm').addEventListener('submit', function(event) {
+            // Prevent form submission if the password doesn't meet the criteria
+            if (lengthCheck.classList.contains('invalid') || 
+                uppercaseCheck.classList.contains('invalid') || 
+                specialCheck.classList.contains('invalid')) {
+                event.preventDefault();
+                passwordWarning.style.display = 'block';
+                passwordWarning.textContent = "Your password is too weak. Please ensure it meets all the criteria.";
+            }
+        });
+    </script>
+</body>
+</html>
+

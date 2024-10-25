@@ -1,0 +1,51 @@
+<!-- templates/news_feed.html -->
+
+{% extends 'news_base.html' %}
+
+
+{% block title %}News Feed - My Website{% endblock %}
+
+{% block content %}
+
+<div class="wrapper">
+    {% for article in articles|slice:":4" %}
+    <div class="box{{ forloop.counter }}">
+        <h4>{{ article.title }}</h4>
+        <p>{{ article.content }}</p>
+        {% if article.image %}
+        <img src="{{ article.image.url }}" alt="{{ article.title }}" loading="lazy">
+        {% endif %}
+        {% if article.video %}
+        <video controls preload="none">
+            <source src="{{ article.video.url }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        {% endif %}
+        <span class="feed-date">{{ article.publish_date|date:"F d, Y H:i" }}</span>
+    </div>
+    {% endfor %}
+    <!-- If more than 4 articles, display the rest below -->
+    {% if articles|length > 4 %}
+    <div class="additional-articles">
+        {% for article in articles|slice:"4:" %}
+        <div class="feed-item">
+            <h4>{{ article.title }}</h4>
+            <p>{{ article.content }}</p>
+            {% if article.image %}
+            <img src="{{ article.image.url }}" alt="{{ article.title }}" loading="lazy">
+            {% endif %}
+            {% if article.video %}
+            <video controls preload="none">
+                <source src="{{ article.video.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            {% endif %}
+            <span class="feed-date">{{ article.publish_date|date:"F d, Y H:i" }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+    
+{% endblock %}

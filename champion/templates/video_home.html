@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | Video Home</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    {% load video_filters %}
+    {% load custom_filters %}
+
+
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+        }
+    
+        .container {
+            max-width: 80%;
+            margin: 50px auto;
+        }
+    
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: left;
+            color: #ffcc00;
+        }
+    
+        /* Hero Section */
+        .hero {
+            background-image: url("{% static 'images/videos_hero.png' %}"); /* Replace with your image */
+            background-size: cover;
+            background-position: center;
+            padding: 300px 0;
+            height:70%;
+            text-align: center;
+            color: white;
+            margin-bottom: 0px;
+        }
+    
+        @media (max-width:1080px){
+            .hero {
+                background-image: url(https://thechampionsclubmedia.s3.ap-south-1.amazonaws.com/images/videos_hero.png);
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+                padding: 180px 0 196px;
+                height: 70%;
+                width: 100%;
+                text-align: center;
+                color: white;
+                margin-bottom: 30px;
+            }
+        }
+        
+    
+        /* Filter & Search Section */
+        .filter-search-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+    
+        .filter-search-bar .search-box {
+            width: 50%;
+        }
+    
+        .filter-search-bar input[type="text"] {
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+    
+        .filter-search-bar select {
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+    
+        /* Video Grid */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+    
+        .video-card {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+    
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+        }
+    
+        .video-thumbnail {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+    
+        .video-info {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+    
+        .video-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            line-height: 1.4;
+        }
+    
+        .video-description {
+            font-size: 0.9rem;
+            color: #bbb;
+            margin-bottom: 10px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+    
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffcc00;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+    
+        .watch-button {
+            margin-top: auto;
+            background-color: #ffcc00;
+            color: #000;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1rem;
+        }
+    
+        .watch-button:hover {
+            background-color: #e6b800;
+        }
+        /* Category Tag Styling */
+h2{
+    margin-bottom:30px;
+    margin-top:20px;
+}
+
+    </style>
+    
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <section>
+       
+    <nav class="top-navbar">
+        <!-- Logo on the left -->
+        <div class="logo">
+            <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+            THE CHAMPIONS CLUB
+        </div>
+
+        <!-- Menu Icon for Mobile -->
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <ul id="nav-links">
+            <li><a href="{% url 'home' %}">HOME</a></li>
+            <li><a href="{% url 'blog_list' %}">NEWS</a></li>
+            
+          
+    
+            <!-- Dropdown tab for Resources -->
+            <li class="dropdown">
+                <a href="#">RESOURCES</a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                    <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                </ul>
+            </li>
+
+
+
+            
+            <li><a href="{% url 'support_request' %}">CONTACT</a></li>
+            
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+            {% else %}
+            {% if registration.approved == 1 %}
+            {% if registration.membership_paid == 0 %}
+            <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li>
+            {% else %}
+            <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> DASHBOARD</a></li>
+            {% endif %}
+            {% else %}
+            <li class="dropdown">
+                <a href="#">
+                    {% if registration.profile_image %}
+                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                    {% else %}
+                        <i class="fa-solid fa-circle-user fa-xl"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'user_profile' %}">PROFILE</a></li>
+                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+                </ul>
+            </li>
+            
+            {% endif %}
+            {% endif %}
+           
+            <!-- <li>
+                <div class="toggle">
+                    <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                    <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                       </div>
+                </li> -->
+        </ul>
+    </nav>
+
+    <!-- Add your page content here -->
+
+    <script>
+        function toggleMenu() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.getElementById('nav-links');
+
+            menuIcon.classList.toggle('open');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+   
+<div class="progress-container">
+    <div class="progress-bar" id="myBar"></div>
+  </div>  
+
+
+<script>
+
+
+  // Toggle dropdown for mobile
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdownLinks = document.querySelectorAll('.dropdown > a');
+    
+    dropdownLinks.forEach(function(dropdownLink) {
+        dropdownLink.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            
+            const dropdown = this.parentElement; // Get the parent <li> element
+
+            // Toggle the 'show' class to show or hide the dropdown
+            dropdown.classList.toggle('show');
+
+            // Close any other open dropdowns
+            document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                if (otherDropdown !== dropdown) {
+                    otherDropdown.classList.remove('show');
+                }
+            });
+        });
+    });
+});
+
+
+   function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    const menuIcon = document.querySelector('.menu-icon');
+    navLinks.classList.toggle('show');
+    menuIcon.classList.toggle('open');
+}
+
+    </script>
+    </section>
+    <section id="dividing-section">
+
+    </section>
+    <section class="hero">
+            
+        
+    </section>
+    <section id="dividing-section">
+
+    </section>
+   
+   <div class="podcast-reels-slider">
+    <h1>EXPLORE SHORTS FROM OUR VIDEOS</h1>
+    <div class="slide-container">
+        <ul class="slide-reel">
+            {% for reel in reels %}
+            <li class="film" data-reel-index="{{ reel.id }}" data-video-url="{% if reel.is_compressed %}{{ reel.compressed_video.url }}{% else %}{{ reel.video.url }}{% endif %}">
+                <img src="{{ reel.thumbnail.url }}" alt="{{ reel.title }}">
+                <div class="play-button">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <p>{{ reel.title }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <a class="checkout-more" href="{% url 'reel_grid' %}">Check out More &rarr;</a>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const reelsContainer = document.querySelector('.slide-reel');
+    const videoModal = document.getElementById('video-modal');
+    const modalVideo = document.getElementById('modal-video');
+    const closeModal = document.getElementById('close-modal');
+    const prevReelBtn = document.getElementById('prev-reel');
+    const nextReelBtn = document.getElementById('next-reel');
+    const shareButton = document.getElementById('share-button');
+    let currentReelIndex = null;
+    let allReels = [];
+
+    // Initialize existing reels on page load
+    const initializeReels = () => {
+        const reelElements = document.querySelectorAll('.film');
+        reelElements.forEach((reelElement, index) => {
+            const videoUrl = reelElement.getAttribute('data-video-url');
+            const thumbnailUrl = reelElement.querySelector('img').src;
+            const title = reelElement.querySelector('img').alt;
+
+            const reelData = {
+                video_url: videoUrl,
+                thumbnail_url: thumbnailUrl,
+                title: title,
+            };
+
+            allReels.push(reelData);
+            reelElement.setAttribute('data-reel-index', index);
+        });
+    };
+
+    // Function to open modal and play video
+    const openModal = (reelIndex) => {
+        const reel = allReels[reelIndex];
+        if (reel) {
+            const handleVideoPlay = () => modalVideo.play();
+            modalVideo.removeEventListener('loadedmetadata', handleVideoPlay);  // Remove existing listeners
+            modalVideo.src = reel.video_url;  // Set the video source
+            videoModal.classList.add('active');
+            modalVideo.addEventListener('loadedmetadata', handleVideoPlay, { once: true });
+            currentReelIndex = reelIndex;
+        }
+    };
+
+    // Function to close modal and stop video
+    const closeVideoModal = () => {
+        modalVideo.pause();
+        modalVideo.currentTime = 0;
+        modalVideo.src = '';
+        videoModal.classList.remove('active');
+        currentReelIndex = null;
+    };
+
+    // Event delegation to handle click on reels
+    document.body.addEventListener('click', (event) => {
+        const reelElement = event.target.closest('.film');
+        if (reelElement) {
+            const reelIndex = parseInt(reelElement.getAttribute('data-reel-index'), 10);
+            if (!isNaN(reelIndex)) {
+                openModal(reelIndex);
+            }
+        }
+    });
+
+    // Initialize reels on load
+    initializeReels();
+
+    // Close modal functionality
+    closeModal.addEventListener('click', closeVideoModal);
+
+    // Share button functionality
+    shareButton.addEventListener('click', () => {
+        if (currentReelIndex !== null) {
+            const reel = allReels[currentReelIndex];
+            if (reel) {
+                const shareData = {
+                    title: reel.title || 'Check out this video!',
+                    text: 'Check out this video from The Champions Club!',
+                    url: `${window.location.origin}/reels/${currentReelIndex}`,
+                };
+
+                if (navigator.share) {
+                    navigator.share(shareData)
+                        .then(() => console.log('Shared successfully!'))
+                        .catch((error) => console.error('Share failed:', error));
+                } else {
+                    navigator.clipboard.writeText(shareData.url)
+                        .then(() => alert('Link copied to clipboard!'))
+                        .catch((error) => console.error('Could not copy text: ', error));
+                }
+            }
+        }
+    });
+
+    // Close modal when clicking outside the video content
+    videoModal.addEventListener('click', (event) => {
+        if (event.target === videoModal) {
+            closeVideoModal();
+        }
+    });
+
+    // Previous and Next Reel Buttons
+    prevReelBtn.addEventListener('click', () => {
+        if (currentReelIndex > 0) {
+            openModal(currentReelIndex - 1);
+        }
+    });
+
+    nextReelBtn.addEventListener('click', () => {
+        if (currentReelIndex < allReels.length - 1) {
+            openModal(currentReelIndex + 1);
+        }
+    });
+});
+
+</script>
+
+<div id="video-modal" class="video-modal">
+    <div class="modal-content">
+        <button id="close-modal" class="button close-button" aria-label="Close">
+            <i class="fas fa-times"></i>
+        </button>
+        <button id="share-button" class="button share-button" aria-label="Share">
+            <i class="fas fa-share-alt"></i>
+        </button>
+        <button id="prev-reel" class="button" aria-label="Previous">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button id="next-reel" class="button" aria-label="Next">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <video id="modal-video" autoplay playsinline></video>
+        <div class="branding-overlay">
+            <div class="branding">THE CHAMPIONS CLUB</div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #modal-video {
+    max-width: 40%;
+    max-height: 60%;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    background-color: #000000;
+    outline: none;
+}
+.modal-content {
+    position: relative;
+   
+    max-width: 50%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.video-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.video-modal.active {
+  display: flex;
+}
+
+.modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+}
+
+video {
+  width: 100%;
+  height: auto;
+}
+
+.button {
+  position: absolute;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.close-button {
+  top: 10px;
+  right: 10px;
+}
+
+.share-button {
+  top: 10px;
+  left: 10px;
+}
+
+#prev-reel {
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#next-reel {
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+</style>
+<style>
+.checkout-more{
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    margin-left: 70px;
+}
+    .podcast-reels-slider{
+        max-width: 80%;
+    
+    margin: 50px auto;
+    }
+    @media (max-width:1080px){
+       .podcast-reels-slider{
+        max-width: 90%;
+    text-align: center;
+    margin: 50px auto;
+       }
+    }
+    .play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  color: white;
+}
+        html {
+  scroll-snap-type: x mandatory;
+  scroll-padding: 1rem;
+  --film--aspect-ratio: calc(4/6);
+  --film--width: 220px;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+    .slide-container {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.slide-reel {
+    display: flex;
+    flex-wrap: nowrap;
+    list-style: none;
+    max-width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 1rem;
+    padding: 2rem;
+    margin: 2rem;
+}
+
+.film {
+    min-width: var(--film--width, 300px);
+    width: var(--film--width, 300px);
+    height: calc(var(--film--width, 300px) / var(--film--aspect-ratio, 1.5));
+    background: rgba(100, 100, 100, 0.3);
+    margin: 0 2rem 2rem 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 2px 3px 10px rgba(0, 0, 0, 0.5);
+    scroll-snap-align: start;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+.film p {
+    font-weight: bold;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    padding: 8rem 1rem 2rem;
+    width: 100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(3rem);
+    transition: all 0.4s ease-in-out;
+}
+
+.film img {
+    transform: scale(1);
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.film:hover {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 2px 3px 10px rgba(0, 0, 0, 0.5);
+}
+
+.film:hover p {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.film:hover img {
+    transform: scale(1.05);
+}
+
+</style>
+
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 4,
+            spaceBetween: 30,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            loop: true,
+        });
+    </script>
+<section id="dividing-section">
+
+</section>
+    <div class="container">
+        <!-- Hero Section -->
+      
+        <h1>EXPLORE VIDEOS</h1>
+        <!-- Filter & Search Section -->
+        <div class="filter-search-bar">
+            <!-- Search Bar -->
+            <div class="search-box">
+                <form method="GET" action="{% url 'video_home' %}">
+                    <input type="text" name="q" placeholder="Search for videos..." value="{{ request.GET.q }}">
+                </form>
+            </div>
+            <!-- Filter Dropdown -->
+            <div class="filter-box">
+                <form method="GET" action="{% url 'video_home' %}">
+                    <select name="category" onchange="this.form.submit()">
+                        <option value="">Filter by Category</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}" {% if category.id|stringformat:"s" == selected_category %}selected{% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+        </div>
+    
+        <!-- Video Section -->
+        <div id="video-section">
+            {% if videos %}
+                <div class="video-grid">
+                    {% for video in videos %}
+                    <div class="video-card">
+                        <img class="video-thumbnail" src="{% if video.thumbnail %}{{ video.thumbnail.url }}{% else %}{% static 'images/video_placeholder.png' %}{% endif %}" alt="{{ video.title }}">
+                        <div class="video-info">
+                            <a href="{% url 'video_preview' video.id %}" class="video-title">{{ video.title }}</a>
+                            <p class="video-description">{{ video.description|truncatewords:20 }}</p>
+                            <div class="video-meta">
+                                <span>{{ video.duration|time:"H:i:s" }}</span>
+                                {% if video.price > 0 %}
+                                    {% if request.user.is_authenticated and request.user.registration.membership_paid %}
+                                        <span style="text-decoration: line-through;">${{ video.price }}</span>
+                                        <span>Champion Discount ${{ video.price|mul:0.75|floatformat:2 }}</span>
+                                    {% else %}
+                                        <span>${{ video.price }}</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <!-- Category Tag -->
+                            <div class="video-category">
+                                <span class="category-tag">{{ video.videocategory.name }}</span>
+                            </div>
+                            <a href="{% url 'video_preview' video.id %}" class="watch-button">
+                                {% if user_video_statuses|get_item:video.id %}Continue Watching{% else %}Watch Now{% endif %}
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% elif videos_grouped %}
+                {% for category, videos in videos_grouped.items %}
+                    <h2>{{ category.name }}</h2>
+                    <div class="video-grid">
+                        {% for video in videos %}
+                        <div class="video-card">
+                            <img class="video-thumbnail" src="{% if video.thumbnail %}{{ video.thumbnail.url }}{% else %}{% static 'images/video_placeholder.png' %}{% endif %}" alt="{{ video.title }}">
+                            <div class="video-info">
+                                <a href="{% url 'video_preview' video.id %}" class="video-title">{{ video.title }}</a>
+                                <p class="video-description">{{ video.description|truncatewords:20 }}</p>
+                                <div class="video-meta">
+                                    <span>{{ video.duration|time:"H:i:s" }}</span>
+                                    {% if video.price > 0 %}
+                                        {% if request.user.is_authenticated and request.user.registration.membership_paid %}
+                                            <span style="text-decoration: line-through;">${{ video.price }}</span>
+                                            <span>Champion Discount ${{ video.price|mul:0.75|floatformat:2 }}</span>
+                                        {% else %}
+                                            <span>${{ video.price }}</span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <!-- Category Tag -->
+                                
+                                <a href="{% url 'video_preview' video.id %}" class="watch-button">
+                                    {% if user_video_statuses|get_item:video.id %}Continue Watching{% else %}Watch Now{% endif %}
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No videos found for your search.</p>
+            {% endif %}
+        </div>
+        
+    </div>
+    
+    
+<section id="dividing-section">
+
+</section>
+        <footer id="footer" class="fade-in">
+
+
+            <div class="footer-content">
+
+                <div class="footer-section">
+                    <img src="{% static 'images/logo.png' %}" alt="">
+                 </div>
+                
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <a href="{% url 'support_request' %}" class="footer-link">Support</a>
+                    <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                    <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
+                    <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
+                    
+                    <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">Company</h4>
+                    <a href="/about-us" class="footer-link">Become a Partner</a>
+                    <a href="{% url 'careers' %}" class="footer-link">Careers</a>
+                    
+                </div>
+
+                <div class="footer-section">
+                    <h4 class="footer-title">STAY CONNECTED</h4>
+                    <div class="social-media">
+                        <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
+                            <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
+                        </a>
+                        <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+
+                </div>
+                
+            </div>
+            <section id="dividing-section">
+
+            </section>
+            <div class="footer-bottom">
+                <div class="trademark">The Champions Club</div>
+                <div class="copyright">Copyright © & Trademark ® 2024 The Champions Club™ - All Rights Reserved.</div>
+            </div>
+        </footer>
+<style>
+    .navbar-profile-img {
+        width: 35px;             /* Adjust width as needed */
+        height: 35px;  
+                  /* Adjust height as needed */
+        border-radius: 50%;      /* Makes the image circular */
+        object-fit: cover;       /* Ensures the image covers the container without distortion */
+        vertical-align: middle;  /* Aligns the image vertically */
+    }
+.footer-section button{
+    background-color: transparent;
+    color: white;
+    padding: 15px 45px;
+    border: 1px solid white;
+    margin-left: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.footer-section button::before,
+.footer-section button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 1px;
+    background-color: white;
+    transform: translateY(-50%);
+}
+.footer-section button::before {
+    left: 10px;
+}
+
+.footer-section button::after {
+    right: 10px;
+}
+.footer-section button:hover {
+    background-color: white;
+    color: #333;
+    border-color: #333;
+}
+
+
+
+
+
+
+#footer {
+    background-color: #000;
+    padding: 50px 100px;
+    color: #f4f4f4;
+    font-family: 'Roboto', sans-serif;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    
+    padding-bottom: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin: 10px;
+    margin-left: 100px;
+}
+
+.footer-title {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #f4f4f4;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.footer-link {
+    display: block;
+    color: #f4f4f4;
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #999;
+}
+
+.social-media {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-icon {
+    color: #f4f4f4;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+    color: #999;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.trademark {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    #footer{
+        padding:0;
+    }
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-section {
+        margin-bottom: 20px;
+        margin-left: 0;
+    }
+
+    .social-media {
+        justify-content: center;
+    }
+}
+#footer img{
+    height: 150px;
+    margin:0 auto;
+}
+#dividing-section{
+    margin-top:0px;
+        background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+        height: 1px;
+    }
+</style>
+</body>
+</html>

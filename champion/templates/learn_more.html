@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | Learn More</title>
+
+    {% load static %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/learn_more.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+
+</head>
+<style>
+   .top-navbar{
+    width:100%;
+   }
+</style>
+<body>
+    <nav class="top-navbar">
+        <!-- Logo on the left -->
+        <div class="logo">
+            <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+            THE CHAMPIONS CLUB
+        </div>
+
+        <!-- Menu Icon for Mobile -->
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <ul id="nav-links">
+            <li><a href="{% url 'home' %}">HOME</a></li>
+            <li><a href="{% url 'blog_list' %}">NEWS</a></li>
+            
+          
+    
+            <!-- Dropdown tab for Resources -->
+            <li class="dropdown">
+                <a href="#">RESOURCES</a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                    <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                </ul>
+            </li>
+
+
+            
+            <li><a href="{% url 'support_request' %}">CONTACT</a></li>
+            
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+            {% else %}
+            {% if registration.approved == 1 %}
+            {% if registration.membership_paid == 0 %}
+            <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li>
+            {% else %}
+            <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> DASHBOARD</a></li>
+            {% endif %}
+            {% else %}
+            <li class="dropdown">
+                <a href="#">
+                    {% if registration.profile_image %}
+                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                    {% else %}
+                        <i class="fa-solid fa-circle-user fa-xl"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'user_profile' %}">PROFILE</a></li>
+                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+                </ul>
+            </li>
+            
+            {% endif %}
+            {% endif %}
+           
+            <!-- <li>
+                <div class="toggle">
+                    <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                    <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                       </div>
+                </li> -->
+        </ul>
+    </nav>
+
+    <!-- Add your page content here -->
+
+    <script>
+        function toggleMenu() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.getElementById('nav-links');
+
+            menuIcon.classList.toggle('open');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+   
+<div class="progress-container">
+    <div class="progress-bar" id="myBar"></div>
+  </div>  
+
+
+<script>
+
+
+  // Toggle dropdown for mobile
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdownLinks = document.querySelectorAll('.dropdown > a');
+    
+    dropdownLinks.forEach(function(dropdownLink) {
+        dropdownLink.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            
+            const dropdown = this.parentElement; // Get the parent <li> element
+
+            // Toggle the 'show' class to show or hide the dropdown
+            dropdown.classList.toggle('show');
+
+            // Close any other open dropdowns
+            document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                if (otherDropdown !== dropdown) {
+                    otherDropdown.classList.remove('show');
+                }
+            });
+        });
+    });
+});
+
+
+   function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    const menuIcon = document.querySelector('.menu-icon');
+    navLinks.classList.toggle('show');
+    menuIcon.classList.toggle('open');
+}
+
+    </script>
+    </section>
+    <section id="dividing-section">
+
+    </section>
+    <section id="strength">
+        <h1 class="strength-heading">CORE BELIEF</h1>
+        <hr class="strength-divider">
+        <h1 class="strength-subheading">STRENGTH ABOVE ALL</h1>
+        
+        
+        <h3 class="strength-subheading">MENTAL - PHYSICAL - SPIRITUAL</h3>
+        
+        <p class="strength-text">A community of achievers who reject the ordinary and challenge the extraordinary.</p>
+        <p class="strength-text">We celebrate Champions and nurture new talent by example.</p>
+        {% comment %} <section id="in-pursuit">
+            
+            <div class="cards-container">
+                <div class="card">
+                    <img src="{% static 'images/mental.jpg' %}"
+                        alt="Pride of the sky">
+                    <h4>MENTAL</h4>
+                    <p>You are the one to watch, you are the one to be and you know it because you earned it with your own
+                        merit. No matter the start, you made the most out of your resources and amplified life for everyone
+                        around yourself. We are as proud of your achievements as you are, your fortitude is truly inspiring,
+                        you are a cut above.</p>
+                </div>
+                <div class="card">
+                    <img src="{% static 'images/physcial.jpg' %}"
+                        alt="Pride of the sky">
+                    <h4>PHYSCIAL</h4>
+                    <p>You have done for others irrespective of what they did or did not do for you, you are a pillar of hope for the ones who matter to you. With a heart of gold, you seek to make the world a better place for yourself, your friends, your family and for those who matter to you. We admire your chivalry towards society.</p>
+                </div>
+                <div class="card">
+                    <img src="{% static 'images/spritual.jpg' %}"
+                       
+                        alt="Pride of the sky">
+                    <h4>SPIRITUAL</h4>
+                    <p>You made it big and took your team with you to greater heights through raw action. You are celebrated as a winner, you are respected as an achiever and you are cherished as a treasure in life. We respect your accomplishments in life, we value your will power, we respect your determination, you are a Champion.</p>
+                </div>
+            </div>
+        </section> {% endcomment %}
+        <br>
+        <p class="strength-quote"><i>"For Champions, by Champions." - The Champions Club</i></p>
+
+    </section>
+    <section id="core-beliefs">
+        <div class="container">
+            
+            <div class="beliefs-grid">
+                <div class="belief">
+                    <h3>Integrity</h3>
+                    <p>At Champions Club, we believe in maintaining the highest standards of integrity. Every action we take is guided by honesty, fairness, and accountability.</p>
+                </div>
+                <div class="belief">
+                    <h3>Excellence</h3>
+                    <p>We strive for excellence in everything we do. Whether it's personal growth or helping others succeed, we set high standards and continuously work to achieve them.</p>
+                </div>
+                <div class="belief">
+                    <h3>Community</h3>
+                    <p>Our community is at the heart of everything. We foster an environment of support, collaboration, and mutual respect where everyone can thrive together.</p>
+                </div>
+                <div class="belief">
+                    <h3>Growth</h3>
+                    <p>Personal and professional growth is a cornerstone of the Champions Club. We encourage continuous learning and development to help members reach their full potential.</p>
+                </div>
+                <div class="belief">
+                    <h3>Empowerment</h3>
+                    <p>Empowering others to succeed is a key value. We believe in sharing knowledge, providing resources, and offering encouragement to help others achieve their goals.</p>
+                </div>
+                <div class="belief">
+                    <h3>Innovation</h3>
+                    <p>We embrace innovation and creativity, always seeking new ways to solve problems and improve our services and community.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+<style>
+    .navbar-profile-img {
+        width: 35px;             /* Adjust width as needed */
+        height: 35px;  
+                  /* Adjust height as needed */
+        border-radius: 50%;      /* Makes the image circular */
+        object-fit: cover;       /* Ensures the image covers the container without distortion */
+        vertical-align: middle;  /* Aligns the image vertically */
+    }
+  #core-beliefs {
+    background-color: #000;
+    color: #fff;
+    padding: 50px 0;
+    font-family: Arial, sans-serif;
+}
+
+#core-beliefs .container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+#core-beliefs h2 {
+   
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid gray;
+    padding-bottom: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.beliefs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.belief {
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.belief h3 {
+    
+    font-size: 24px;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.belief p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ddd;
+    font-family: 'Roboto';
+    font-weight: 300;
+}
+
+.belief:hover {
+    transform: scale(1.05);
+}
+
+</style>  
+
+    <section id="in-pursuit">
+        <h1>IN THE PURSUIT OF EXCELLENCE</h1>
+        <hr>
+        <div class="cards-container">
+            <div class="card">
+                <img src="//img1.wsimg.com/isteam/stock/40072/:/cr=t:0%25,l:16.79%25,w:66.42%25,h:100%25/rs=w:365,h:365,cg:true"
+                    srcset="//img1.wsimg.com/isteam/stock/40072/:/cr=t:0%25,l:16.79%25,w:66.42%25,h:100%25/rs=w:365,h:365,cg:true/qt=q:20"
+                    alt="Pride of the sky">
+                <h4>PRIDE</h4>
+                <p>You are the one to watch, you are the one to be and you know it because you earned it with your own
+                    merit. No matter the start, you made the most out of your resources and amplified life for everyone
+                    around yourself. We are as proud of your achievements as you are, your fortitude is truly inspiring,
+                    you are a cut above.</p>
+            </div>
+            <div class="card">
+                <img src="https://img1.wsimg.com/isteam/stock/K8pyBKP/:/cr=t:0%25,l:16.76%25,w:66.48%25,h:100%25/rs=w:365,h:365,cg:true/qt=q:11"
+                    alt="Pride of the sky">
+                <h4>HONOR</h4>
+                <p>You have done for others irrespective of what they did or did not do for you, you are a pillar of hope for the ones who matter to you. With a heart of gold, you seek to make the world a better place for yourself, your friends, your family and for those who matter to you. We admire your chivalry towards society.</p>
+            </div>
+            <div class="card">
+                <img src="https://img1.wsimg.com/isteam/stock/118806/:/cr=t:0%25,l:16.68%25,w:66.65%25,h:100%25/rs=w:365,h:365,cg:true/qt=q:11"
+                   
+                    alt="Pride of the sky">
+                <h4>GLORY</h4>
+                <p>You made it big and took your team with you to greater heights through raw action. You are celebrated as a winner, you are respected as an achiever and you are cherished as a treasure in life. We respect your accomplishments in life, we value your will power, we respect your determination, you are a Champion.</p>
+            </div>
+           
+            <a href="{% url 'membership_portal' %}"><button>INTERESTED?</button></a>
+        </div>
+        
+        
+    </section>
+    <section id="FAQ">
+        <div class="accordion">
+            <h1>Frequently Asked Questions</h1>
+            <hr>
+            <p>The Champions Club has answered some commonly asked questions below.</p>
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion1">
+                <label for="accordion1" class="accordion-item-title"><span class="icon"></span>What is The Champions Club all about?</label>
+                <div class="accordion-item-desc">The Champions Club is a global private network that operates as a community of achievers from all around the world. The club will be expanding it's services with time. Stay tuned!</div>
+            </div>
+        
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion2">
+                <label for="accordion2" class="accordion-item-title"><span class="icon"></span>How can I join The Champions Club?</label>
+                <div class="accordion-item-desc">We encourage new applicants to apply directly to our website and see if they qualify for the club's membership. Applicants are permitted to apply once every quarter of a calendar year.
+                    <br>
+                    Alternatively, an existing Champion can sponsor a new candidate for membership, the club will review the application on request. It must be noted that this does not guarantee membership.</div>
+            </div>
+        
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion3">
+                <label for="accordion3" class="accordion-item-title"><span class="icon"></span>What can I get in return?</label>
+                <div class="accordion-item-desc">The club provides it's members with an elite network of achievers along with many other services. We are a brotherhood of winners who stand united and create exceptionally strong network effects together. We celebrate life together with camaraderie and virtue.</div>
+            </div>
+        
+            <!-- <div class="accordion-item">
+                <input type="checkbox" id="accordion4">
+                <label for="accordion4" class="accordion-item-title"><span class="icon"></span>How does mobile optimization impact SEO?</label>
+                <div class="accordion-item-desc">Mobile optimization is crucial for SEO because search engines prioritize mobile-friendly websites. With the increasing use of smartphones, search engines like Google consider mobile responsiveness as a ranking factor. Websites that provide a seamless experience on mobile devices are more likely to rank higher in search results.</div>
+            </div>
+        
+            <div class="accordion-item">
+                <input type="checkbox" id="accordion5">
+                <label for="accordion5" class="accordion-item-title"><span class="icon"></span>What is the role of backlinks in SEO, and how can they be acquired?</label>
+                <div class="accordion-item-desc">Backlinks, or inbound links from other websites to yours, play a significant role in SEO. They are considered a vote of confidence and can improve a site's authority. Quality over quantity is crucial when acquiring backlinks. Strategies for obtaining backlinks include creating high-quality content, guest posting, reaching out to industry influencers, and participating in community activities. It's important to focus on natural and ethical link-building practices.</div>
+            </div> -->
+            
+        
+        </div>
+    </section>
+    <section id="dividing-section">
+
+    </section>
+    <section id="who-is-a-champion3">
+        <div class="who-is-a-champion3">
+            <h1>WE MAKE NO EXCEPTIONS</h1>
+            <a href="{% url 'membership_portal' %}"><button>CHECK YOUR ELIGIBILITY</button></a>
+        </div>
+    </section>
+    <section id="dividing-section">
+    
+    </section>
+    <style>
+            #who-is-a-champion3 {
+        height: 200px;
+        width: auto;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) 100%), url("{% static 'images/lightbackground.jpg'%}");
+        background-size: auto, cover;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        padding: 10px 20px;
+    }
+    #who-is-a-champion3 h1 {
+        margin-top:20px;
+        font-size: 48px;
+        color: #fff;
+        font-weight: 600;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+    }
+    .who-is-a-champion3 {
+       
+        display: flex;
+        flex-direction: row;
+        gap:20px;
+        align-items: center;
+        margin: 30px auto;
+    }
+        .who-is-a-champion3 button {
+        background-color: transparent;
+        width: 300px;
+        color: white;
+        
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-top: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        
+    }
+    
+    .who-is-a-champion3 button::before,
+    .who-is-a-champion3 button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 2px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    
+    .who-is-a-champion3 button::before {
+        left: 10px;
+    }
+    
+    .who-is-a-champion3 button::after {
+        right: 10px;
+    }
+    
+    .who-is-a-champion3 button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    @media (max-width: 768px) {
+        #who-is-a-champion3 {
+            padding: 60px 10px;
+            height: auto;
+        }
+        .who-is-a-champion3{
+            flex-direction: column;
+        }
+    
+        .who-is-a-champion3 h1 {
+            font-size: 1.5rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+    
+    }
+    </style>
+    
+    
+            <footer id="footer" >
+    
+    
+                <div class="footer-content">
+    
+                    <div class="footer-section">
+                        <img src="{% static 'images/logo.png' %}" alt="">
+                     </div>
+                    
+                    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Quick Links</h4>
+                        <a href="{% url 'support_request' %}" class="footer-link">Support</a>
+                        <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                        <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
+                        <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
+                        
+                        <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
+                    </div>
+    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Company</h4>
+                        <a href="/about-us" class="footer-link">Become a Partner</a>
+                        <a href="{% url 'careers' %}" class="footer-link">Careers</a>
+                        
+                    </div>
+    
+                    <div class="footer-section">
+                        <h4 class="footer-title">STAY CONNECTED</h4>
+                        <div class="social-media">
+                            <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
+                                <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
+                            </a>
+                            <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+    
+                    </div>
+                    
+                </div>
+                <section id="dividing-section">
+    
+                </section>
+                <div class="footer-bottom">
+                    <div class="trademark">The Champions Club</div>
+                    <div class="copyright">Copyright © & Trademark ® 2024 The Champions Club™ - All Rights Reserved.</div>
+                </div>
+            </footer>
+    <style>
+        
+    .footer-section button{
+        background-color: transparent;
+        color: white;
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-left: 15px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .footer-section button::before,
+    .footer-section button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 1px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    .footer-section button::before {
+        left: 10px;
+    }
+    
+    .footer-section button::after {
+        right: 10px;
+    }
+    .footer-section button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    
+    
+    
+    
+    
+    
+    #footer {
+        background-color: #000;
+        padding: 50px 100px;
+        color: #f4f4f4;
+        font-family: 'Roboto', sans-serif;
+    }
+    
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+        
+        padding-bottom: 20px;
+    }
+    
+    .footer-section {
+        flex: 1;
+        min-width: 200px;
+        margin: 10px;
+        margin-left: 100px;
+    }
+    
+    .footer-title {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: #f4f4f4;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+    
+    .footer-link {
+        display: block;
+        color: #f4f4f4;
+        text-decoration: none;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+    
+    .footer-link:hover {
+        color: #999;
+    }
+    
+    .social-media {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+    }
+    
+    .social-icon {
+        color: #f4f4f4;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+    }
+    
+    .social-icon:hover {
+        color: #999;
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .trademark {
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+    
+    .copyright {
+        font-size: 0.8rem;
+        color: #666;
+    }
+    
+    @media (max-width: 768px) {
+        #footer{
+            padding:0;
+        }
+        .footer-content {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+    
+        .footer-section {
+            margin-bottom: 20px;
+            margin-left: 0;
+        }
+    
+        .social-media {
+            justify-content: center;
+        }
+    }
+    #footer img{
+        height: 150px;
+        margin:0 auto;
+    }
+    #dividing-section{
+            background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+            height: 1px;
+        }
+    </style>
+    <script src="scripts.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <script type="application/json" src="./js/animation.js"></script>
+    
+    
+</body>
+
+</html>

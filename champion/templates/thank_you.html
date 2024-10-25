@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | Thank You </title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 120px 20px 80px 20px;
+            background-image: url('{% static "images/thank-you-hero.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            background: rgba(0, 0, 0, 0.6);
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Content Section */
+        .content {
+            background-color: #111;
+            padding: 40px 30px;
+            margin-top: -80px;
+            border-radius: 8px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background-color: #f1c40f;
+            color: #000;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: #d4ac0d;
+        }
+
+        /* Footer Section */
+        .footer {
+            text-align: center;
+            color: #777;
+            padding: 40px 20px;
+            background-color: #000;
+            margin-top: 60px;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .footer a {
+            color: #f1c40f;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .footer a:hover {
+            color: #d4ac0d;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 767px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .content {
+                padding: 30px 20px;
+                margin-top: -60px;
+            }
+
+            .cta-btn {
+                font-size: 1rem;
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Thank You for Your Generosity!</h1>
+            <p>Your support means the world to us.</p>
+        </div>
+
+        <!-- Content Section -->
+        <div class="content">
+            <p>
+                We sincerely appreciate your contribution to <strong>Champions Club</strong>. Your donation will make a significant impact in helping us empower and inspire future champions. Together, we're making a difference.
+            </p>
+
+            <a href="{% url 'home' %}" class="cta-btn">Return to Home</a>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>Stay connected with us:</p>
+            <p>
+                <a href="https://facebook.com/championsclub" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com/championsclub" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://instagram.com/championsclub" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://linkedin.com/company/championsclub" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </p>
+            <p>Champions Club © {{ current_year }}. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

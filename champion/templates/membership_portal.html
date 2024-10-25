@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>TCC | Membership Portal</title>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <style>
+        /* Global Settings */
+        
+
+       
+
+        .card button:hover {
+            background-color: #b99e4a; /* Darker shade on hover */
+        }
+
+        /* Eligibility Section */
+        .eligibility-section {
+            text-align: center;
+            margin: 100px auto;
+            width: 85%;
+            padding: 0 5%;
+        }
+
+        .eligibility-section h2 {
+            font-size: 2.3rem; /* Softer size */
+            color: #d3af5a;
+            margin-bottom: 50px;
+        }
+
+        .eligibility-columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .eligibility-column {
+            background-color: #1c1c1c;
+            flex: 1;
+            padding: 40px 20px;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .eligibility-column h4 {
+            font-size: 1.7rem;
+            color: #d3af5a;
+            margin-bottom: 20px;
+        }
+
+        .eligibility-column p {
+            font-size: 1.1rem;
+            color: #b3b3b3;
+            line-height: 1.6;
+        }
+
+        /* Video Section */
+        .video-section {
+            text-align: center;
+            margin: 100px 0;
+            padding: 0 5%;
+        }
+
+        .video-section h2 {
+            font-size: 2.5rem;
+            
+            margin-bottom: 20px;
+        }
+
+        .video-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .video-wrapper iframe {
+            width: 100%;
+            height: 450px;
+            border-radius: 10px;
+            border: 1px solid #333; /* Minimal border */
+        }
+
+       
+
+        footer p {
+            font-size: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .cards-container {
+                flex-wrap: wrap;
+            }
+
+            .card {
+                width: 45%;
+                margin-bottom: 20px;
+            }
+
+            .eligibility-columns {
+                flex-wrap: wrap;
+            }
+
+            .eligibility-column {
+                width: 45%;
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1{
+                margin-top:100px;
+            }
+            .cards-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 90%;
+            }
+
+            .eligibility-columns {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .eligibility-column {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+
+            .eligibility-column h4 {
+                font-size: 1.4rem;
+            }
+
+            .eligibility-column p {
+                font-size: 0.95rem;
+                line-height: 1.5;
+                padding: 0 10px;
+            }
+
+            .video-wrapper iframe {
+                height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+        }
+        #dividing-section{
+            background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+            height: 1px;
+        }
+    </style>
+</head>
+<body>
+<section>
+    <nav class="top-navbar">
+        <!-- Logo on the left -->
+        <div class="logo">
+            <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+            THE CHAMPIONS CLUB
+        </div>
+
+        <!-- Menu Icon for Mobile -->
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <ul id="nav-links">
+            <li><a href="{% url 'home' %}">HOME</a></li>
+            <li><a href="{% url 'blog_list' %}">NEWS</a></li>
+            
+          
+    
+            <!-- Dropdown tab for Resources -->
+            <li class="dropdown">
+                <a href="#">RESOURCES</a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                    <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                </ul>
+            </li>
+
+
+
+            
+            <li><a href="{% url 'support_request' %}">CONTACT</a></li>
+            
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+            {% else %}
+            {% if registration.approved == 1 %}
+            {% if registration.membership_paid == 0 %}
+            <li><a href="{% url 'champions_dashboard' %} ">BUY MEMEBERSHIP TODAY</a></li>
+            {% else %}
+            <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> DASHBOARD</a></li>
+            {% endif %}
+            {% else %}
+            <li class="dropdown">
+                <a href="#">
+                    {% if registration.profile_image %}
+                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                    {% else %}
+                        <i class="fa-solid fa-circle-user fa-xl"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'user_profile' %}">PROFILE</a></li>
+                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+                </ul>
+            </li>
+            
+            {% endif %}
+            {% endif %}
+           
+            <!-- <li>
+                <div class="toggle">
+                    <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                    <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                       </div>
+                </li> -->
+        </ul>
+    </nav>
+
+    <!-- Add your page content here -->
+
+    <script>
+        function toggleMenu() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.getElementById('nav-links');
+
+            menuIcon.classList.toggle('open');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+   
+<div class="progress-container">
+    <div class="progress-bar" id="myBar"></div>
+  </div>  
+
+
+<script>
+
+
+  // Toggle dropdown for mobile
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdownLinks = document.querySelectorAll('.dropdown > a');
+    
+    dropdownLinks.forEach(function(dropdownLink) {
+        dropdownLink.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            
+            const dropdown = this.parentElement; // Get the parent <li> element
+
+            // Toggle the 'show' class to show or hide the dropdown
+            dropdown.classList.toggle('show');
+
+            // Close any other open dropdowns
+            document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                if (otherDropdown !== dropdown) {
+                    otherDropdown.classList.remove('show');
+                }
+            });
+        });
+    });
+});
+
+
+   function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    const menuIcon = document.querySelector('.menu-icon');
+    navLinks.classList.toggle('show');
+    menuIcon.classList.toggle('open');
+}
+
+    </script>
+    </section>
+    <section id="dividing-section">
+
+    </section>
+
+    <!-- Heading -->
+
+    <section class="pathways"> 
+        <div class="container">
+          <h1>
+           WINNING IS A LIFESTYLE
+          </h1>
+          <hr>  
+          <div class="cards-wrapper">
+            <!-- Card 1 -->
+            <div class="card">
+              <div class="card-image" role="img" aria-label="Champion"></div>
+              <div class="card-middle-text">Goals</div>
+              <div class="card-content">
+                <h2 role="heading" aria-level="2">ARE ACHIEVED</h2>
+                
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="card">
+              <div class="card-image" role="img" aria-label="Associate"></div>
+              <div class="card-middle-text">Dreams</div>
+              <div class="card-content">
+                <h2 role="heading" aria-level="2">COME TRUE</h2>
+                
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="card">
+              <div class="card-image" role="img" aria-label="Partner"></div>
+              <div class="card-middle-text">Ambition</div>
+              <div class="card-content">
+                <h2 role="heading" aria-level="2">IS REWARDED</h2>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      
+      <!-- CSS -->
+      <style>
+        /* Card middle text styles */
+    /* Styles for the section */
+    .pathways {
+      padding: 50px 0;
+      background-color: #000;
+      color: #fff;
+    }
+    @media (max-width: 792px) {
+        .card-content h2 {
+            margin: 40px 0;
+            font-size: 10px;
+            text-align: center;
+            font-family: 'Montserrat';
+            font-weight: 400;
+          }
+    }
+    /* Container styles */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    /* Heading styles */
+    .container h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+    }
+    
+    .container h1 + hr {
+      width: 50px;
+      border: 1px solid #999;
+      margin: 0 auto 40px;
+    }
+    
+    /* Cards wrapper styles */
+    .cards-wrapper {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    
+    /* Card styles */
+    .card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      flex: 1 1 calc(33.333% - 20px);
+      max-width: 400px;
+      min-width: 280px;
+      height: 500px;
+    }
+    
+    /* Card image styles */
+    .card-image {
+        background: rgba(0, 0, 0, 0.8);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.25s ease;
+    }
+    
+    /* Overlay to darken the image */
+    .card-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3); /* Adjust opacity for darkness */
+      opacity: 1;
+      transition: background 0.15s ease;
+    }
+    
+    /* Darken the overlay on hover */
+    .card:hover .card-image::before {
+    
+      background: rgba(0, 0, 0, 0.6);
+    }
+    
+    /* Card middle text styles */
+    .card-middle-text {
+      position: absolute;
+      font-family: 'Montserrat';
+      font-weight: 600 !important;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.9);
+      opacity: 1;
+      transition: opacity 0.1s ease;
+    }
+    
+    /* Hide the middle text on hover */
+    
+    /* Card content styles */
+    .card-content {
+      position: absolute;
+      bottom: 0px;
+      left: 20px;
+      right: 20px;
+      color: #fff;
+      transform: translateY(100%);
+      transition: transform 0.20s ease;
+    }
+    
+    /* Hover effects */
+    .card:hover .card-content {
+      transform: translateY(0);
+    }
+    
+    .card:hover .card-image {
+      transform: scale(1.1);
+    }
+    
+    /* Specific images */
+    .card-image[aria-label="Champion"] {
+      background-image: url("{% static 'images/goal.jpg' %}");
+    }
+    
+    .card-image[aria-label="Associate"] {
+      background-image: url("{% static 'images/dreams.jpg' %}");
+    }
+    
+    .card-image[aria-label="Partner"] {
+      background-image: url("{% static 'images/ambition.jpg' %}");
+    }
+    
+    /* Heading styles within card */
+    .card-content h2 {
+      margin: 40px 0;
+      font-size: 20px;
+      text-align: center;
+      font-family: 'Montserrat';
+      font-weight: 400;
+    }
+    
+    /* Media Queries for Responsiveness */
+    @media (max-width: 992px) {
+      .card {
+        flex: 1 1 calc(50% - 20px);
+        height: 400px; /* Reduce height on tablets */
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .card {
+        flex: 1 1 100%;
+        height: 400px; /* Reduce height on mobile */
+      }
+    
+      .card-middle-text {
+        font-size: 2rem; /* Adjust text size for mobile */
+      }
+    
+      .card-content h2 {
+        font-size: 15px;
+      }
+    }
+    #who-is-a-champion {
+        width: auto;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), url('{% static 'images/lava.jpg'%}');
+        background-size: cover;
+        background-position: center;
+        padding: 10px 20px;
+    }
+    .who-is-a-champion {
+       
+        display: flex;
+        flex-direction: row;
+        gap:20px;
+        align-items: center;
+        margin: 30px auto;
+    }
+    
+    .who-is-a-champion h1 {
+        margin-top:20px;
+        font-size: 48px;
+        color: #fff;
+        font-weight: 600;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+    }
+    
+    .who-is-a-champion button {
+        background-color: transparent;
+        color: white;
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-top: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        
+    }
+    
+    .who-is-a-champion button::before,
+    .who-is-a-champion button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 2px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    
+    .who-is-a-champion button::before {
+        left: 10px;
+    }
+    
+    .who-is-a-champion button::after {
+        right: 10px;
+    }
+    .navbar-profile-img {
+        width: 35px;             /* Adjust width as needed */
+        height: 35px;  
+                  /* Adjust height as needed */
+        border-radius: 50%;      /* Makes the image circular */
+        object-fit: cover;       /* Ensures the image covers the container without distortion */
+        vertical-align: middle;  /* Aligns the image vertically */
+    }
+    .who-is-a-champion button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    
+    @media (max-width: 768px) {
+        #who-is-a-champion {
+            padding: 20px 10px;
+        }
+        .who-is-a-champion{
+            flex-direction: column;
+        }
+    
+        .who-is-a-champion h1 {
+            font-size: 2rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+    
+        .who-is-a-champion button {
+            padding: 12px 35px;
+            font-size: 14px;
+        }
+    }
+    
+    
+    
+      </style>
+      <section id="who-is-a-champion">
+        <div class="who-is-a-champion">
+            <h1>A WILL OF IRON</h1>
+            <a href="{% url 'about' %}"><button>READ OUR STORY</button></a>
+        </div>
+    </section>
+
+
+    <section class="pathways"> 
+        <div class="container">
+          <h1>
+            THREE PATHWAYS TO THE ONE WORLD
+          </h1>
+          <hr>  
+          <div class="cards-wrapper">
+            <!-- Card 1 -->
+            <div class="card">
+              <div class="card-image" role="img" aria-label="Champion1"></div>
+              <div class="card-middle-text">CHAMPION</div>
+              <div class="card-content">
+                <h2 role="heading" aria-level="2">JOIN AS A MEMBER</h2>
+                <h2 role="heading" aria-level="2">(ACCEPTANCE RATE:<1%)</h2>
+                
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="card">
+              <div class="card-image" role="img" aria-label="Associate1"></div>
+              <div class="card-middle-text">ASSOCIATE</div>
+              <div class="card-content">
+                <h2 role="heading" aria-level="2">JOIN AS A STUDENT</h2>
+                <h2 role="heading" aria-level="2">(ACCEPTANCE RATE: N/A)</h2>
+                
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="card">
+              <div class="card-image" role="img" aria-label="Partner1"></div>
+              <div class="card-middle-text">PARTNER</div>
+              <div class="card-content">
+                <h2 role="heading" aria-level="2">JOIN AS A PARTNER</h2>
+                <h2 role="heading" aria-level="2">(ACCEPTANCE RATE: 3-12%)</h2>
+                 
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="membership-section">
+        <div class="membership-card">
+            <h3>TCC CHAMPION</h3>
+            <p>A full <strong>membership</strong> to our club is granted to individuals of exceptional talent and capability with a history of demonstrated achievement in multiple aspects of life.</p>
+            <p>There is <strong>no set selection criteria</strong> for this coveted membership. Each application is carefully reviewed by our Board and is approved on a <strong>voting</strong> basis.</p>
+            <p>Note: This tier of service <strong>guarantees</strong> access to The Champions Club's Global Private Network.</p>
+            <p>Applicants are permitted to apply <strong>once every month</strong> in a calendar year.</p>
+            <p><strong>Acceptance Rate: &lt;1%</strong><br>(Last updated 01/09/2024)</p>
+            <a href = "{% url 'apply' %}"><button>Enquire</button></a>
+        </div>
+    
+        <div class="membership-card">
+            <h3>TCC ASSOCIATE</h3>
+            <p>An <strong>association</strong> to our club is granted to individuals who wish to access our array of premium educational content, online resources and much more.</p>
+            <p>There is <strong>no selection criteria</strong> for an associate relationship with our club, we welcome students from <strong>all</strong> parts of the world <strong>regardless</strong> of age or status.</p>
+            <p>Note: This tier of service <strong>does not</strong> provide access to The Champions Club's Global Private Network.</p>
+            <p>Applicants are permitted to apply <strong>once every 24 hours</strong> on a daily basis.</p>
+            <p><strong>Acceptance Rate: N/A</strong><br>(Last updated 01/09/2024)</p>
+            <a href = "{% url 'associate_reg' %}"><button>Apply</button></a>
+        </div>
+    
+        <div class="membership-card">
+            <h3>TCC PARTNER</h3>
+            <p>A commercial <strong>partnership</strong> is granted to startup leaders, business owners and senior corporate executives who meet our internal selection criteria.</p>
+            <p>There is a <strong>strict selection criteria</strong> for a business relationship with our club, we do <strong>not</strong> accept any investments into our club and we <strong>do not</strong> offer equity at all.</p>
+            <p>Note: This tier of service <strong>may</strong> provide access to The Champions Club's Global Private Network based on <strong>relations</strong>.</p>
+            <p>Applicants are permitted to apply <strong>once every 3 months</strong> in a calendar year.</p>
+            <p><strong>Acceptance Rate: 3-12%</strong><br>(Last updated 01/09/2024)</p>
+            <a href="{% url 'register_partner' %}"><button>Apply</button></a>
+        </div>
+    </div>
+    
+     
+      <style>
+        
+        body {
+          font-family: 'Montserrat', sans-serif;
+          
+          background-color: #000; /* Background color black */
+          color: #fff; /* Text color white */
+      }
+      
+      .membership-section {
+        font-family: 'Montserrat', sans-serif;
+          display: flex;
+          flex-direction:row;
+          justify-content: center;
+          font-weight:400;
+          font-size:16px;
+          padding: 20px;
+      }
+      .membership-section button {
+        background-color: transparent;
+        color: white;
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-top: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        
+    }
+    
+    .membership-section button::before,
+    .membership-section button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 2px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    
+    .membership-section button::before {
+        left: 10px;
+    }
+    
+    .membership-section button::after {
+        right: 10px;
+    }
+    
+    .membership-section button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+      .membership-card {
+          background-color: #000; /* Dark gray card background */
+          padding: 30px;
+          width: 20%;
+          gap:20px
+          border-radius: 8px;
+          box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+          text-align: center;
+      }
+      
+      .membership-card h3 {
+        font-size:24px;
+        font-weight:400;
+        line-height:1.25;
+          color: rgb(226, 226, 226);
+          margin-bottom: 20px;
+      }
+      
+      .membership-card p {
+          font-size: 18px;
+          overflow-wrap:break-word;
+          line-height: 1.5;
+          color: rgb(145, 145, 145); /* Light gray for text */
+          margin-bottom: 20px;
+      }
+      
+      .membership-card strong {
+          color: rgb(145, 145, 145) ; /* Make bold text white */
+      }
+      
+      
+      
+      .membership-card p:last-of-type {
+          margin-bottom: 40px;
+      }
+      
+      .membership-card button {
+          margin-top: auto;
+      }
+      
+        .pathways{
+            text-align:center;
+        }
+        .pathways button {
+            margin-bottom:10px;
+            background-color: transparent;
+            color: white;
+            padding: 15px 45px;
+            border: 1px solid white;
+            margin-top: 0px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            
+        }
+        
+        .pathways button::before,
+        .pathways button::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 2px;
+            background-color: white;
+            transform: translateY(-50%);
+        }
+        
+        .pathways button::before {
+            left: 10px;
+        }
+        
+        .pathways button::after {
+            right: 10px;
+        }
+        
+        .pathways button:hover {
+            background-color: white;
+            color: #333;
+            border-color: #333;
+        }
+        @media (max-width: 768px){
+          .membership-section{
+            flex-direction:column;
+            
+          }
+          .membership-card{
+            width:90%;
+          }
+        }
+        
+        .card-image[aria-label="Champion1"] {
+            background-image: url("{% static 'images/champion.jpg' %}");
+          }
+          
+          .card-image[aria-label="Associate1"] {
+            background-image: url("{% static 'images/associate.jpg' %}");
+          }
+          
+          .card-image[aria-label="Partner1"] {
+            background-image: url("{% static 'images/partner.jpg' %}");
+          }
+        
+      </style>
+     
+
+    <!-- Eligibility Criteria -->
+      <section id="exp-sec">
+    <div class="exception-section">
+      <h1>WE MAKE NO EXCEPTIONS</h1>
+      <hr>
+      <div class="exception-container">
+          <div class="exception-card-large">
+              <h2>Individuals Connected With Our Founder</h2>
+              <p>We greatly appreciate your support and excitement for our Founder's vision but we must emphasize that being connected with our Founder (Past/Present) <strong>does not</strong> grant your application any special consideration under any circumstances.</p>
+              <p>Please understand that The Champions Club is as <strong>exclusive</strong> as it gets, our members represent the very best of the best in society. Our Founder has <strong>no authority</strong> to overrule the club's decision making when it comes to granting membership or partnership.</p>
+          </div>
+          <div class="exception-card-small">
+              <h2>Family, Staff & Partners</h2>
+              <p>We cherish close relations but it must be noted that being a family member (Immediate/Distant) of our Founder, member of staff (Executive/Workforce) or business partner <strong>does not</strong> grant your application any special consideration under any circumstances.</p>
+          </div>
+      </div>
+  </div>
+</section>
+<style>
+  #exp-sec hr{
+    width:50px;
+    color:#333;
+    margin-bottom:30px;
+  }
+#exp-sec{
+  width:100%;
+  background-color:#000;
+  justify-content:center;
+  font-family:'Montserrat';
+  font-weight:400;
+  overflow-wrap: break-word;
+}
+.exception-section {
+    margin:0 auto;
+    text-align: center;
+    padding: 50px 0;
+    max-width:1400px;
+}
+
+.exception-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.exception-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 50px;
+}
+
+.exception-card-large {
+    width: 60%;
+    
+    text-align:left;
+     /* Slightly lighter black for card */
+    padding: 20px 30px;
+    line-height:1.5;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.exception-card-small {
+  width: 30%;
+  text-align:left;
+  line-height:1.5;
+   /* Slightly lighter black for card */
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.exception-card-large h2,
+.exception-card-small h2
+ {
+    font-size: 24px;
+    font-weight:400;
+    
+    line-height:1.25;
+    color: rgb(226, 226, 226);
+    margin-bottom: 24px;
+}
+
+.exception-card-large p,
+.exception-card-small p {
+    font-size: 18px;
+    color: rgb(145, 145, 145); /* Light gray for text */
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.exception-card strong {
+    color: #fff; /* Make bold text white */
+}
+
+/* Ensure responsive behavior for smaller screens */
+@media screen and (max-width: 768px) {
+    .exception-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .exception-card-large,
+    .exception-card-small
+     {
+        width: 90%;
+        margin-bottom: 20px;
+    }
+}
+.video-section hr{
+width:50px;
+margin-bottom:30px;
+
+
+
+}
+
+</style>  
+
+    <!-- Video Section -->
+    <div class="video-section">
+        <h2>CELEBRATE LIFE WITH THE CHAMPIONS CLUB</h2>
+        <hr>
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <section id="dividing-section">
+
+    </section>
+            <footer id="footer" class="fade-in">
+    
+    
+                <div class="footer-content">
+    
+                    <div class="footer-section">
+                        <img src="{% static 'images/logo.png' %}" alt="">
+                     </div>
+                    
+                    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Quick Links</h4>
+                        <a href="{% url 'support_request' %}" class="footer-link">Support</a>
+                        <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                        <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
+                        <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
+                        
+                        <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
+                    </div>
+    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Company</h4>
+                        <a href="/about-us" class="footer-link">Become a Partner</a>
+                        <a href="{% url 'careers' %}" class="footer-link">Careers</a>
+                        
+                    </div>
+    
+                    <div class="footer-section">
+                        <h4 class="footer-title">STAY CONNECTED</h4>
+                        <div class="social-media">
+                            <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
+                                <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
+                            </a>
+                            <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+    
+                    </div>
+                    
+                </div>
+                <section id="dividing-section">
+    
+                </section>
+                <div class="footer-bottom">
+                    <div class="trademark">The Champions Club</div>
+                    <div class="copyright">Copyright © & Trademark ® 2024 The Champions Club™ - All Rights Reserved.</div>
+                </div>
+            </footer>
+    <style>
+        
+    .footer-section button{
+        background-color: transparent;
+        color: white;
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin-left: 15px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .footer-section button::before,
+    .footer-section button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 1px;
+        background-color: white;
+        transform: translateY(-50%);
+    }
+    .footer-section button::before {
+        left: 10px;
+    }
+    
+    .footer-section button::after {
+        right: 10px;
+    }
+    .footer-section button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    
+    
+    
+    
+    
+    
+    #footer {
+        background-color: #000;
+        padding: 50px 100px;
+        color: #f4f4f4;
+        font-family: 'Roboto', sans-serif;
+    }
+    
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+        
+        padding-bottom: 20px;
+    }
+    
+    .footer-section {
+        flex: 1;
+        min-width: 200px;
+        margin: 10px;
+        margin-left: 100px;
+    }
+    
+    .footer-title {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: #f4f4f4;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+    
+    .footer-link {
+        display: block;
+        color: #f4f4f4;
+        text-decoration: none;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+    
+    .footer-link:hover {
+        color: #999;
+    }
+    
+    .social-media {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+    }
+    
+    .social-icon {
+        color: #f4f4f4;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+    }
+    
+    .social-icon:hover {
+        color: #999;
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .trademark {
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+    
+    .copyright {
+        font-size: 0.8rem;
+        color: #666;
+    }
+    
+    @media (max-width: 768px) {
+        #footer{
+            padding:0;
+        }
+        .footer-content {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+    
+        .footer-section {
+            margin-bottom: 20px;
+            margin-left: 0;
+        }
+    
+        .social-media {
+            justify-content: center;
+        }
+    }
+    #footer img{
+        height: 150px;
+        margin:0 auto;
+    }
+    #dividing-section{
+       
+            background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+            height: 1px;
+        }
+    </style>
+
+</body>
+</html>

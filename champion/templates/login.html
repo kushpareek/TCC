@@ -1,0 +1,440 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        {% load crispy_forms_tags %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+       
+        <link rel="stylesheet" href="{% static 'css/application.css' %}">
+    </head>
+<body>
+  
+    <div class="login-container">
+        <h2>Login</h2>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            {% csrf_token %}
+        {{ form.username_or_email|as_crispy_field }}
+        
+           
+            {{ form.password|as_crispy_field }} 
+            <!-- Use crispy filter to render the form -->
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <p>Forgot your password? <a href="{% url 'password_reset' %}">Reset it here</a></p>
+
+        <p>Don't have an account? <a href="{% url 'apply' %}">Register here</a></p>
+    </div>
+
+</body>
+</html> {% endcomment %}
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load crispy_forms_tags %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    
+    <style>
+        body {
+            background-color: #000;
+            color: #ffffff;
+            font-family: 'Montserrat', 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #000;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .messages {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ff4d4d;
+            color: #fff;
+            list-style: none;
+        }
+
+        .messages li {
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .form-control {
+            background-color: #2e2e2e;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 12px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            background-color: #3e3e3e;
+            border-color: #666;
+            box-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-check input {
+            margin-right: 10px;
+        }
+
+        .form-check-label {
+            font-size: 0.9rem;
+        }
+
+        p {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        p a {
+            color: #ffcc00;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        p a:hover {
+            color: #e6b800;
+        }
+
+        button {
+            background-color: transparent;
+            color: white;
+            width: 100%;
+            padding: 15px 45px;
+            border: 1px solid white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        button::before,
+        button::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 1px;
+            background-color: white;
+            transform: translateY(-50%);
+        }
+
+        button::before {
+            left: 10px;
+        }
+
+        button::after {
+            right: 10px;
+        }
+
+        button:hover {
+            background-color: white;
+            color: #333;
+            border-color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: #e6b800;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form method="post" id="loginForm">
+            {% csrf_token %}
+            {{ form.username_or_email|as_crispy_field }}
+            {{ form.password|as_crispy_field }}
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="agreeTerms">
+                <label class="form-check-label" for="agreeTerms">I agree with the <a href="{% url 'terms_conditions' %}">terms and conditions</a></label>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <p>Forgot your password? <a href="{% url 'password_reset' %}">Reset it here</a></p>
+        <p>Don't have an account? <a href="{% url 'apply' %}">Register here</a></p>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            const agreeTerms = document.getElementById('agreeTerms');
+            if (!agreeTerms.checked) {
+                alert('You must agree with the terms and conditions to proceed.');
+                event.preventDefault(); // Prevent form submission if the checkbox is not checked
+            }
+        });
+    </script>
+</body>
+</html> {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    {% load static %}
+    {% load crispy_forms_tags %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC | Login</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <style>
+        body {
+            background-color: #000;
+            color: #ffffff;
+            font-family: 'Montserrat', 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #000;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            max-width: 400px;
+            width: 100%;
+            text-align: center; /* Center-align the content */
+        }
+
+        .login-container img {
+            max-width: 250px; /* Set the maximum width of the logo */
+            margin-bottom: 20px; /* Space between the logo and the heading */
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .messages {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ff4d4d;
+            color: #fff;
+            list-style: none;
+        }
+
+        .messages li {
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        form {
+            display: flex;
+            text-align:left;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .form-control {
+            background-color: #2e2e2e;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 12px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            background-color: #3e3e3e;
+            border-color: #666;
+            box-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-check input {
+            margin-right: 10px;
+        }
+
+        .form-check-label {
+            font-size: 0.9rem;
+        }
+
+        p {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        p a {
+            color: #ffcc00;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        p a:hover {
+            color: #e6b800;
+        }
+
+        button {
+            background-color: transparent;
+            color: white;
+            width: 100%;
+            padding: 15px 45px;
+            border: 1px solid white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        button::before,
+        button::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 1px;
+            background-color: white;
+            transform: translateY(-50%);
+        }
+
+        button::before {
+            left: 10px;
+        }
+
+        button::after {
+            right: 10px;
+        }
+
+        button:hover {
+            background-color: white;
+            color: #333;
+            border-color: #333;
+        }
+
+        a {
+            font-weight:bold;
+            background: linear-gradient(to bottom, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="{% static 'images/logo.png' %}" alt="The Champions Club Logo">
+        <h2>Login</h2>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form method="post" id="loginForm">
+            {% csrf_token %}
+            {{ form.username_or_email|as_crispy_field }}
+            {{ form.password|as_crispy_field }}
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="agreeTerms">
+                <label class="form-check-label" for="agreeTerms">I agree with the <a href="{% url 'terms_conditions' %}">terms and conditions</a></label>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <p>Forgot your password? <a href="{% url 'password_reset' %}">Reset it here</a></p>
+        <p>Don't have an account? <a href="{% url 'apply' %}">Register here</a></p>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            const agreeTerms = document.getElementById('agreeTerms');
+            if (!agreeTerms.checked) {
+                alert('You must agree with the terms and conditions to proceed.');
+                event.preventDefault(); // Prevent form submission if the checkbox is not checked
+            }
+        });
+    </script>
+</body>
+</html>
