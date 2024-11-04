@@ -1516,8 +1516,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <li>Collaborate to evaluate your business potential</li>
             </ul>
             <div class="cta-buttons">
-                <button class="join-btn">Join</button>
-                <a href="#" class="learn-more-link">Learn More <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                <a href = "{% url 'apply' %}"><button class="join-btn">Join</button></a>
+                <a href="{% url 'membership_portal' %}" class="learn-more-link">Learn More <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
                     <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
                 </svg></a>
             </div>
@@ -1735,8 +1735,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
             <div class="cta-buttons">
-                <button class="join-btn">Join</button>
-                <a href="#" class="learn-more-link">Learn More 
+                <a href="{% url 'course_soon' %}"><button class="join-btn">Join</button></a>
+                <a href="{% url 'course_soon' %}" class="learn-more-link">Learn More 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
                         <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
                     </svg>
@@ -1953,8 +1953,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
             <div class="cta-buttons">
-                <button class="join-btn">Schedule a Meeting</button>
-                <a href="#" class="learn-more-link">Learn More 
+                <a href="{% url 'membership_portal' %}"><button class="join-btn">Schedule a Meeting</button></a>
+                <a href="{% url 'register_partner' %}" class="learn-more-link">Learn More 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
                         <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
                     </svg>
@@ -2147,7 +2147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <h2>Join Our Global Network of Champions and Achieve Greatness</h2>
                 <p>Engage with our exclusive network to connect with like-minded achievers.</p>
-                <a href="#" class="learn-more-link">Join
+                <a href="{% url 'apply' %}" class="learn-more-link">Join
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
                         <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
                     </svg>
@@ -2159,7 +2159,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <h2>Transform Your Skills with Our Wealth-Making Courses</h2>
                 <p>Our courses are designed to equip you with the tools for success.</p>
-                <a href="#" class="learn-more-link"> Learn
+                <a href="{% url 'associate_reg' %}" class="learn-more-link"> Learn
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
                         <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
                     </svg>
@@ -2171,7 +2171,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <h2>Expert Business Consulting Tailored to Your Unique Needs</h2>
                 <p>Our consulting services provide actionable strategies to elevate your business.</p>
-                <a href="#" class="learn-more-link">Consult
+                <a href="{% url 'register_partner' %}" class="learn-more-link">Consult
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
                         <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
                     </svg>
@@ -2425,7 +2425,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <p>Join a Community of Champions and elevate your journey</p>
     </div>
     <div class="button-container">
-    <button>Join Now</button>
+    <a href = "{% url 'membership_portal' %}"><button>Join Now</button></a>
 </div>
 </section>
  
@@ -3288,7 +3288,7 @@ a:hover {
                 <h4>PAY</h4>
                 <h2>$49.99</h2>
                 <p>Immediately tap into a reservoir of cutting-edge knowledge, positioning yourself at the vanguard of innovation and fast-tracking your path to wealth.</p>
-                <button class="action-btn">Enroll Today</button>
+                <a href="{% url 'membership_portal' %}"><button class="action-btn">Enroll Today</button></a>
             </div>
         </div>
     </div>
