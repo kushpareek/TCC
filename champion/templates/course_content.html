@@ -1,158 +1,4 @@
-{% comment %} <!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <title>{{ course.title }} - Course Content</title>
-    <link rel="stylesheet" href="{% static 'css/courses.css' %}">
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
-    <style>
-        /* Custom styles for the page */
-        body {
-            background-color: #000;
-            color: #fff;
-            max-width:1200px;
-            margin:100px auto;
-            font-family: 'Montserrat', 'Roboto', sans-serif;
-        }
-        .course-content-container {
-            display: flex;
-            gap: 2rem;
-        }
-        .video-container {
-            flex: 2;
-        }
-        h1, h4 {
-            font-family: 'Montserrat', sans-serif;
-            margin-bottom:7%;
-            color:white;
-            font-size: 3rem;
-            font-weight: 700;
-        }
-        p, .list-group-item {
-            font-family: 'Roboto', sans-serif;
-            font-weight: 400;
-            color: #cccccc;
-        }
-        .card {
-            background-color: #1e1e1e;
-            border: none;
-        }
-        .card-header {
-            background-color: #000;
-            color: #f5f5f5;
-            border-bottom: white 1px solid;
-        }
-        .btn-primary {
-            background-color: #ffcc00;
-            border: none;
-            color: #121212;
-            font-weight: 600;
-        }
-        .btn-primary:hover {
-            background-color: #e6b800;
-        }
-        .btn-success {
-            background-color: #28a745;
-            border: none;
-            color: #121212;
-            font-weight: 600;
-        }
-        .btn-success:hover {
-            background-color: #218838;
-        }
-        .list-group-item {
-            background-color: #1e1e1e;
-            border: none;
-        }
-        .list-group-item a {
-            color: #ffcc00;
-            text-decoration: none;
-        }
-        .list-group-item a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="container mt-5">
-        <h1>{{ course.title }} - Course Content</h1>
-        <div class="course-content-container">
-            <!-- Video Player Section -->
-            <div class="video-container">
-                {% if current_lesson %}
-                    <video controls id="courseVideo" class="w-100" autoplay controls controlslist="nodownload noplaybackrate">
-                        <source src="{% url 'stream_lesson' current_lesson.id %}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <div class="d-flex justify-content-between mt-3">
-                        {% if previous_lesson %}
-                            <a href="?lesson_id={{ previous_lesson.id }}" class="btn btn-secondary" id="prevBtn">Previous</a>
-                        {% else %}
-                            <button class="btn btn-secondary" disabled>Previous</button>
-                        {% endif %}
-                        {% if next_lesson %}
-                            <a href="?lesson_id={{ next_lesson.id }}" class="btn btn-primary" id="nextBtn">Next</a>
-                        {% else %}
-                            <button class="btn btn-primary" disabled>Next</button>
-                        {% endif %}
-                    </div>
-                {% else %}
-                    <p>No lessons available for this course.</p>
-                {% endif %}
-            </div>
 
-            <!-- Syllabus Accordion Section -->
-            <div id="syllabusAccordion" class="syllabus-container">
-                {% for section in sections %}
-                <div class="card mb-3">
-                    <div class="card-header" id="heading{{ section.id }}">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link text-left text-decoration-none text-light" type="button" data-toggle="collapse" data-target="#collapse{{ section.id }}" aria-expanded="true" aria-controls="collapse{{ section.id }}">
-                                {{ section.title }}
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapse{{ section.id }}" class="collapse" aria-labelledby="heading{{ section.id }}" data-parent="#syllabusAccordion">
-                        <div class="card-body">
-                            <ol class="list-group list-group-flush">
-                                {% for lesson in section.lessons.all %}
-                                <li class="list-group-item">
-                                    <a href="?lesson_id={{ lesson.id }}">{{ lesson.title }}</a>
-                                </li>
-                                {% endfor %}
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const video = document.getElementById('courseVideo');
-            const nextBtn = document.getElementById('nextBtn');
-
-            video.addEventListener('ended', function() {
-                if (nextBtn) {
-                    nextBtn.click();  // Automatically click the Next button when the video ends
-                }
-            });
-        });
-    </script>
-</body>
-</html> {% endcomment %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -189,21 +35,20 @@
             <!-- Navigation Links -->
             <ul id="nav-links">
                 <li><a href="{% url 'home' %}">HOME</a></li>
-                <li><a href="{% url 'blog_list' %}">NEWS</a></li>
-                
-              
-        
+                <li><a href="{% url 'news_feed' %}">NEWS</a></li>
+          
+    
                 <!-- Dropdown tab for Resources -->
                 <li class="dropdown">
                     <a href="#">RESOURCES</a>
                     <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'blog_list' %}">BLOGS</a></li>
                         <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
-                        <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
-                        <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
                         <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                        <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>  
                     </ul>
                 </li>
-    
     
     
                 
@@ -724,7 +569,7 @@
                      </div>
                     
                     
-                    <div class="footer-section">
+                     <div class="footer-section">
                         <h4 class="footer-title">Quick Links</h4>
                         <a href="{% url 'support_request' %}" class="footer-link">Support</a>
                         <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
@@ -736,10 +581,11 @@
     
                     <div class="footer-section">
                         <h4 class="footer-title">Company</h4>
-                        <a href="/about-us" class="footer-link">Become a Partner</a>
+                        <a href="{% url 'register_partner' %}" class="footer-link">Become a Partner</a>
                         <a href="{% url 'careers' %}" class="footer-link">Careers</a>
                         
                     </div>
+    
     
                     <div class="footer-section">
                         <h4 class="footer-title">STAY CONNECTED</h4>

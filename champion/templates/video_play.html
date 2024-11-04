@@ -1,125 +1,4 @@
-{% comment %} <!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ video.title }} - Video Streaming</title>
-    <style>
-        /* Hide the seek bar */
-        video::-webkit-media-controls-timeline {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <h1>{{ video.title }}</h1>
-    <video id="videoPlayer" controls controlslist="nodownload noplaybackrate">
-        <source src="{% url 'stream_video' video.id %}" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
 
-    <script>
-        const videoPlayer = document.getElementById('videoPlayer');
-
-        // Start the video from the last watched time
-        videoPlayer.currentTime = {{ last_watched_time }};
-
-        // Function to update the last watched time on the server
-        function updateVideoTime() {
-            fetch('{% url "update_video_time" video.id %}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ time: videoPlayer.currentTime })
-            });
-           
-        }
-
-        // Periodically update the last watched time every 15 seconds
-        setInterval(updateVideoTime, 1500); // 15000ms = 15 seconds
-
-        // Also update the last watched time when the video is paused
-        videoPlayer.onpause = updateVideoTime;
-        
-        // Mark the video as completed when it ends
-        videoPlayer.onended = function() {
-            fetch('{% url "complete_video" video.id %}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ completed: true })
-            });
-        };
-    </script>
-</body>
-</html> {% endcomment %}
-{% comment %} <!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <title>{{ video.title }} - Video Streaming</title>
-    <style>
-        /* Hide the seek bar */
-        video::-webkit-media-controls-timeline {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <h1>{{ video.title }}</h1>
-    <video id="videoPlayer" controls controlslist="nodownload noplaybackrate">
-        <source src="{% url 'stream_video' video.id %}" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-
-    <script>
-        const videoPlayer = document.getElementById('videoPlayer');
-
-        // Start the video from the last watched time
-        videoPlayer.currentTime = {{ last_watched_time }};
-
-        // Function to update the last watched time on the server
-        function updateVideoTime() {
-            fetch('{% url "update_video_time" video.id %}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ time: videoPlayer.currentTime })
-            });
-           
-        }
-
-        // Periodically update the last watched time every 15 seconds
-        setInterval(updateVideoTime, 3500); // 15000ms = 15 seconds
-
-        // Also update the last watched time when the video is paused
-        videoPlayer.onpause = updateVideoTime;
-        
-        // Mark the video as completed when it ends
-        videoPlayer.onended = function() {
-            fetch('{% url "complete_video" video.id %}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ completed: true })
-            });
-        };
-
-        // Detect screen sharing
-       
-    </script>
-</body>
-</html> {% endcomment %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,6 +9,8 @@
     <link rel="stylesheet" href="{% static "css/play_video.css" %}">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static "css/navbar.css" %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -222,11 +103,28 @@
             color: #ffcc00;
         }
         @media (max-width: 768px) {
+            .custom-video-player {
+                position: relative;
+                width: 100%; /* Full width of the container */
+                background-color: #000;
+                max-width:100%;
+            }
             .video-container {
-                margin: 50px 0; /* Add 100px margin to the top and bottom */
+                margin: 60px 0; /* Add 100px margin to the top and bottom */
             }
             h1{
-                margin-top:100px;
+                margin-top:10px;
+            }
+            .branding {
+                color: #ffcc00;
+                font-size:14px;
+            }
+            #playPauseBtn {
+                font-size: 22px;
+                color: white;
+                background: none;
+                border: none;
+                cursor: pointer;
             }
    
         }
@@ -250,18 +148,18 @@
         <!-- Navigation Links -->
         <ul id="nav-links">
             <li><a href="{% url 'home' %}">HOME</a></li>
-            <li><a href="{% url 'blog_list' %}">NEWS</a></li>
-            
+            <li><a href="{% url 'news_feed' %}">NEWS</a></li>
           
     
             <!-- Dropdown tab for Resources -->
             <li class="dropdown">
                 <a href="#">RESOURCES</a>
                 <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'blog_list' %}">BLOGS</a></li>
                     <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
-                    <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
-                    <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
                     <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                    <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>  
                 </ul>
             </li>
 
@@ -363,7 +261,7 @@
             <div class="video-container">
                 
                 <div class="custom-video-player" id="videoPlayerContainer">
-                    <video id="courseVideo" class="video-js vjs-default-skin" preload="auto" controlslist="nodownload noplaybackrate">
+                    <video webkit-playsinline="true" x-webkit-airplay="allow" id="courseVideo" class="video-js vjs-default-skin" preload="auto" controlslist="nodownload noplaybackrate">
                         <source src="{% url 'stream_video' video.id %}?token={{ token }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
@@ -455,6 +353,9 @@
 </main>
     
     <style>
+        #courseVideo {
+            touch-action: manipulation;
+        }
         /* ... existing styles ... */
         .sidebar {
             flex: 1;
@@ -713,6 +614,7 @@
     @media (max-width: 992px) {
         .main-content {
             flex-direction: column;
+            padding:0;
         }
     
         .video-section {
@@ -722,6 +624,12 @@
         .suggested-videos {
             max-width: 100%;
             margin-top: 40px;
+        }
+        .custom-video-player video {
+            width: 100%;
+            height: auto;
+            border-radius:0px;
+            cursor: pointer;
         }
     }
     
@@ -868,7 +776,7 @@
                  </div>
                 
                 
-                <div class="footer-section">
+                 <div class="footer-section">
                     <h4 class="footer-title">Quick Links</h4>
                     <a href="{% url 'support_request' %}" class="footer-link">Support</a>
                     <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
@@ -884,6 +792,7 @@
                     <a href="{% url 'careers' %}" class="footer-link">Careers</a>
                     
                 </div>
+
 
                 <div class="footer-section">
                     <h4 class="footer-title">STAY CONNECTED</h4>

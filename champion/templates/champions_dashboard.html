@@ -1,197 +1,4 @@
-{% comment %} <!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Champion's Dashboard</title>
-    
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <nav class="navbar">
-        <h1>THE CHAMPIONS CLUB</h1>
-    </nav>
-    <div class="dashboard-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <h2>Welcome, {{ user.first_name }} {{ user.last_name }}!</h2>
-            
-            {% if registration.profile_image %}
-                <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="profile-img-circle">
-            {% endif %}
 
-            {% if registration.discord_id and registration.telegram_username %}
-            <div class="social-links">
-                <h3>Exclusive Links</h3>
-                <p><a href="https://discord.com/invite/your-channel" target="_blank"><i class="fab fa-discord"></i> Join our Discord Channel</a></p>
-                <p><a href="https://t.me/your-group" target="_blank"><i class="fab fa-telegram-plane"></i> Join our Telegram Group</a></p>
-            </div>
-            {% endif %}
-            
-            <div class="welcome-message">
-                <p>Welcome to The Champions Club! You are now part of an exclusive group of achievers. Here, we celebrate your accomplishments and unique traits.</p>
-                <p>Welcome to the inner circle! We are excited to have you join our online communities. These channels are your gateway to connect with fellow champions, share your insights, and gain inspiration. Please keep these links private and do not share them with anyone outside the club.</p>
-            </div>
-        
-            <h3>Connect with Us</h3>
-            
-            {% if form %}
-                <p>Please update your Discord ID and Telegram username to join our exclusive social channels. Connect with other champions and be part of the community!</p>
-            {% else %}
-                <p>Thank you for updating your details. You can now join our exclusive channels. Please keep these links confidential—these are for champions only!</p>
-            {% endif %}
-        </div>
-
-        <!-- Main Content Area -->
-        <div class="content">
-            <h1>Dashboard</h1>
-
-            <div class="dashboard-section">
-                <h2>Your Achievements</h2>
-                <p>{{ registration.achievements }}</p>
-                <p>Your achievements define you as a champion. Keep striving for excellence, and remember that your hard work does not go unnoticed.</p>
-            </div>
-
-            <div class="dashboard-section">
-                <h2>Your Unique Trait</h2>
-                <p>{{ registration.unique_trait }}</p>
-                <p>Your unique trait is what sets you apart from the rest. Embrace it, and let it guide you on your journey to greatness.</p>
-            </div>
-
-            <!-- Social Media Form -->
-            <div class="dashboard-section">
-                <h2>Update Your Details</h2>
-                {% if form %}
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit">Update Details</button>
-                    </form>
-                {% else %}
-                    <p><i class="fab fa-discord"></i> {{ registration.discord_id }}</p>
-                    <p><i class="fab fa-telegram-plane"></i> {{ registration.telegram_username }}</p>
-                {% endif %}
-            </div>
-        </div>
-        
-    </div>
-    <footer id="footer">
-        {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
-    {% endif %}
-    <div class="trademark">The Champions Club</div>
-    <div class="copyright">Copyright &copy; 2024 The Champions Club - All Rights Reserved.</div>
-    </footer>
-</body>
-</html> {% endcomment %}
-{% comment %} <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Champion's Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-   
-    </style>
-</head>
-
-<body>
-    <div class="dashboard-container">
-        <!-- Profile Header -->
-        <div class="profile-header">
-            {% if registration.profile_image %}
-            <img src="{{ registration.profile_image.url }}" alt="Profile Image">
-            {% endif %}
-            <div class="info">
-                <h2>{{ user.first_name }} {{ user.last_name }}</h2>
-                <p>Email: {{ user.email }}</p>
-                <p>Phone: {{ registration.phone }}</p>
-            </div>
-        </div>
-
-        <!-- Dashboard Content -->
-        <div class="content">
-            <!-- Bio Section -->
-            <div class="card">
-                <h3>Bio</h3>
-                <p>{{ registration.bio }}</p>
-            </div>
-
-            <!-- Personality Section -->
-            <div class="card">
-                <h3>Personality</h3>
-                <ul>
-                    <li><i class="fas fa-check"></i>{{ registration.personality_traits }}</li>
-                </ul>
-            </div>
-
-            <!-- Skills Section -->
-            <div class="card">
-                <h3>Skills</h3>
-                <ul>
-                    
-                    <li><i class="fas fa-check"></i>{{ registration.skills }}</li>
-                   
-                </ul>
-            </div>
-
-            <!-- Motivations Section -->
-            <div class="card">
-                <h3>Motivations</h3>
-                <ul>
-                    
-                    <li><i class="fas fa-check"></i>{{ registration.motivations }}</li>
-                    
-                </ul>
-            </div>
-
-            <!-- Goals Section -->
-            <div class="card">
-                <h3>Goals</h3>
-                <ul>
-                    
-                    <li><i class="fas fa-check"></i>{{ registration.goals }}</li>
-                    
-                </ul>
-            </div>
-            <div class="card">
-                <h3>Why You Are Champion</h3>
-                <ul>
-                    
-                    <li><i class="fas fa-check"></i>{{ registration.champion_reason }}</li>
-                    
-                </ul>
-            </div>
-            <div class="card">
-                <h3>Achievements</h3>
-                <ul>
-                    
-                    <li><i class="fas fa-check"></i>{{ registration.achievements }}</li>
-                    
-                </ul>
-            </div>
-            <div class="card">
-                <h3>Unique Trait</h3>
-                <ul>
-                    
-                    <li><i class="fas fa-check"></i>{{ registration.unique_trait }}</li>
-                    
-                </ul>
-            </div>
-        </div>
-    </div>
-
-
-</body>
-
-</html> {% endcomment %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -201,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <title>TCC | Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -218,6 +28,7 @@
             width: 260px;
             background-color: #000;
             height: 100%;
+            margin-top:5%;
             position: fixed;
             padding: 20px 0;
             display: flex;
@@ -312,9 +123,10 @@
 
         .section p,
         .section ul li {
-            margin-bottom: 15px;
-            color: #b5b5b5;
-            font-size: 1.1rem;
+            text-align: left;
+    margin-bottom: 15px;
+    color: #b5b5b5;
+    font-size: 1rem;
         }
 
         .section ul {
@@ -338,7 +150,35 @@
             margin-bottom: 8px;
             font-size: 1rem;
         }
-
+        .course-item{
+            background-color: #111;
+            padding: 30px;
+            margin: 20px auto;
+            border-radius: 10px;
+            
+        }
+        .course-item a{
+            text-decoration: none;
+            color:#000;
+            background-color: #ffd700;
+            padding: 10px 8px;
+            margin:20px auto;
+            border-radius: 4px;
+        }
+        .video-item{
+            background-color: #111;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px
+        }
+        .video-item a{
+            text-decoration: none;
+            color:#000;
+            background-color: #ffd700;
+            padding: 10px 8px;
+            margin:20px auto;
+            border-radius: 4px;
+        }
         .form-group input,
         .form-group select {
             width: 90%;
@@ -432,10 +272,10 @@
 
         @media (max-width: 768px) {
             .sidebar {
-                width: 90%;
+                width: auto;
                 height: auto;
                 position: relative;
-                top: 0;
+                top: 75px;
                 transform: translateY(0);
                 border-right: none;
                 border-bottom: 1px solid #333;
@@ -453,7 +293,7 @@
             .main-content {
                 margin-left: 0;
                 padding: 20px;
-                width: 90%;
+                width: auto;
             }
 
             .profile-header {
@@ -526,13 +366,159 @@
 </head>
 
 <body>
-   
+    <section>
+        <nav class="top-navbar">
+            <!-- Logo on the left -->
+            <div class="logo">
+                <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+                THE CHAMPIONS CLUB
+            </div>
+    
+            <!-- Menu Icon for Mobile -->
+            <div class="menu-icon" onclick="toggleMenu()">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+    
+            <!-- Navigation Links -->
+            <ul id="nav-links">
+                <li><a href="{% url 'home' %}">HOME</a></li>
+                <li><a href="{% url 'news_feed' %}">NEWS</a></li>
+          
+    
+                <!-- Dropdown tab for Resources -->
+                <li class="dropdown">
+                    <a href="#">RESOURCES</a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'blog_list' %}">BLOGS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                        <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>  
+                    </ul>
+                </li>
+    
+    
+    
+                
+                <li><a href="{% url 'support_request' %}">CONTACT</a></li>
+                
+                {% if not user.is_authenticated %}
+                <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+                {% else %}
+                {% if registration.approved == 1 %}
+                {% if registration.membership_paid == 0 %}
+                <li><a href="{% url 'champions_dashboard' %} ">BUY MEMEBERSHIP TODAY</a></li>
+                {% else %}
+                <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> DASHBOARD</a></li>
+                {% endif %}
+                {% else %}
+                <li class="dropdown">
+                    <a href="#">
+                        {% if registration.profile_image %}
+                            <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                        {% else %}
+                            <i class="fa-solid fa-circle-user fa-xl"></i>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'user_profile' %}">PROFILE</a></li>
+                        <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+                    </ul>
+                </li>
+                
+                {% endif %}
+                {% endif %}
+               
+                <!-- <li>
+                    <div class="toggle">
+                        <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                        <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                           </div>
+                    </li> -->
+            </ul>
+        </nav>
+    
+        <!-- Add your page content here -->
+    
+        <script>
+            function toggleMenu() {
+                const menuIcon = document.querySelector('.menu-icon');
+                const navLinks = document.getElementById('nav-links');
+    
+                menuIcon.classList.toggle('open');
+                navLinks.classList.toggle('show');
+            }
+        </script>
+       
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+      </div>  
+    
+    
+    <script>
+    
+    
+      // Toggle dropdown for mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        const dropdownLinks = document.querySelectorAll('.dropdown > a');
+        
+        dropdownLinks.forEach(function(dropdownLink) {
+            dropdownLink.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default link behavior
+                
+                const dropdown = this.parentElement; // Get the parent <li> element
+    
+                // Toggle the 'show' class to show or hide the dropdown
+                dropdown.classList.toggle('show');
+    
+                // Close any other open dropdowns
+                document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                    if (otherDropdown !== dropdown) {
+                        otherDropdown.classList.remove('show');
+                    }
+                });
+            });
+        });
+    });
+    
+    
+       function toggleMenu() {
+        const navLinks = document.getElementById('nav-links');
+        const menuIcon = document.querySelector('.menu-icon');
+        navLinks.classList.toggle('show');
+        menuIcon.classList.toggle('open');
+    }
+    
+        </script>
+        <style>
+            .top-navbar{
+               position: fixed;
+                z-index: 999999;
+            }
+            .navbar-profile-img {
+                width: 35px;             /* Adjust width as needed */
+                height: 35px;  
+                          /* Adjust height as needed */
+                border-radius: 50%;      /* Makes the image circular */
+                object-fit: cover;       /* Ensures the image covers the container without distortion */
+                vertical-align: middle;  /* Aligns the image vertically */
+            }
+           .main-content{
+            margin-top:100px;
+           }
+        </style>
+        </section>
+        
+    <section id = "Dashboard-container">
     <!-- Sidebar -->
     <div class="sidebar">
         <a href="#" class="active" onclick="showContent('PersonalInfo')">Personal Info</a>
         <a href="#" onclick="showContent('Courses')">My Library</a>
         <a href="#" onclick="showContent('Settings')">Settings</a>
         <a href="#" onclick="showContent('PrivacySettings')">Privacy Settings</a> <!-- New Tab -->
+       
     </div>
 
     <!-- Main Content -->
@@ -546,9 +532,25 @@
 {% endif %}
         <!-- Profile Header -->
         <div class="profile-header">
-            {% if registration.profile_image %}
-            <img src="{{ registration.profile_image.url }}" alt="Profile Image">
-            {% endif %}
+            <div class="image-container">
+                <!-- Profile Image -->
+                {% if registration.profile_image %}
+                    <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="profile-img">
+                {% else %}
+                    <img src="{% static 'images/default_profile.png' %}" alt="Profile Image" class="profile-img">
+                {% endif %}
+                
+                <!-- Overlay for Update Button -->
+                <div class="overlay">
+                    <form id="image-update-form" action="{% url 'champions_dashboard' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="file" id="profileImageInput" name="profile_image" accept="image/*" style="display: none;">
+                        <button type="button" class="update-btn" onclick="triggerFileInput()">Update Image</button>
+                    </form>
+                </div>
+            </div>
+        
+            <!-- User Info -->
             <div class="info">
                 <h2>{{ user.first_name }} {{ user.last_name }}</h2>
                 <p>{{ registration.designation }}</p>
@@ -556,7 +558,73 @@
                 <p>{{ registration.phone }}</p>
             </div>
         </div>
-
+        <!-- CSS -->
+        <style>
+            .profile-header {
+                display: flex;
+                align-items: center;
+            }
+            .image-container {
+                position: relative;
+                width: 150px;
+                height: 150px;
+            }
+            .profile-img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+            .overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 88%;
+                height: 89%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(0, 0, 0, 0.5);
+                border-radius: 50%;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .image-container:hover .overlay,
+            .image-container:focus-within .overlay {
+                opacity: 1;
+            }
+            .update-btn {
+                background-color: #ffcc00;
+                color: #000;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+            }
+            .profile-img-circle {
+                width: 300px;
+                height: 300px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 3px solid #3a3a3a; /* Subtle border around the profile image */
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Soft shadow for depth */
+            }
+        </style>
+        <script>
+            function triggerFileInput() {
+                document.getElementById('profileImageInput').click();
+            }
+        
+            document.getElementById('profileImageInput').addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    document.getElementById('image-update-form').submit();
+                } else {
+                    console.error("No file selected.");
+                }
+            });
+        </script>
+        
         <!-- Personal Info Section -->
         <div id="PersonalInfo" class="section">
             <h3>Bio</h3>
@@ -611,77 +679,163 @@
         <!-- Settings Section -->
         <div id="Settings" class="section" style="display:none;">
             <h3>Profile Settings</h3>
-            <form method="post" class="form-grid">
+            <form method="post" class="form-grid" enctype="multipart/form-data">
                 {% csrf_token %}
+        
+                <!-- First Name with Error Display -->
                 <div class="form-group">
                     <label for="first_name">First Name</label>
-                    <input type="text" id="first_name" name="first_name" value="{{ form.first_name.value|default:user.first_name }}">
+                    <input type="text" id="first_name" name="first_name" value="{{ form.first_name.value|default:user.first_name }}" required>
+                    {% if form.first_name.errors %}
+                        <div class="error">{{ form.first_name.errors.0 }}</div>
+                    {% endif %}
                 </div>
-
+        
+                <!-- Last Name with Error Display -->
                 <div class="form-group">
                     <label for="last_name">Last Name</label>
-                    <input type="text" id="last_name" name="last_name" value="{{ form.last_name.value|default:user.last_name }}">
+                    <input type="text" id="last_name" name="last_name" value="{{ form.last_name.value|default:user.last_name }}" required>
+                    {% if form.last_name.errors %}
+                        <div class="error">{{ form.last_name.errors.0 }}</div>
+                    {% endif %}
                 </div>
-
+        
+                <!-- Email with Error Display -->
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" value="{{ form.email.value|default:user.email }}">
+                    <input type="email" id="email" name="email" value="{{ form.email.value|default:user.email }}" required>
+                    {% if form.email.errors %}
+                        <div class="error">{{ form.email.errors.0 }}</div>
+                    {% endif %}
                 </div>
-
+        
+                <!-- Phone with Error Display -->
                 <div class="form-group">
                     <label for="phone">Phone</label>
                     <input type="text" id="phone" name="phone" value="{{ form.phone.value|default:registration.phone }}">
+                    {% if form.phone.errors %}
+                        <div class="error">{{ form.phone.errors.0 }}</div>
+                    {% endif %}
                 </div>
-
+        
+                <!-- Bio with Error Display -->
                 <div class="form-group">
                     <label for="bio">Bio</label>
                     <textarea id="bio" name="bio">{{ form.bio.value|default:registration.bio }}</textarea>
+                    {% if form.bio.errors %}
+                        <div class="error">{{ form.bio.errors.0 }}</div>
+                    {% endif %}
                 </div>
-
+        
+                <!-- Designation -->
                 <div class="form-group">
                     <label for="designation">Designation</label>
                     <input type="text" id="designation" name="designation" value="{{ form.designation.value|default:registration.designation }}">
                 </div>
-
+        
+                <!-- Personality Traits -->
                 <div class="form-group">
                     <label for="personality_traits">Personality Traits</label>
                     <textarea id="personality_traits" name="personality_traits">{{ form.personality_traits.value|default:registration.personality_traits }}</textarea>
                 </div>
-
+        
+                <!-- Skills -->
                 <div class="form-group">
                     <label for="skills">Skills</label>
                     <textarea id="skills" name="skills">{{ form.skills.value|default:registration.skills }}</textarea>
                 </div>
-
+        
+                <!-- Motivations -->
                 <div class="form-group">
                     <label for="motivations">Motivations</label>
                     <textarea id="motivations" name="motivations">{{ form.motivations.value|default:registration.motivations }}</textarea>
                 </div>
-
+        
+                <!-- Goals -->
                 <div class="form-group">
                     <label for="goals">Goals</label>
                     <textarea id="goals" name="goals">{{ form.goals.value|default:registration.goals }}</textarea>
                 </div>
-
+        
+                <!-- Achievements -->
                 <div class="form-group">
                     <label for="achievements">Achievements</label>
                     <textarea id="achievements" name="achievements">{{ form.achievements.value|default:registration.achievements }}</textarea>
                 </div>
-
-                <div class="form-group">
+        
+                <!-- Public Profile Toggle -->
+                {% comment %} <div class="form-group">
                     <label for="is_public">Activate Public Profile</label>
                     <label class="toggle-switch">
-                        <input type="checkbox" name="is_public" {% if registration.is_public %}checked{% endif %}>
+                        <input type="checkbox" name="is_public" id="is_public" {% if registration.is_public %}checked{% endif %}>
                         <span class="slider"></span>
                     </label>
-                </div>
-
+                    {% if form.is_public.errors %}
+                        <div class="error">{{ form.is_public.errors.0 }}</div>
+                    {% endif %}
+                </div> {% endcomment %}
+        
+                <!-- Update Information Button -->
                 <div style="grid-column: span 2;">
-                    <button type="submit" name="update_info" style="width: 100%; background-color: #ffcc00; color: #000; padding: 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">Update Information</button>
+                    <button type="submit" name="update_info" style="width: 100%; background-color: #ffcc00; color: #000; padding: 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">
+                        Update Information
+                    </button>
                 </div>
             </form>
         </div>
-
+        
+        <style>
+            .toggle-switch {
+                position: relative;
+                display: inline-block;
+                width: 50px;
+                height: 24px;
+            }
+        
+            .toggle-switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+        
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                transition: .4s;
+                border-radius: 24px;
+            }
+        
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 18px;
+                width: 18px;
+                left: 4px;
+                bottom: 3px;
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%;
+            }
+        
+            input:checked + .slider {
+                background-color: #ffcc00;
+            }
+        
+            input:checked + .slider:before {
+                transform: translateX(26px);
+            }
+        
+            .error {
+                color: #ff4d4d;
+                font-size: 0.9rem;
+                margin-top: 5px;
+            }
+        </style>
         <!-- Privacy Settings Section -->
         <div id="PrivacySettings" class="section" style="display:none;">
             <h3>Privacy Settings</h3>
@@ -725,7 +879,7 @@
         </div>
 
     </div>
-
+</section>
     <script>
         function showContent(section) {
             document.querySelectorAll('.section').forEach(div => div.style.display = 'none');
@@ -737,6 +891,11 @@
     </script>
 
 </body>
-
+<style>
+    #dividing-section{
+            background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+            height: 1px;
+        }
+</style>
 </html>
 

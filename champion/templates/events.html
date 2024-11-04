@@ -45,7 +45,14 @@
                 transform: translateY(0);
             }
         }
-      
+        .navbar-profile-img {
+            width: 35px;             /* Adjust width as needed */
+            height: 35px;  
+                      /* Adjust height as needed */
+            border-radius: 50%;      /* Makes the image circular */
+            object-fit: cover;       /* Ensures the image covers the container without distortion */
+            vertical-align: middle;  /* Aligns the image vertically */
+        }
         
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -70,18 +77,18 @@
             <!-- Navigation Links -->
             <ul id="nav-links">
                 <li><a href="{% url 'home' %}">HOME</a></li>
-                <li><a href="{% url 'blog_list' %}">NEWS</a></li>
-                
-              
-        
+                <li><a href="{% url 'news_feed' %}">NEWS</a></li>
+          
+    
                 <!-- Dropdown tab for Resources -->
                 <li class="dropdown">
                     <a href="#">RESOURCES</a>
                     <ul class="dropdown-content">
+                        <li class="dropdown-link"><a href="{% url 'blog_list' %}">BLOGS</a></li>
                         <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
-                        <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
-                        <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
                         <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                        <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                        <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>  
                     </ul>
                 </li>
     

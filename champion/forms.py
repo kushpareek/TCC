@@ -231,7 +231,11 @@ from .models import Registration
 class PublicProfileForm(forms.ModelForm):
     class Meta:
         model = Registration
-        fields = ['bio', 'personality_traits', 'skills', 'motivations', 'goals', 'champion_reason', 'achievements', 'unique_trait']
+        fields = [
+            'phone', 'bio', 'designation', 'personality_traits', 'skills',
+            'motivations', 'goals', 'achievements'
+              # Add this if `is_public` exists on the model
+        ]
 class AssociateRegistrationForm(forms.ModelForm):
     first_name = forms.CharField(label='First Name', max_length=100)
     last_name = forms.CharField(label='Last Name', max_length=100)

@@ -572,11 +572,14 @@ def login(request):
     return render(request, 'login.html', {'form': form})
 
 
+from django.contrib import messages
+
 @login_required
 def champions_dashboard(request):
-    registration = request.user.registration
-    enrollments = Enrollment.objects.filter(user=request.user)
-    watched_videos = UserVideoStatus.objects.filter(user=request.user)
+    user = request.user
+    registration = user.registration
+    enrollments = Enrollment.objects.filter(user=user)
+    watched_videos = UserVideoStatus.objects.filter(user=user)
     
     # List of required fields to check
     required_fields = [
@@ -594,23 +597,41 @@ def champions_dashboard(request):
         registration.country
     ]
 
-    # If any required field is empty, redirect to the information form
+    # Redirect to information form if any required field is missing
     if not all(required_fields):
         return redirect('information_form')
 
     # Check if membership is paid, otherwise redirect to payment
     if not registration.membership_paid:
         return redirect('membership_payment')  # Redirect to payment if membership not paid
-    
+
     if request.method == 'POST':
+        print(request.POST)
+        # Handle visibility update
         if 'update_visibility' in request.POST:
             registration.is_public = request.POST.get('is_public', '') == 'on'
             registration.save()
+            messages.success(request, 'Visibility updated successfully.')
+        
+        # Handle profile info update
         elif 'update_info' in request.POST:
             form = PublicProfileForm(request.POST, instance=registration)
             if form.is_valid():
                 form.save()
+                messages.success(request, 'Profile information updated successfully.')
+            else:
+                messages.error(request, 'Please correct the errors in the form.')
+        
+        # Handle profile picture update
+        elif 'profile_image' in request.FILES:
+            profile_image = request.FILES['profile_image']
+            registration.profile_image = profile_image
+            registration.save()
+            messages.success(request, 'Profile picture updated successfully.')
+        else:
+            print("No file found in request.FILES")
 
+    # Instantiate form with current registration data
     form = PublicProfileForm(instance=registration)
 
     context = {
@@ -620,6 +641,7 @@ def champions_dashboard(request):
         'watched_videos': watched_videos,
     }
     return render(request, 'champions_dashboard.html', context)
+
 
 
 @login_required
@@ -1710,6 +1732,9 @@ from .forms import SupportRequestForm
 from .models import SupportRequest
 
 def support_request(request):
+    registration = None
+    if request.user.is_authenticated:
+        registration = request.user.registration
     if request.method == 'POST':
         form = SupportRequestForm(request.POST, user=request.user)
         if form.is_valid():
@@ -1725,16 +1750,22 @@ def support_request(request):
     else:
         form = SupportRequestForm(user=request.user)
 
-    return render(request, 'support_request.html', {'form': form})
+    return render(request, 'support_request.html', {'form': form,'registration': registration,})
 
 from django.shortcuts import render
 
 def privacy_policy(request):
-    return render(request, 'privacy_policy.html')
+    registration = None
+    if request.user.is_authenticated:
+        registration = request.user.registration
+    return render(request, 'privacy_policy.html',{'registration': registration,})
 from django.shortcuts import render
 
 def terms_conditions(request):
-    return render(request, 'terms_conditions.html')
+    registration = None
+    if request.user.is_authenticated:
+        registration = request.user.registration
+    return render(request, 'terms_conditions.html',{'registration': registration,})
 from django.shortcuts import render
 
 # Other views...
@@ -1784,6 +1815,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 
 def blog_list(request):
+    registration = None
+    if request.user.is_authenticated:
+        registration = request.user.registration
     blogs = Blog.objects.all().order_by('-created_at')
 
     # Get distinct categories for the filter
@@ -1823,9 +1857,13 @@ def blog_list(request):
         'search_query': search_query,
         'category_filter': category_filter,
         'purchased_blog_ids': purchased_blog_ids,
+        'registration': registration,
     }
     return render(request, 'blog_list.html', context)
 def blog_detail(request, slug):
+    registration = None
+    if request.user.is_authenticated:
+        registration = request.user.registration
     blog = get_object_or_404(Blog, slug=slug)
     is_purchased = False
 
@@ -1839,12 +1877,16 @@ def blog_detail(request, slug):
     context = {
         'blog': blog,
         'is_purchased': is_purchased,
+        'registration': registration,
     }
 
     return render(request, 'blog_detail.html', context)
 
 @login_required
 def purchase_blog(request, slug):
+    registration = None
+    if request.user.is_authenticated:
+        registration = request.user.registration
     blog = get_object_or_404(Blog, slug=slug)
 
     if not blog.is_paid:
@@ -1872,6 +1914,7 @@ def purchase_blog(request, slug):
         'amount': int(blog.price * 100),
         'currency': 'USD',
         'current_year': timezone.now().year,
+        'registration': registration,
   # or 'USD'
     }
     print(context)
@@ -2035,6 +2078,9 @@ from django.contrib import messages
 from razorpay.errors import BadRequestError
 
 def donate(request):
+    registration = None
+    if request.user.is_authenticated:
+        registration = request.user.registration
     razorpay_key_id = settings.RAZORPAY_KEY_ID
     
     if request.method == "POST":
@@ -2098,7 +2144,7 @@ def donate(request):
                 return redirect('donate')
 
     # Render the normal donation page if the request is GET
-    return render(request, 'donate.html', {'RAZORPAY_KEY_ID': razorpay_key_id})
+    return render(request, 'donate.html', {'RAZORPAY_KEY_ID': razorpay_key_id,'registration': registration,})
 
 @csrf_exempt
 def razorpay_donation_callback(request):
@@ -2170,6 +2216,9 @@ from django.shortcuts import render, redirect
 from .forms import PartnerRegistrationForm
 
 def register_partner(request):
+    registration = None
+    if request.user.is_authenticated:
+        registration = request.user.registration
     if request.method == 'POST':
         form = PartnerRegistrationForm(request.POST)
         if form.is_valid():
@@ -2178,7 +2227,7 @@ def register_partner(request):
     else:
         form = PartnerRegistrationForm()
     
-    return render(request, 'register_partner.html', {'form': form})
+    return render(request, 'register_partner.html', {'form': form,'registration': registration,})
     
 def thank_you_partner(request):
     return render(request, 'thank_you_partner.html')
@@ -2187,6 +2236,9 @@ from django.contrib import messages
 from .forms import ExceptionalDonationForm
 
 def exceptional_donation(request):
+    registration = None
+    if request.user.is_authenticated:
+        registration = request.user.registration
     if request.method == 'POST':
         form = ExceptionalDonationForm(request.POST)
         if form.is_valid():
@@ -2196,7 +2248,7 @@ def exceptional_donation(request):
     else:
         form = ExceptionalDonationForm()
 
-    return render(request, 'exceptional_donation.html', {'form': form})
+    return render(request, 'exceptional_donation.html', {'form': form,'registration': registration,})
 def thank_you_exc(request):
     return render(request, 'thank_you_exc.html')
 
@@ -2206,11 +2258,15 @@ from django.shortcuts import render
 from .models import JobPost, JobCategory
 
 def careers_home(request):
+    registration = None
+    if request.user.is_authenticated:
+        registration = request.user.registration
     categories = JobCategory.objects.all()
     featured_jobs = JobPost.objects.filter(is_active=True)[:5]
     context = {
         'categories': categories,
         'featured_jobs': featured_jobs,
+        'registration': registration,
     }
     return render(request, 'career_home.html', context)
 # careers/views.py
@@ -2268,6 +2324,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 
 def job_apply(request, slug):
+
     job = get_object_or_404(JobPost, slug=slug, is_active=True)
     if request.method == 'POST':
         form = JobApplicationForm(request.POST, request.FILES)
@@ -2285,7 +2342,10 @@ def job_apply(request, slug):
     }
     return render(request, 'job_apply.html', context)
 def about_us(request):
-    return render(request,'about_us.html')
+    registration = None
+    if request.user.is_authenticated:
+        registration = request.user.registration
+    return render(request,'about_us.html',{'registration': registration})
 
 from django.shortcuts import render
 from django.views.generic import ListView
@@ -2442,3 +2502,6 @@ def news_feed(request):
     return render(request, 'news_feed.html', {'articles': articles})
 def tcc_academia_view(request):
     return render(request, 'TCCACA.html')
+
+def course_soon(request):
+    return render(request,'courses_coming_soon.html')

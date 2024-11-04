@@ -68,4 +68,5 @@ urlpatterns = [
     path('news/', views.news_feed, name='news_feed'),
       # Donation form view
        path('tcc_academia/', views.tcc_academia_view, name='tcc_academia'),
+       path('course_soon/', views.course_soon, name='course_soon')
 ]
