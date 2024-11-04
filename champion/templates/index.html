@@ -377,6 +377,12 @@
             object-fit: cover;       /* Ensures the image covers the container without distortion */
             vertical-align: middle;  /* Aligns the image vertically */
         }
+        .logo-link:hover{
+            background-color:transparent !important;
+            transition: none !important;
+            transform: translateY(0px) !important;
+    box-shadow: none !important;
+        }
 
     </style>
 <script>
@@ -399,10 +405,10 @@ function toggleMusic() {
 </script>
     <nav class="top-navbar">
         <!-- Logo on the left -->
-        <div class="logo">
+        <a class="logo-link" href="{% url 'home' %}"><div class="logo">
             <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
             THE CHAMPIONS CLUB
-        </div>
+        </div></a>
 
         <!-- Menu Icon for Mobile -->
         <div class="menu-icon" onclick="toggleMenu()">
@@ -597,7 +603,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       </section>
     <div class="hero-container">
-        <video autoplay muted loop id="myVideo">
+        <video autoplay muted loop id="myVideo" webkit-playsinline playsinline disablePictureInPicture x-webkit-airplay="allow">
             <source src="{% static 'videos/back2.mp4' %}" type="video/mp4">
         </video>
         <div class="pos-abs flex-cont text-container1">

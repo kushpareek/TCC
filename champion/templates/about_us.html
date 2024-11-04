@@ -18,10 +18,10 @@
     <section>
         <nav class="top-navbar">
             <!-- Logo on the left -->
-            <div class="logo">
+            <a class="logo-link" href="{% url 'home' %}"><div class="logo">
                 <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
                 THE CHAMPIONS CLUB
-            </div>
+            </div></a>
     
             <!-- Menu Icon for Mobile -->
             <div class="menu-icon" onclick="toggleMenu()">
@@ -147,6 +147,12 @@
         </section>
         
     <style>
+        .logo-link:hover{
+            background-color:transparent !important;
+            transition: none !important;
+            transform: translateY(0px) !important;
+    box-shadow: none !important;
+        }
         .navbar-profile-img {
             width: 35px;             /* Adjust width as needed */
             height: 35px;  
