@@ -257,6 +257,7 @@
     </section>
     <div class="main-content">
         <!-- Video Section -->
+
         <div class="video-section">
             <div class="video-container">
                 
@@ -284,6 +285,9 @@
                     </div>
                 </div>
                 <h1>{{ video.title }}</h1>
+                <div id="fullscreen-note" class="fullscreen-note">
+                    <em>Note: Fullscreen is currently supported on desktop, Mac, and Android devices.</em>
+                </div>
                 <!-- Video Description -->
                 <p>{{ video.description }}</p>
                 <!-- Pay Button -->
@@ -418,7 +422,12 @@
             font-size: 14px;
             color: #aaa;
         }
-        
+        .fullscreen-note {
+            margin-bottom: 10px;
+            font-style: italic;
+            color: #ccc;
+            text-align: center;
+        }
         /* Responsive Design Adjustments */
         @media (max-width: 992px) {
             .main-content {
@@ -636,7 +645,7 @@
     }
     
     </style>
-    {% comment %} <script>
+    <script>
         const videoPlayer = document.getElementById('courseVideo');
         const playPauseBtn = document.getElementById('playPauseBtn');
         const fullScreenBtn = document.getElementById('fullScreenBtn');
@@ -645,9 +654,27 @@
         const progressBar = document.querySelector('.progress');
         const progressBarContainer = document.querySelector('.progress-bar-container');
         const controls = document.querySelector('.custom-controls');
+        const fullscreenNote = document.getElementById('fullscreen-note');
+        const videoContainer = document.getElementById('videoPlayerContainer');
         let hideControlsTimeout;
         let lastTap = 0;
-
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        }
+        
+        // Detect if the device is Android
+        function isAndroid() {
+            return /Android/.test(navigator.userAgent);
+        }
+        
+        // Hide the fullscreen button on iOS devices
+        if (isIOS()) {
+            fullScreenBtn.style.display = 'none';
+        } else {
+            // Hide the note on non-iOS devices
+            fullscreenNote.style.display = 'none';
+        }
+        
         // Start the video from the last watched time
         videoPlayer.currentTime = {{ last_watched_time }};
 
@@ -663,8 +690,7 @@
 
         videoPlayer.addEventListener('timeupdate', function() {
             currentTimeElem.textContent = formatTime(videoPlayer.currentTime);
-            const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
-            progressBar.style.width = `${progress}%`;
+            
         });
 
         function showControls() {
@@ -674,7 +700,12 @@
         function hideControls() {
             controls.style.opacity = '0';
         }
-
+        if (isIOS()) {
+            fullScreenBtn.style.display = 'none';
+        } else {
+            // Hide the note on non-iOS devices
+            fullscreenNote.style.display = 'none';
+        }
         videoPlayer.addEventListener('play', function() {
             showControls();
             hideControlsTimeout = setTimeout(hideControls, 1000);
@@ -702,12 +733,46 @@
                 hideControls();
             }
         });
-
         fullScreenBtn.addEventListener('click', function() {
-            if (!document.fullscreenElement) {
-                document.getElementById('videoPlayerContainer').requestFullscreen();
+            const isFullscreen = !!(
+                document.fullscreenElement ||
+                document.webkitFullscreenElement ||
+                document.mozFullScreenElement ||
+                document.msFullscreenElement
+            );
+        
+            if (isFullscreen) {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                // Unlock orientation on Android
+                if (isAndroid() && screen.orientation && screen.orientation.unlock) {
+                    screen.orientation.unlock();
+                }
             } else {
-                document.exitFullscreen();
+                // Enter fullscreen
+                if (videoContainer.requestFullscreen) {
+                    videoContainer.requestFullscreen();
+                } else if (videoContainer.webkitRequestFullscreen) {
+                    videoContainer.webkitRequestFullscreen();
+                } else if (videoContainer.mozRequestFullScreen) {
+                    videoContainer.mozRequestFullScreen();
+                } else if (videoContainer.msRequestFullscreen) {
+                    videoContainer.msRequestFullscreen();
+                }
+                // Lock orientation to landscape on Android
+                if (isAndroid() && screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock('landscape').catch(function(error) {
+                        console.log('Screen orientation lock failed:', error);
+                    });
+                }
             }
         });
 
@@ -763,200 +828,8 @@
                 body: JSON.stringify({ completed: true })
             });
         };
-    </script> {% endcomment %}
-    <script>
-        const videoPlayer = document.getElementById('courseVideo');
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const fullScreenBtn = document.getElementById('fullScreenBtn');
-        const currentTimeElem = document.getElementById('currentTime');
-        const totalTimeElem = document.getElementById('totalTime');
-        const progressBar = document.querySelector('.progress');
-        const progressBarContainer = document.querySelector('.progress-bar-container');
-        const controls = document.querySelector('.custom-controls');
-        let hideControlsTimeout;
-        let lastTap = 0;
+    </script> 
     
-        // Start the video from the last watched time
-        videoPlayer.currentTime = {{ last_watched_time }};
-    
-        // Format time in minutes and seconds
-        function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-    
-        // Update total time once metadata is loaded
-        videoPlayer.addEventListener('loadedmetadata', function() {
-            totalTimeElem.textContent = formatTime(videoPlayer.duration);
-        });
-    
-        // Update current time and progress bar
-        videoPlayer.addEventListener('timeupdate', function() {
-            currentTimeElem.textContent = formatTime(videoPlayer.currentTime);
-            const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
-            progressBar.style.width = `${progress}%`;
-        });
-    
-        // Show controls
-        function showControls() {
-            controls.style.opacity = '1';
-        }
-    
-        // Hide controls
-        function hideControls() {
-            controls.style.opacity = '0';
-        }
-    
-        // Update play/pause button icon
-        function updatePlayPauseButton() {
-            if (videoPlayer.paused) {
-                playPauseBtn.textContent = '►';
-            } else {
-                playPauseBtn.textContent = '❚❚';
-            }
-        }
-    
-        // Toggle play/pause
-        function togglePlayPause() {
-            if (videoPlayer.paused) {
-                videoPlayer.play();
-            } else {
-                videoPlayer.pause();
-            }
-            updatePlayPauseButton();
-        }
-    
-        // Toggle fullscreen with vendor prefixes
-        function toggleFullscreen() {
-            const videoContainer = document.getElementById('videoPlayerContainer');
-            if (
-                document.fullscreenElement ||
-                document.webkitFullscreenElement ||
-                document.mozFullScreenElement ||
-                document.msFullscreenElement
-            ) {
-                // Exit fullscreen
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
-            } else {
-                // Enter fullscreen
-                if (videoContainer.requestFullscreen) {
-                    videoContainer.requestFullscreen();
-                } else if (videoContainer.webkitRequestFullscreen) {
-                    videoContainer.webkitRequestFullscreen();
-                } else if (videoContainer.mozRequestFullScreen) {
-                    videoContainer.mozRequestFullScreen();
-                } else if (videoContainer.msRequestFullscreen) {
-                    videoContainer.msRequestFullscreen();
-                }
-            }
-        }
-    
-        // Show controls when video is playing
-        videoPlayer.addEventListener('play', function() {
-            updatePlayPauseButton();
-            showControls();
-            hideControlsTimeout = setTimeout(hideControls, 2000);
-        });
-    
-        // Show controls when video is paused
-        videoPlayer.addEventListener('pause', function() {
-            updatePlayPauseButton();
-            clearTimeout(hideControlsTimeout);
-            showControls();
-        });
-    
-        // Show controls on mouse move or touch move over controls
-        function handleControlsInteraction() {
-            showControls();
-            clearTimeout(hideControlsTimeout);
-            hideControlsTimeout = setTimeout(hideControls, 2000);
-        }
-    
-        controls.addEventListener('mousemove', handleControlsInteraction, false);
-        controls.addEventListener('touchmove', handleControlsInteraction, false);
-    
-        // Play/pause button click handler
-        playPauseBtn.addEventListener('click', function() {
-            togglePlayPause();
-        });
-    
-        // Fullscreen button click handler
-        fullScreenBtn.addEventListener('click', function() {
-            toggleFullscreen();
-        });
-    
-        // Handle single tap for play/pause and double tap for fullscreen
-        function handleVideoInteraction(e) {
-            e.preventDefault();
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
-    
-            if (tapLength < 500 && tapLength > 0) {
-                // Double tap - toggle fullscreen
-                toggleFullscreen();
-            } else {
-                // Single tap - toggle play/pause
-                togglePlayPause();
-            }
-            lastTap = currentTime;
-        }
-    
-        videoPlayer.addEventListener('click', handleVideoInteraction, false);
-        videoPlayer.addEventListener('touchend', handleVideoInteraction, false);
-    
-        // Prevent default touch behavior on video to stop iOS from opening native controls
-        videoPlayer.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-        }, false);
-    
-        // Show controls on touch start
-        videoPlayer.addEventListener('touchstart', function() {
-            showControls();
-            clearTimeout(hideControlsTimeout);
-            hideControlsTimeout = setTimeout(hideControls, 2000);
-        }, false);
-    
-        // Update last watched time every 3 seconds
-        function updateVideoTime() {
-            fetch('{% url "update_video_time" video.id %}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ time: videoPlayer.currentTime })
-            });
-        }
-    
-        setInterval(updateVideoTime, 3000); // 3 seconds
-    
-        // Update time when paused
-        videoPlayer.onpause = updateVideoTime;
-    
-        // Mark the video as completed when it ends
-        videoPlayer.onended = function() {
-            fetch('{% url "complete_video" video.id %}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ completed: true })
-            });
-            // Show controls when video ends
-            showControls();
-            updatePlayPauseButton();
-        };
-    </script>
     
 <section id="dividing-section">
 
