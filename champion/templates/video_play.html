@@ -261,7 +261,9 @@
             <div class="video-container">
                 
                 <div class="custom-video-player" id="videoPlayerContainer">
-                    <video webkit-playsinline="true" x-webkit-airplay="allow" id="courseVideo" class="video-js vjs-default-skin" preload="auto" controlslist="nodownload noplaybackrate">
+                    <video id="courseVideo" class="video-js vjs-default-skin" preload="auto" controlslist="nodownload noplaybackrate" controlslist="nodownload noplaybackrate"
+                    webkit-playsinline playsinline disablePictureInPicture
+                    x-webkit-airplay="allow">
                         <source src="{% url 'stream_video' video.id %}?token={{ token }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
