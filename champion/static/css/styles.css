@@ -43,6 +43,15 @@ body {
   color: white;
   
 }
+@media (max-width:1080px){
+    .hero-container {
+        padding-top: 10px;
+        position: relative;
+        min-height: 550px;
+        height: 60%;
+        color: white;
+    }
+}
 
 .hero-container button {
     background-color: transparent;
