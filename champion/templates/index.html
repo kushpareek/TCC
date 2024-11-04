@@ -442,9 +442,35 @@ function toggleMusic() {
             {% else %}
             {% if registration.approved == 1 %}
             {% if registration.membership_paid == 0 %}
-            <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li>
+            <li class="dropdown">
+                <a href="#">
+                    {% if registration.profile_image %}
+                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                    {% else %}
+                        <i class="fa-solid fa-circle-user fa-xl"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'champions_dashboard' %}">BUY MEMBERSHIP TODAY</a></li>
+                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </li>
+            {% comment %} <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li> {% endcomment %}
             {% else %}
-            <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> Dashboard</a></li>
+            {% comment %} <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> Dashboard</a></li> {% endcomment %}
+            <li class="dropdown">
+                <a href="#">
+                    {% if registration.profile_image %}
+                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                    {% else %}
+                        <i class="fa-solid fa-circle-user fa-xl"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> Dashboard</a></li>
+                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </li>
             {% endif %}
             {% else %}
             <li class="dropdown">
