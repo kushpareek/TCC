@@ -471,7 +471,7 @@ body {
 @media (max-width: 480px) {
     .exclusive-container-left h1 {
         font-size: 2rem;
-        text-align: center;
+        
     }
 
     .exclusive-container-left h3 {
