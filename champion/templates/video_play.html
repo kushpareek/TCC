@@ -302,7 +302,8 @@
                     {% if comments %}
                         {% for comment in comments %}
                             <div class="comment">
-                                <p><strong>{{ comment.user.username }}</strong> - {{ comment.created_at|date:"M d, Y" }} <br> {{ comment.comment_text }}</p>
+                                
+                                <p><span class="user-name"><strong> {{ comment.user.username }}</strong> - {{ comment.created_at|date:"M d, Y" }}</span> <br>  {{ comment.comment_text }}</p>
                                 
                             </div>
                         {% endfor %}
@@ -362,6 +363,9 @@
 </main>
     
     <style>
+        .user-name{
+            font-size:14px;
+        }
         #courseVideo {
             touch-action: manipulation;
         }
@@ -444,6 +448,7 @@
             .sidebar {
                 max-width: 100%;
                 margin-top: 40px;
+                padding:20px;
             }
         }
         /* General Styles */
