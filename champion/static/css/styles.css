@@ -611,6 +611,7 @@ body {
     .left-container ul,
     .right-container ul {
         padding-left: 0;
+        font-size:0.8rem;
         
     }
 
