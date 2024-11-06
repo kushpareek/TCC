@@ -236,7 +236,7 @@ user-select: none;
                             </div>
                             <p>This is a premium article. To read the full content, please purchase it.</p>
                             {% if user.is_authenticated %}
-                            <a href="{% url 'purchase_blog' blog.slug %}" class="btn">Pay ₹{{ blog.price|floatformat:2 }} to Read More</a>
+                            <a href="{% url 'purchase_blog' blog.slug %}" class="btn">Pay ${{ blog.price|floatformat:2 }} to Read More</a>
                         {% else %}
                             <a href="{% url 'login' %}?next={{ request.path }}" class="btn">Login to Purchase</a>
                         {% endif %}
