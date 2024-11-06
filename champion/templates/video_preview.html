@@ -21,6 +21,105 @@
             object-fit: cover;       /* Ensures the image covers the container without distortion */
             vertical-align: middle;  /* Aligns the image vertically */
         }
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin:100px auto ;
+            max-width: 80%;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align:center;
+        }
+
+        .video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin:0 auto;
+            flex-direction: column;
+            width: 100%;
+            max-width: 100%; /* Set a max width for the video player */
+        }
+
+        .custom-video-player {
+            position: relative;
+            width: 100%; /* Full width of the container */
+            background-color: #000;
+        }
+
+        .custom-video-player video {
+            width: 100%;
+            height: auto;
+        }
+
+        .custom-controls {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .custom-video-player:hover .custom-controls {
+            opacity: 1;
+        }
+
+        .time {
+            color: white;
+        }
+
+        .branding {
+            color: #ffcc00;
+        }
+
+        #playPauseBtn {
+            font-size: 24px;
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        #playPauseBtn:hover {
+            color: #ffcc00;
+        }
+        @media (max-width: 768px) {
+            .custom-video-player {
+                position: relative;
+                width: 100%; /* Full width of the container */
+                background-color: #000;
+                max-width:100%;
+            }
+            .video-container {
+                margin: 60px 0; /* Add 100px margin to the top and bottom */
+            }
+            h1{
+                margin-top:10px;
+            }
+            .branding {
+                color: #ffcc00;
+                font-size:14px;
+            }
+            #playPauseBtn {
+                font-size: 22px;
+                color: white;
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+   
+        }
+     
     </style>
     <!-- Navbar Section -->
     <header>
@@ -93,7 +192,8 @@
                 <div class="video-container">
                     
                     <div class="custom-video-player" id="videoPlayerContainer">
-                        <video id="courseVideo" class="video-js vjs-default-skin" preload="auto" controlslist="nodownload noplaybackrate">
+                        <video id="courseVideo" class="video-js vjs-default-skin" preload="auto" controlslist="nodownload noplaybackrate" webkit-playsinline playsinline disablePictureInPicture
+                        x-webkit-airplay="allow">
                             <source src="{{ video.preview_file.url }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -115,6 +215,9 @@
                     </div>
                     <h1>{{ video.title }} - Preview</h1>
                     <!-- Video Description -->
+                    <div id="fullscreen-note" class="fullscreen-note">
+                        <em>Note: Fullscreen is currently supported on desktop, Mac, and Android devices.</em>
+                    </div>
                     <p>{{ video.description }}</p>
                     <!-- Pay Button -->
                     <a href="{% url 'video_payment' video.id %}"><button class="pay-button">Pay to Watch Full Video</button></a>
@@ -125,7 +228,7 @@
                         {% if comments %}
                             {% for comment in comments %}
                                 <div class="comment">
-                                    <p><strong>{{ comment.user.username }}</strong> - {{ comment.created_at|date:"M d, Y" }} <br> {{ comment.comment_text }}</p>
+                                    <p><span class="user-name"><strong> {{ comment.user.username }}</strong> - {{ comment.created_at|date:"M d, Y" }}</span> <br>  {{ comment.comment_text }}</p>
                                     
                                 </div>
                             {% endfor %}
@@ -164,202 +267,296 @@
             </div>
         </div>
     </main>
-<style>
-    /* General Styles */
-body {
-    background-color: #000;
-    color: #fff;
-    margin: 0;
-    font-family: 'Montserrat', 'Roboto', sans-serif;
-}
-
-main {
-    margin-top: 70px; /* Adjust if your navbar height is different */
-}
-
-#dividing-section {
-    background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
-    height: 1px;
-}
-
-/* Main Content Area */
-.main-content {
-    display: flex;
-    justify-content: center;
-    max-width: 100%;
-    margin: 30px auto 100px;
-    padding: 20px;
-}
-
-/* Video Section */
-.video-section {
-    flex: 3;
-    margin-right: 20px;
-}
-
-.video-container h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-.video-container{
-    width:100%;
-}
-.video-container p {
-    font-size: 16px;
-    margin-top: 20px;
-    line-height:1.5;
-    width:75%;
-    text-align:left;
-    background-color:#1a1a1a;
-    border-radius:10px;
-    padding:30px;
-}
-
-.pay-button {
-    background-color: transparent;
-    color: white;
-    padding: 15px 45px;
-    border: 1px solid white;
-    margin: 15px 0;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 2;
-    position: relative;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-.pay-button:hover {
-    background-color: white;
-    color: #333;
-    border-color: #333;
-}
-
-/* Custom Video Player Styles */
-.custom-video-player {
-    position: relative;
-    width: 100%;
-   
-    background-color: #000;
-}
-
-.custom-video-player video {
-    width: 100%;
-    height: auto;
-    border-radius:10px;
-    cursor: pointer;
-}
-
-.custom-controls {
-    /* Your existing custom controls styles */
-}
-textarea{
-    width: 100%;
-    background-color: #0a0a0a;
-    height: 100px;
-    border-radius: 10px;
-    color:#fff;
-}
-form{
-    display:flex;
-}
-/* Comments Section */
-.comments-section {
-    margin-top: 40px;
-    width:70%;
-}
-
-.comments-section h2 {
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: #ffcc00;
-}
-
-.comment {
-    margin-bottom: 20px;
-}
-
-.comment p {
-    margin: 5px 0;
-}
-
-.comment-submit-button {
-    background-color: #ffcc00;
-    color: #000;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
-    height: 40px;
-    margin: 10px;
-    border-radius:10px;
-}
-
-.comment-submit-button:hover {
-    background-color: #d4ac0d;
-}
-
-/* Suggested Videos */
-.suggested-videos {
-    flex: 1;
-    max-width: 450px;
-}
-
-.suggested-videos h2 {
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: #ffcc00;
-}
-
-.suggested-video {
-    display: flex;
-    margin-bottom: 15px;
-}
-
-.suggested-video a{
-    display:flex;
-    text-decoration:none;
-}
-
-.suggested-video img {
-    width: 150px;
-    height: 78px;
-    object-fit: cover;
-    margin-right: 10px;
-}
-
-.suggested-video-info {
-    flex: 1;
-}
-
-.suggested-video-title {
-    font-size: 16px;
-    color: #fff;
-    margin: 0;
-}
-
-.suggested-video-duration {
-    font-size: 14px;
-    color: #aaa;
-}
-
-/* Responsive Design */
-@media (max-width: 992px) {
+    <style>
+        .user-name{
+            font-size:14px;
+        }
+        #courseVideo {
+            touch-action: manipulation;
+        }
+        /* ... existing styles ... */
+        .sidebar {
+            flex: 1;
+            max-width: 450px;
+        }
+        
+        /* Move suggested videos into the sidebar */
+        .suggested-videos {
+            margin-bottom: 40px;
+        }
+        
+        /* Explore More Services Section */
+        .explore-services {
+            margin-top: 40px;
+        }
+        
+        .explore-services h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #ffcc00;
+        }
+        
+        .services-list {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .service-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .service-item a {
+            display: flex;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .service-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-right: 10px;
+            border-radius: 10px;
+        }
+        
+        .service-info {
+            flex: 1;
+        }
+        
+        .service-title {
+            font-size: 16px;
+            color: #fff;
+            margin: 0;
+        }
+        
+        .service-description {
+            font-size: 14px;
+            color: #aaa;
+        }
+        .fullscreen-note {
+            margin-bottom: 10px;
+            font-style: italic;
+            color: #ccc;
+            text-align: center;
+        }
+        /* Responsive Design Adjustments */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+        
+            .video-section {
+                margin-right: 0;
+            }
+        
+            .sidebar {
+                max-width: 100%;
+                margin-top: 40px;
+                padding:20px;
+            }
+        }
+        /* General Styles */
+    body {
+        background-color: #000;
+        color: #fff;
+        margin: 0;
+        font-family: 'Montserrat', 'Roboto', sans-serif;
+    }
+    
+    main {
+        margin-top: 20px; /* Adjust if your navbar height is different */
+    }
+    
+    #dividing-section {
+        background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+        height: 1px;
+    }
+    
+    /* Main Content Area */
     .main-content {
-        flex-direction: column;
-    }
-
-    .video-section {
-        margin-right: 0;
-    }
-
-    .suggested-videos {
+        display: flex;
+        justify-content: center;
         max-width: 100%;
-        margin-top: 40px;
+        margin: 30px auto 100px;
+        padding: 20px;
     }
-}
-
+    
+    /* Video Section */
+    .video-section {
+        flex: 3;
+        margin-right: 20px;
+    }
+    
+    .video-container h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .video-container{
+        width:100%;
+    }
+    .video-container p {
+        font-size: 16px;
+        margin-top: 20px;
+        line-height:1.5;
+        width:75%;
+        text-align:left;
+        background-color:#1a1a1a;
+        border-radius:10px;
+        padding:30px;
+    }
+    
+    .pay-button {
+        background-color: transparent;
+        color: white;
+        padding: 15px 45px;
+        border: 1px solid white;
+        margin: 15px 0;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 2;
+        position: relative;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .pay-button:hover {
+        background-color: white;
+        color: #333;
+        border-color: #333;
+    }
+    
+    /* Custom Video Player Styles */
+    .custom-video-player {
+        position: relative;
+        width: 100%;
+       
+        background-color: #000;
+    }
+    
+    .custom-video-player video {
+        width: 100%;
+        height: auto;
+        border-radius:10px;
+        cursor: pointer;
+    }
+    
+    .custom-controls {
+        /* Your existing custom controls styles */
+    }
+    textarea{
+        width: 100%;
+        background-color: #0a0a0a;
+        height: 100px;
+        border-radius: 10px;
+        color:#fff;
+    }
+    form{
+        display:flex;
+    }
+    /* Comments Section */
+    .comments-section {
+        margin-top: 40px;
+        width:70%;
+    }
+    
+    .comments-section h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #ffcc00;
+    }
+    
+    .comment {
+        margin-bottom: 20px;
+    }
+    
+    .comment p {
+        margin: 5px 0;
+    }
+    
+    .comment-submit-button {
+        background-color: #ffcc00;
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        height: 40px;
+        margin: 10px;
+        border-radius:10px;
+    }
+    
+    .comment-submit-button:hover {
+        background-color: #d4ac0d;
+    }
+    
+    /* Suggested Videos */
+    .suggested-videos {
+        flex: 1;
+        max-width: 450px;
+    }
+    
+    .suggested-videos h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #ffcc00;
+    }
+    
+    .suggested-video {
+        
+        margin-bottom: 15px;
+    }
+    .suggested-video a{
+        display:flex;
+        text-decoration:none;
+    }
+    
+    .suggested-video img {
+        width: 150px;
+        height: 78px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+    
+    .suggested-video-info {
+        flex: 1;
+    }
+    
+    .suggested-video-title {
+        font-size: 16px;
+        color: #fff;
+        margin: 0;
+    }
+    
+    .suggested-video-duration {
+        font-size: 14px;
+        color: #aaa;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .main-content {
+            flex-direction: column;
+            padding:0;
+        }
+    
+        .video-section {
+            margin-right: 0;
+        }
+    
+        .suggested-videos {
+            max-width: 100%;
+            margin-top: 40px;
+        }
+        .custom-video-player video {
+            width: 100%;
+            height: auto;
+            border-radius:0px;
+            cursor: pointer;
+        }
+    }
+    
 </style>
     <!-- Scripts -->
     <script>
@@ -382,8 +579,30 @@ form{
         const progressBar = document.querySelector('.progress');
         const progressBarContainer = document.querySelector('.progress-bar-container');
         const controls = document.querySelector('.custom-controls');
+        const fullscreenNote = document.getElementById('fullscreen-note');
+        const videoContainer = document.getElementById('videoPlayerContainer');
         let hideControlsTimeout;
         let lastTap = 0;
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        }
+        
+        // Detect if the device is Android
+        function isAndroid() {
+            return /Android/.test(navigator.userAgent);
+        }
+        
+        // Hide the fullscreen button on iOS devices
+        if (isIOS()) {
+            fullScreenBtn.style.display = 'none';
+        } else {
+            // Hide the note on non-iOS devices
+            fullscreenNote.style.display = 'none';
+        }
+        
+        // Start the video from the last watched time
+        
+        
 
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
@@ -397,8 +616,7 @@ form{
 
         videoPlayer.addEventListener('timeupdate', function() {
             currentTimeElem.textContent = formatTime(videoPlayer.currentTime);
-            const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
-            progressBar.style.width = `${progress}%`;
+            
         });
 
         function showControls() {
@@ -408,7 +626,12 @@ form{
         function hideControls() {
             controls.style.opacity = '0';
         }
-
+        if (isIOS()) {
+            fullScreenBtn.style.display = 'none';
+        } else {
+            // Hide the note on non-iOS devices
+            fullscreenNote.style.display = 'none';
+        }
         videoPlayer.addEventListener('play', function() {
             showControls();
             hideControlsTimeout = setTimeout(hideControls, 1000);
@@ -422,7 +645,7 @@ form{
         controls.addEventListener('mousemove', function() {
             showControls();
             clearTimeout(hideControlsTimeout);
-            hideControlsTimeout = setTimeout(hideControls, 1500);
+            hideControlsTimeout = setTimeout(hideControls, 1000);
         });
 
         playPauseBtn.addEventListener('click', function() {
@@ -436,12 +659,46 @@ form{
                 hideControls();
             }
         });
-
         fullScreenBtn.addEventListener('click', function() {
-            if (!document.fullscreenElement) {
-                document.getElementById('videoPlayerContainer').requestFullscreen();
+            const isFullscreen = !!(
+                document.fullscreenElement ||
+                document.webkitFullscreenElement ||
+                document.mozFullScreenElement ||
+                document.msFullscreenElement
+            );
+        
+            if (isFullscreen) {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                // Unlock orientation on Android
+                if (isAndroid() && screen.orientation && screen.orientation.unlock) {
+                    screen.orientation.unlock();
+                }
             } else {
-                document.exitFullscreen();
+                // Enter fullscreen
+                if (videoContainer.requestFullscreen) {
+                    videoContainer.requestFullscreen();
+                } else if (videoContainer.webkitRequestFullscreen) {
+                    videoContainer.webkitRequestFullscreen();
+                } else if (videoContainer.mozRequestFullScreen) {
+                    videoContainer.mozRequestFullScreen();
+                } else if (videoContainer.msRequestFullscreen) {
+                    videoContainer.msRequestFullscreen();
+                }
+                // Lock orientation to landscape on Android
+                if (isAndroid() && screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock('landscape').catch(function(error) {
+                        console.log('Screen orientation lock failed:', error);
+                    });
+                }
             }
         });
 
@@ -467,12 +724,36 @@ form{
             lastTap = currentTime;
         });
 
-        progressBarContainer.addEventListener('click', function(e) {
-            const rect = progressBarContainer.getBoundingClientRect();
-            const offsetX = e.clientX - rect.left;
-            const newTime = (offsetX / rect.width) * videoPlayer.duration;
-            videoPlayer.currentTime = newTime;
-        });
+    
+
+        // Update last watched time every 15 seconds
+        function updateVideoTime() {
+            fetch('{% url "update_video_time" video.id %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ time: videoPlayer.currentTime })
+            });
+        }
+
+        setInterval(updateVideoTime, 3500); // 3 seconds
+
+        // Update time when paused
+        videoPlayer.onpause = updateVideoTime;
+
+        // Mark the video as completed when it ends
+        videoPlayer.onended = function() {
+            fetch('{% url "complete_video" video.id %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ completed: true })
+            });
+        };
     </script>
          
 <section id="dividing-section">

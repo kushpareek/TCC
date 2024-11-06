@@ -963,14 +963,10 @@ h6 {
 }
 
 img {
-    max-width: 90%;
+    max-width: 100%;
     border-radius: 4px;
 }
-@media (max-width:1068){
-    img{
-        max-width: 100% !important;
-    }
-}
+
 
 button {
     background: none;
