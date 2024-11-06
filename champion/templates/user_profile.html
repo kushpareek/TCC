@@ -160,11 +160,12 @@
                 <img src="{% if registration.profile_image %}{{ registration.profile_image.url }}{% else %}{% static 'images/default_profile.png' %}{% endif %}" alt="Profile Image" class="profile-img">
                 <form class="update-photo-form" action="{% url 'user_profile' %}" method="POST" enctype="multipart/form-data" class="upload-form">
                     {% csrf_token %}
-                    <input type="file" name="profile_image" id="profileImageInput" class="d-none">
+                    <input type="file" name="profile_image" id="profileImageInput" class="d-none" accept="image/*">
                     <button type="button" class="btn upload-btn" id="triggerFileInput">Update Photo</button>
                     <button type="submit" class="btn submit-btn d-none">Submit</button>
                 </form>
             </div>
+            
             <!-- User's Name and Badge -->
     <div class="user-info">
         

@@ -133,9 +133,12 @@ class InformationForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your Telegram Username/Number'})
     )
     profile_image = forms.ImageField(
-        label='Please upload a profile image?', 
-        required=False, 
-        widget=forms.ClearableFileInput(attrs={'class': 'form-control-file'})
+        label='Please upload a profile image?',
+        required=False,
+        widget=forms.ClearableFileInput(attrs={
+            'class': 'form-control-file',
+            'accept': 'image/*'  # Restricts file selection to images
+        })
     )
     personality_traits = forms.CharField(
         label='What are your personality traits?',
