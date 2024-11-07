@@ -18,9 +18,7 @@
 
     <section>
         <style>
-            .top-navbar{
-                width:auto !important;    
-            }
+            
         </style>
         <nav class="top-navbar">
             <!-- Logo on the left -->
@@ -323,8 +321,27 @@
     
         <!-- Show reels if a category is selected -->
         {% if reels %}
+        <div class="slide-reel">
+            {% for reel in reels %}
+            <article class="reel" data-reel-id="{{ reel.id }}" data-video-url="{% if reel.is_compressed %}{{ reel.compressed_video.url }}{% else %}{{ reel.video.url }}{% endif %}">
+                <div class="thumbnail">
+                    <img src="{{ reel.thumbnail.url|default:'/static/images/default-thumbnail.jpg' }}" alt="{{ reel.title }}">
+                    <div class="overlay">
+                        <p>{{ reel.title }}</p>
+                        <div class="play-button">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Show reels grouped by category if no category is selected -->
+        {% for category in categories %}
+            <h2>{{ category.name }}</h2>
             <div class="slide-reel">
-                {% for reel in reels %}
+                {% for reel in category.reels.all %}
                 <article class="reel" data-reel-id="{{ reel.id }}" data-video-url="{% if reel.is_compressed %}{{ reel.compressed_video.url }}{% else %}{{ reel.video.url }}{% endif %}">
                     <div class="thumbnail">
                         <img src="{{ reel.thumbnail.url|default:'/static/images/default-thumbnail.jpg' }}" alt="{{ reel.title }}">
@@ -338,469 +355,517 @@
                 </article>
                 {% endfor %}
             </div>
-        {% else %}
-            <!-- Show reels grouped by category if no category is selected -->
-            {% for category in categories %}
-                <h2>{{ category.name }}</h2>
-                <div class="slide-reel">
-                    {% for reel in category.reels.all %}
-                    <article class="reel" data-reel-id="{{ reel.id }}" data-video-url="{% if reel.is_compressed %}{{ reel.compressed_video.url }}{% else %}{{ reel.video.url }}{% endif %}">
-                        <div class="thumbnail">
-                            <img src="{{ reel.thumbnail.url|default:'/static/images/default-thumbnail.jpg' }}" alt="{{ reel.title }}">
-                            <div class="overlay">
-                                <p>{{ reel.title }}</p>
-                                <div class="play-button">
-                                    <i class="fas fa-play-circle"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        {% endif %}
+        {% endfor %}
+    {% endif %}
     </section>
-
     
     <div id="loader" class="loader">Loading more reels...</div>
     
+    </main>
     
+    <!-- Include Swiper CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
+    />
     
+    <!-- Include Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     
-</main>
-<script>
- document.addEventListener('DOMContentLoaded', () => {
-    const reelsContainer = document.querySelector('.slide-reel');
-    const loader = document.getElementById('loader');
-    const videoModal = document.getElementById('video-modal');
-    const modalVideo = document.getElementById('modal-video');
-    const closeModal = document.getElementById('close-modal');
-    const prevReelBtn = document.getElementById('prev-reel');
-    const nextReelBtn = document.getElementById('next-reel');
-    const shareButton = document.getElementById('share-button');
-    let page = 2; // Start from page 2 since page 1 is already loaded
-    let isLoading = false;
-    let currentReelIndex = null;
-    let allReels = [];
-
-    // Function to open modal and play video
-    const openModal = (reelIndex) => {
-        const reel = allReels[reelIndex];
-        if (reel) {
-            const handleVideoPlay = () => modalVideo.play();
-            modalVideo.removeEventListener('loadedmetadata', handleVideoPlay);  // Remove existing listeners
-            modalVideo.src = reel.video_url;  // Set the video source
+    <!-- Your JavaScript code modified to integrate Swiper.js with the new features -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const reelsContainer = document.querySelector('.slide-reel');
+        const loader = document.getElementById('loader');
+        const videoModal = document.getElementById('video-modal');
+        const swiperWrapper = document.querySelector('.swiper-wrapper');
+        const closeModal = document.getElementById('close-modal');
+        const shareButton = document.getElementById('share-button');
+        let page = 2; // Start from page 2 since page 1 is already loaded
+        let isLoading = false;
+        let allReels = [];
+        let swiper;
+    
+        // Function to create a Swiper slide for each reel
+        const createSwiperSlide = (reel) => {
+            const slideDiv = document.createElement('div');
+            slideDiv.classList.add('swiper-slide');
+    
+            const video = document.createElement('video');
+            video.src = reel.video_url;
+            video.autoplay = false;
+            video.playsInline = true;
+            video.controls = false;
+            video.loop = true;
+            video.muted = false; // Set to true if you want videos to be muted initially
+            video.classList.add('reel-video');
+    
+            // Add event listener for tap to play/pause
+            video.addEventListener('click', () => {
+                if (video.paused) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+            });
+    
+            slideDiv.appendChild(video);
+            return slideDiv;
+        };
+    
+        // Function to open modal and initialize Swiper
+        const openModal = (startIndex) => {
             videoModal.classList.add('active');
-            modalVideo.addEventListener('loadedmetadata', handleVideoPlay, { once: true });
-            currentReelIndex = reelIndex;
-        }
-    };
-
-    // Function to close modal and stop video
-    const closeVideoModal = () => {
-        modalVideo.pause();
-        modalVideo.currentTime = 0;
-        modalVideo.src = '';
-        videoModal.classList.remove('active');
-        currentReelIndex = null;
-    };
-
-    // Event delegation to handle click on reels
-    document.body.addEventListener('click', (event) => {
-        const reelElement = event.target.closest('.reel');
-        if (reelElement) {
-            const reelIndex = parseInt(reelElement.getAttribute('data-reel-index'), 10);
-            if (!isNaN(reelIndex)) {
-                openModal(reelIndex);
-            }
-        }
-    });
-
-    // Function to load more reels dynamically
-    const loadMoreReels = () => {
-        isLoading = true;
-        loader.style.display = 'block';
-        return fetch(`${loadMoreUrl}?page=${page}`)
-            .then(response => response.json())
-            .then(data => {
-                const newReels = data.reels;
-                if (newReels.length > 0) {
-                    newReels.forEach((reelData) => {
-                        const reelIndex = allReels.length;
-                        allReels.push(reelData);
-
-                        const reelDiv = document.createElement('article');
-                        reelDiv.classList.add('reel');
-                        reelDiv.setAttribute('data-video-url', reelData.video_url);
-                        reelDiv.setAttribute('data-reel-index', reelIndex);
-
-                        const thumbnailDiv = document.createElement('div');
-                        thumbnailDiv.classList.add('thumbnail');
-
-                        const img = document.createElement('img');
-                        img.src = reelData.thumbnail_url || '/static/images/default-thumbnail.jpg';
-                        img.alt = reelData.title;
-                        thumbnailDiv.appendChild(img);
-
-                        const overlayDiv = document.createElement('div');
-                        overlayDiv.classList.add('overlay');
-
-                        const playButtonDiv = document.createElement('div');
-                        playButtonDiv.classList.add('play-button');
-                        playButtonDiv.innerHTML = '<i class="fas fa-play-circle"></i>';
-
-                        overlayDiv.appendChild(playButtonDiv);
-                        thumbnailDiv.appendChild(overlayDiv);
-
-                        reelDiv.appendChild(thumbnailDiv);
-
-                        // Append the new reel to the reels container
-                        reelsContainer.appendChild(reelDiv);
-                    });
-                    page += 1;
-                    isLoading = false;
-                    loader.style.display = 'none';
-                } else {
-                    loader.textContent = 'No more reels to load';
-                    infiniteObserver.unobserve(loader);
-                }
-            })
-            .catch(error => {
-                console.error('Error loading more reels:', error);
-                loader.textContent = 'Error loading reels.';
-            });
-    };
-
-    // Initialize existing reels on page load
-    const initializeReels = () => {
-        const reelElements = document.querySelectorAll('.reel');
-        reelElements.forEach((reelElement, index) => {
-            const videoUrl = reelElement.getAttribute('data-video-url');
-            const thumbnailUrl = reelElement.querySelector('img').src;
-            const title = reelElement.querySelector('img').alt;
-            const id = reelElement.getAttribute('data-reel-id');
-
-            const reelData = {
-                video_url: videoUrl,
-                thumbnail_url: thumbnailUrl,
-                title: title,
-                id: id,
-            };
-
-            allReels.push(reelData);
-            reelElement.setAttribute('data-reel-index', index);
-        });
-    };
-
-    initializeReels();
-
-    // Infinite scroll to load more reels when reaching the bottom of the page
-    const infiniteObserver = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && !isLoading) {
-            loadMoreReels();
-        }
-    }, {
-        root: null,
-        rootMargin: '0px',
-        threshold: 1.0
-    });
-
-    infiniteObserver.observe(loader);
-
-    // Close modal functionality
-    closeModal.addEventListener('click', closeVideoModal);
-
-    // Share button functionality
-    shareButton.addEventListener('click', () => {
-        if (currentReelIndex !== null) {
-            const reel = allReels[currentReelIndex];
-            if (reel) {
-                const shareData = {
-                    title: reel.title || 'Check out this video!',
-                    text: 'Check out this video from The Champions Club!',
-                    url: `${window.location.origin}/reels/${reel.id}`,
-                };
-
-                if (navigator.share) {
-                    navigator.share(shareData)
-                        .then(() => console.log('Shared successfully!'))
-                        .catch((error) => console.error('Share failed:', error));
-                } else {
-                    navigator.clipboard.writeText(shareData.url)
-                        .then(() => alert('Link copied to clipboard!'))
-                        .catch((error) => console.error('Could not copy text: ', error));
-                }
-            }
-        }
-    });
-
-    // Close modal when clicking outside the video content
-    videoModal.addEventListener('click', (event) => {
-        if (event.target === videoModal) {
-            closeVideoModal();
-        }
-    });
-
-    // Previous and Next Reel Buttons
-    prevReelBtn.addEventListener('click', () => {
-        if (currentReelIndex > 0) {
-            openModal(currentReelIndex - 1);
-        }
-    });
-
-    nextReelBtn.addEventListener('click', () => {
-        if (currentReelIndex < allReels.length - 1) {
-            openModal(currentReelIndex + 1);
-        } else {
-            loadMoreReels().then(() => {
-                if (currentReelIndex < allReels.length - 1) {
-                    openModal(currentReelIndex + 1);
-                }
-            });
-        }
-    });
-});
-
-
-
-</script>
-<style>
-    html, body {
-  
-  margin: 0;
-  padding: 0;
-  background-color: #000;
-}
-
-body * {
-  box-sizing: border-box;
-}
-
-
-
-
-.reel img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.reel:hover {
-  transform: scale(1.05);
-}
-
-.overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  color: white;
-  padding: 10px;
-}
-
-.overlay p {
-  font-size: 16px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.play-button {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 30px;
-  color: white;
-}
-
-    html {
-  scroll-snap-type: x mandatory;
-  scroll-padding: 1rem;
-  --film--aspect-ratio: calc(4/6);
-  --film--width: 220px;
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-}
-
-
-
-body * {
-  box-sizing: border-box;
-  
-}
-
-.slide-container {
-  max-width: 100%;
-  
-  overflow: hidden;
-}
-
-.slide-reel {
     
-  display: flex;
-  flex-wrap: nowrap;
-  list-style: none;
-  max-width: 100%;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-padding: 1rem;
-  padding: 2rem;
-  margin: 2rem;
-}
-
-.film {
-  min-width: var(--film--width);
-  width: var(--film--width);
-  height: calc(var(--film--width) / var(--film--aspect-ratio));
-  background: rgba(100, 100, 100, 0.3);
-  margin: 0 2rem 2rem 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 2px 3px 10px rgba(0, 0, 0, 0.5);
-  scroll-snap-align: start;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  position: relative;
-  transition: all 0.3s ease-in-out;
-}
-
-.film p {
-  font-weight: bold;
-  position: absolute;
-  bottom: 0;
-  text-align: center;
-  padding: 8rem 1rem 2rem;
-  width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
-  margin: 0;
-  opacity: 0;
-  visibility: 0;
-  transform: translateY(3rem);
-  transition: all 0.4s ease-in-out;
-}
-
-.film img {
-  transform: scale(1);
-  transition: all 0.3s ease-in-out;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.film:hover {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 2px 3px 10px rgba(0, 0, 0, 0.5);
-}
-
-.film:hover p {
-  transform: translateY(0);
-  opacity: 1;
-  visibility: visible;
-}
-
-.film:hover img {
-  transform: scale(1.05);
-}
-
-
-
-</style>
-
-  
- 
-  
-<!-- Video Modal -->
-<!-- ... existing HTML ... -->
-
-<!-- Video Modal -->
-<!-- ... existing HTML ... -->
-
-<!-- Video Modal -->
-<!-- ... existing HTML ... -->
-
-<!-- Video Modal -->
-<!-- Video Modal -->
-<div id="video-modal" class="video-modal">
-    <div class="modal-content">
-        <button id="close-modal" class="button close-button" aria-label="Close">
-            <i class="fas fa-times"></i>
-        </button>
-        <button id="share-button" class="button share-button" aria-label="Share">
-            <i class="fas fa-share-alt"></i>
-        </button>
-        <button id="prev-reel" class="button" aria-label="Previous">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <button id="next-reel" class="button" aria-label="Next">
-            <i class="fas fa-chevron-right"></i>
-        </button>
-        <video id="modal-video" autoplay playsinline></video>
-        <div class="branding-overlay">
-            <div class="branding">THE CHAMPIONS CLUB</div>
+            // Clear previous slides
+            swiperWrapper.innerHTML = '';
+    
+            // Create slides
+            allReels.forEach((reel) => {
+                const slide = createSwiperSlide(reel);
+                swiperWrapper.appendChild(slide);
+            });
+    
+            // Initialize Swiper
+            swiper = new Swiper('.swiper-container', {
+                direction: 'vertical',
+                initialSlide: startIndex,
+                mousewheel: true, // Enable mouse scroll navigation
+                on: {
+                    init: function() {
+                        const videos = document.querySelectorAll('.reel-video');
+                        videos.forEach((video, index) => {
+                            if (index === startIndex) {
+                                video.play();
+                            } else {
+                                video.pause();
+                                video.currentTime = 0;
+                            }
+                        });
+                    },
+                    slideChange: function() {
+                        const activeIndex = this.activeIndex;
+                        const videos = document.querySelectorAll('.reel-video');
+                        videos.forEach((video, index) => {
+                            if (index === activeIndex) {
+                                video.play();
+                            } else {
+                                video.pause();
+                                video.currentTime = 0;
+                            }
+                        });
+                    },
+                    reachEnd: function() {
+                        // Load more reels when reaching the end
+                        loadMoreReels().then(() => {
+                            // Add new slides to Swiper
+                            for (let i = swiper.slides.length; i < allReels.length; i++) {
+                                const slide = createSwiperSlide(allReels[i]);
+                                swiper.appendSlide(slide);
+                            }
+                        });
+                    },
+                },
+            });
+        };
+    
+        // Close modal and stop all videos
+        const closeVideoModal = () => {
+            if (swiper) {
+                swiper.destroy(true, true);
+            }
+            videoModal.classList.remove('active');
+        };
+    
+        // Event delegation to handle click on reels
+        document.body.addEventListener('click', (event) => {
+            const reelElement = event.target.closest('.reel');
+            if (reelElement) {
+                const reelIndex = parseInt(reelElement.getAttribute('data-reel-index'), 10);
+                if (!isNaN(reelIndex)) {
+                    openModal(reelIndex);
+                }
+            }
+        });
+    
+        // Function to load more reels dynamically
+        const loadMoreReels = () => {
+            isLoading = true;
+            loader.style.display = 'block';
+            return fetch(`${loadMoreUrl}?page=${page}`)
+                .then(response => response.json())
+                .then(data => {
+                    const newReels = data.reels;
+                    if (newReels.length > 0) {
+                        newReels.forEach((reelData) => {
+                            const reelIndex = allReels.length;
+                            allReels.push(reelData);
+    
+                            // Update the reel list on the page
+                            const reelDiv = document.createElement('article');
+                            reelDiv.classList.add('reel');
+                            reelDiv.setAttribute('data-video-url', reelData.video_url);
+                            reelDiv.setAttribute('data-reel-index', reelIndex);
+    
+                            const thumbnailDiv = document.createElement('div');
+                            thumbnailDiv.classList.add('thumbnail');
+    
+                            const img = document.createElement('img');
+                            img.src = reelData.thumbnail_url || '/static/images/default-thumbnail.jpg';
+                            img.alt = reelData.title;
+                            thumbnailDiv.appendChild(img);
+    
+                            const overlayDiv = document.createElement('div');
+                            overlayDiv.classList.add('overlay');
+    
+                            const playButtonDiv = document.createElement('div');
+                            playButtonDiv.classList.add('play-button');
+                            playButtonDiv.innerHTML = '<i class="fas fa-play-circle"></i>';
+    
+                            overlayDiv.appendChild(playButtonDiv);
+                            thumbnailDiv.appendChild(overlayDiv);
+    
+                            reelDiv.appendChild(thumbnailDiv);
+    
+                            // Append the new reel to the reels container
+                            reelsContainer.appendChild(reelDiv);
+                        });
+                        page += 1;
+                        isLoading = false;
+                        loader.style.display = 'none';
+                    } else {
+                        loader.textContent = 'No more reels to load';
+                        infiniteObserver.unobserve(loader);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading more reels:', error);
+                    loader.textContent = 'Error loading reels.';
+                });
+        };
+    
+        // Initialize existing reels on page load
+        const initializeReels = () => {
+            const reelElements = document.querySelectorAll('.reel');
+            reelElements.forEach((reelElement, index) => {
+                const videoUrl = reelElement.getAttribute('data-video-url');
+                const thumbnailUrl = reelElement.querySelector('img').src;
+                const title = reelElement.querySelector('img').alt;
+                const id = reelElement.getAttribute('data-reel-id');
+    
+                const reelData = {
+                    video_url: videoUrl,
+                    thumbnail_url: thumbnailUrl,
+                    title: title,
+                    id: id,
+                };
+    
+                allReels.push(reelData);
+                reelElement.setAttribute('data-reel-index', index);
+            });
+        };
+    
+        initializeReels();
+    
+        // Infinite scroll to load more reels when reaching the bottom of the page
+        const infiniteObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !isLoading) {
+                loadMoreReels();
+            }
+        }, {
+            root: null,
+            rootMargin: '0px',
+            threshold: 1.0
+        });
+    
+        infiniteObserver.observe(loader);
+    
+        // Close modal functionality
+        closeModal.addEventListener('click', closeVideoModal);
+    
+        // Share button functionality
+        shareButton.addEventListener('click', () => {
+            if (swiper && swiper.slides.length > 0) {
+                const activeIndex = swiper.activeIndex;
+                const reel = allReels[activeIndex];
+                if (reel) {
+                    const shareData = {
+                        title: reel.title || 'Check out this video!',
+                        text: 'Check out this video from The Champions Club!',
+                        url: `${window.location.origin}/reels/${reel.id}`,
+                    };
+    
+                    if (navigator.share) {
+                        navigator.share(shareData)
+                            .then(() => console.log('Shared successfully!'))
+                            .catch((error) => console.error('Share failed:', error));
+                    } else {
+                        navigator.clipboard.writeText(shareData.url)
+                            .then(() => alert('Link copied to clipboard!'))
+                            .catch((error) => console.error('Could not copy text: ', error));
+                    }
+                }
+            }
+        });
+    
+        // Close modal when clicking outside the video content
+        videoModal.addEventListener('click', (event) => {
+            if (event.target === videoModal) {
+                closeVideoModal();
+            }
+        });
+    });
+    </script>
+    
+    <!-- Your existing CSS styles along with Swiper adjustments -->
+    <style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+    }
+    
+    body * {
+        box-sizing: border-box;
+    }
+    
+    .reel {
+        position: relative;
+        cursor: pointer;
+    }
+    
+    .reel img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .reel:hover {
+        transform: scale(1.05);
+    }
+    
+    .thumbnail {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        color: white;
+        padding: 10px;
+    }
+    
+    .overlay p {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0;
+    }
+    
+    .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 30px;
+        color: white;
+    }
+    
+    html {
+        scroll-snap-type: x mandatory;
+        scroll-padding: 1rem;
+        --film--aspect-ratio: calc(9/16); /* Changed aspect ratio to 9:16 */
+        --film--width: 220px;
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+    }
+    
+    .slide-container {
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    .slide-reel {
+        display: flex;
+        flex-wrap: nowrap;
+        list-style: none;
+        max-width: 100%;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-padding: 1rem;
+        padding: 2rem;
+        margin: 2rem;
+    }
+    
+    .film {
+        min-width: var(--film--width);
+        width: var(--film--width);
+        height: calc(var(--film--width) / var(--film--aspect-ratio));
+        background: rgba(100, 100, 100, 0.3);
+        margin: 0 2rem 2rem 0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 2px 3px 10px rgba(0, 0, 0, 0.5);
+        scroll-snap-align: start;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        position: relative;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    .film p {
+        font-weight: bold;
+        position: absolute;
+        bottom: 0;
+        text-align: center;
+        padding: 8rem 1rem 2rem;
+        width: 100%;
+        background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+        margin: 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(3rem);
+        transition: all 0.4s ease-in-out;
+    }
+    
+    .film img {
+        transform: scale(1);
+        transition: all 0.3s ease-in-out;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .film:hover {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 2px 3px 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .film:hover p {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .film:hover img {
+        transform: scale(1.05);
+    }
+    
+    /* Swiper styles for the modal */
+    .video-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000; /* Changed to solid black for consistency */
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    
+    .video-modal.active {
+        display: flex;
+    }
+    
+    .modal-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+        
+    }
+    
+    .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .reel-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background-color: #000;
+    }
+    
+    /* Adjust the aspect ratio for the video */
+    @media (min-aspect-ratio: 9/16) {
+        .reel-video {
+            width: auto;
+            height: 100%;
+            border-radius:10px;
+        }
+    }
+    
+    @media (max-aspect-ratio: 9/16) {
+        .reel-video {
+            width: 100%;
+            height: auto;
+        }
+    }
+    
+    .button {
+        position: absolute;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 10;
+    }
+    
+    .close-button {
+        top: 10px;
+        right: 10px;
+    }
+    
+    .share-button {
+        top: 10px;
+        left: 10px;
+    }
+    
+    /* Optional: Hide scrollbar in Swiper */
+    .swiper-container::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .swiper-container {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    </style>
+    
+    <!-- Video Modal -->
+    <div id="video-modal" class="video-modal">
+        <div class="modal-content">
+            <button id="close-modal" class="button close-button" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+            <button id="share-button" class="button share-button" aria-label="Share">
+                <i class="fas fa-share-alt"></i>
+            </button>
+    
+            <!-- Swiper Container -->
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <!-- Swiper slides will be injected here -->
+                </div>
+            </div>
+    
+            <!-- Branding Overlay (if needed) -->
+            <div class="branding-overlay">
+                <div class="branding">THE CHAMPIONS CLUB</div>
+            </div>
         </div>
     </div>
-</div>
-
-<style>
-.video-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.video-modal.active {
-  display: flex;
-}
-
-.modal-content {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  max-height: 90vh;
-}
-
-video {
-  width: 100%;
-  height: auto;
-}
-
-.button {
-  position: absolute;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.close-button {
-  top: 10px;
-  right: 10px;
-}
-
-.share-button {
-  top: 10px;
-  left: 10px;
-}
-
-#prev-reel {
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#next-reel {
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-</style>
-
+    
 <!-- ... rest of the HTML ... -->
 
 
