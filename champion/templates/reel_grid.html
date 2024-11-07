@@ -372,7 +372,7 @@
     <!-- Include Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     
-    <!-- Your JavaScript code modified to integrate Swiper.js with the new features -->
+    <!-- Updated JavaScript code with fixes and optimizations -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const reelsContainer = document.querySelector('.slide-reel');
@@ -392,13 +392,14 @@
             slideDiv.classList.add('swiper-slide');
     
             const video = document.createElement('video');
-            video.src = reel.video_url;
+            // Do not set video.src here to enable lazy loading
             video.autoplay = false;
             video.playsInline = true;
             video.controls = false;
             video.loop = true;
             video.muted = false; // Set to true if you want videos to be muted initially
             video.classList.add('reel-video');
+            video.setAttribute('data-video-url', reel.video_url);
     
             // Add event listener for tap to play/pause
             video.addEventListener('click', () => {
@@ -433,13 +434,19 @@
                 mousewheel: true, // Enable mouse scroll navigation
                 on: {
                     init: function() {
+                        const activeIndex = this.activeIndex;
                         const videos = document.querySelectorAll('.reel-video');
                         videos.forEach((video, index) => {
-                            if (index === startIndex) {
+                            if (index === activeIndex) {
+                                const videoUrl = video.getAttribute('data-video-url');
+                                video.src = videoUrl;
+                                video.load();
                                 video.play();
                             } else {
                                 video.pause();
                                 video.currentTime = 0;
+                                video.src = '';
+                                video.load();
                             }
                         });
                     },
@@ -448,10 +455,15 @@
                         const videos = document.querySelectorAll('.reel-video');
                         videos.forEach((video, index) => {
                             if (index === activeIndex) {
+                                const videoUrl = video.getAttribute('data-video-url');
+                                video.src = videoUrl;
+                                video.load();
                                 video.play();
                             } else {
                                 video.pause();
                                 video.currentTime = 0;
+                                video.src = '';
+                                video.load();
                             }
                         });
                     },
@@ -471,8 +483,18 @@
     
         // Close modal and stop all videos
         const closeVideoModal = () => {
+            // Pause all videos and unload them
+            const videos = document.querySelectorAll('.reel-video');
+            videos.forEach((video) => {
+                video.pause();
+                video.currentTime = 0;
+                video.src = '';
+                video.load();
+            });
+    
             if (swiper) {
                 swiper.destroy(true, true);
+                swiper = null;
             }
             videoModal.classList.remove('active');
         };
@@ -677,7 +699,7 @@
     html {
         scroll-snap-type: x mandatory;
         scroll-padding: 1rem;
-        --film--aspect-ratio: calc(9/16); /* Changed aspect ratio to 9:16 */
+        --film--aspect-ratio: calc(9/16); /* Aspect ratio set to 9:16 */
         --film--width: 220px;
         scroll-behavior: smooth;
         overflow-x: hidden;
@@ -779,7 +801,6 @@
     .swiper-container {
         width: 100%;
         height: 100%;
-        
     }
     
     .swiper-slide {
@@ -801,7 +822,6 @@
         .reel-video {
             width: auto;
             height: 100%;
-            border-radius:10px;
         }
     }
     
