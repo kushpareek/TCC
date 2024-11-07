@@ -31,14 +31,7 @@
       
 </head>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WRN3TFB4K5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-WRN3TFB4K5');
-</script>
 
 
 <body>
@@ -3693,7 +3686,7 @@ a:hover {
         {% if registration.joined_as == False %}
         <h1>Welcome associate</h1>
         <!-- User is not an associate member -->
-        <a href="{% url 'course_list' %}"><button>GO TO COURSES</button></a>
+        <a href="{% url 'course_soon' %}"><button>GO TO COURSES</button></a>
         {% else %}
         {% if reapply_date < now %} <a href="{% url 'apply' %}"><button>REAPPLY NOW</button></a>
             {% else %}
