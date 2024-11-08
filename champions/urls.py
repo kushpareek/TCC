@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('champion.urls')),
     path('paypal/', include('paypal.standard.ipn.urls')),
+    path('Team_dashboard/', include(('Team_dashboard.urls', 'Team_dashboard'), namespace='Team_dashboard')),
    
 ]
 if settings.DEBUG:

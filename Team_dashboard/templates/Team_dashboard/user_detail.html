@@ -1,0 +1,54 @@
+<!-- dashboard/templates/dashboard/user_detail.html -->
+
+{% extends 'Team_dashboard/base.html' %}
+
+{% block title %}User Details{% endblock %}
+
+{% block content %}
+<h1>User Details: {{ user.user.username }}</h1>
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-bordered">
+            <tr>
+                <th>Username</th>
+                <td>{{ user.user.username }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.user.email }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ user.phone }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ user.get_approved_display }}</td>
+            </tr>
+            <tr>
+                <th>Unique Trait</th>
+                <td>{{ user.unique_trait }}</td>
+            </tr>
+            <tr>
+                <th>Reason of being Champion</th>
+                <td>{{ user.champion_reason }}</td>
+            </tr>
+            <tr>
+                <th>Achievements</th>
+                <td>{{ user.achievements }}</td>
+            </tr>
+            <tr>
+                <th>Submission Date</th>
+                <td>{{ user.submission_date|date:"Y-m-d H:i" }}</td>
+            </tr>
+            <!-- Add more fields as necessary -->
+        </table>
+        {% if user.approved == 0 %}
+        <a href="{% url 'Team_dashboard:user-approve' user.pk %}" class="btn btn-success">Approve</a>
+        <a href="{% url 'Team_dashboard:user-reject' user.pk %}" class="btn btn-danger">Reject</a>
+        {% endif %}
+        <a href="{% url 'Team_dashboard:user-edit' user.pk %}" class="btn btn-secondary">Edit</a>
+        <a href="{% url 'Team_dashboard:user-list' %}" class="btn btn-outline-primary">Back to List</a>
+    </div>
+</div>
+{% endblock %}

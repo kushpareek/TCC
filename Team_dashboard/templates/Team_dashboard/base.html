@@ -1,0 +1,37 @@
+<!-- dashboard/templates/dashboard/base.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Dashboard{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'Team_dashboard:dashboard-home' %}">Dashboard</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'Team_dashboard:user-list' %}">Users</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'Team_dashboard:audit-log' %}">Audit Log</a></li>
+            </ul>
+            <span class="navbar-text">
+                Logged in as {{ user.username }} | <a href="{% url 'Team_dashboard:dashboard-logout' %}">Logout</a>
+            </span>
+        </div>
+    </nav>
+    {% endif %}
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
