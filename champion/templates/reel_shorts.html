@@ -435,34 +435,49 @@
 
     <script>
         let allReels = [];
-        document.querySelectorAll('.swiper-slide').forEach(slide => {
-            const reelId = slide.getAttribute('data-reel-id');
-            const title = slide.querySelector('.video-title').innerText;
-        
-            allReels.push({ id: parseInt(reelId), title: title });
-        });
-        var swiper = new Swiper('.swiper-container', {
-            direction: 'vertical',
-            slidesPerView: 1,
-            spaceBetween: 0,
-            mousewheel: true,
-            on: {
-                slideChange: function () {
-                    var activeSlide = swiper.slides[swiper.activeIndex];
-                    var reelVideo = activeSlide.querySelector('.reel-video');
-                    
-                    // Pause all other videos
-                    document.querySelectorAll('.reel-video').forEach(function(video) {
-                        video.pause();
-                    });
+    document.querySelectorAll('.swiper-slide').forEach(slide => {
+        const reelId = slide.getAttribute('data-reel-id');
+        const title = slide.querySelector('.video-title').innerText;
+    
+        allReels.push({ id: parseInt(reelId), title: title });
+    });
 
-                    // Play the active video
-                    if (reelVideo) {
-                        reelVideo.play();
-                    }
-                }
+    // Get the selected reel ID from the backend
+    const selectedReelId = "{{ selected_reel.id|default:'' }}";
+    let initialSlideIndex = 0;  // Default to 0
+
+    if (selectedReelId) {
+        const reelSlides = document.querySelectorAll('.swiper-slide');
+        reelSlides.forEach((slide, index) => {
+            if (slide.getAttribute('data-reel-id') === selectedReelId) {
+                initialSlideIndex = index;
             }
         });
+    }
+
+    var swiper = new Swiper('.swiper-container', {
+        initialSlide: initialSlideIndex,
+        direction: 'vertical',
+        slidesPerView: 1,
+        spaceBetween: 0,
+        mousewheel: true,
+        on: {
+            slideChange: function () {
+                var activeSlide = swiper.slides[swiper.activeIndex];
+                var reelVideo = activeSlide.querySelector('.reel-video');
+                
+                // Pause all other videos
+                document.querySelectorAll('.reel-video').forEach(function(video) {
+                    video.pause();
+                });
+
+                // Play the active video
+                if (reelVideo) {
+                    reelVideo.play();
+                }
+            }
+        }
+    });
         // Event delegation for share button clicks
 document.body.addEventListener('click', function (event) {
     if (event.target.closest('.share-button')) {

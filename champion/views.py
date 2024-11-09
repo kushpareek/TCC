@@ -2463,26 +2463,28 @@ from .models import Reel
 from django.core.paginator import Paginator
 
 def reel_shorts_view(request, reel_id=None):
-    # Get all reels ordered by creation date
-    reels_list = Reel.objects.order_by('-created_at')
+    # Get all reels ordered by creation date and convert to a list
+    reels_list = list(Reel.objects.order_by('-created_at'))
     
+    selected_reel = None
+    if reel_id:
+        selected_reel = get_object_or_404(Reel, id=reel_id)
+        # Move selected reel to the front if it exists
+        if selected_reel in reels_list:
+            reels_list.remove(selected_reel)
+        else:
+            # If the selected reel is not in the list, add it
+            reels_list.insert(0, selected_reel)
+        reels_list.insert(0, selected_reel)
+
     # Paginate the reels (e.g., 10 reels per page)
     paginator = Paginator(reels_list, 10)  # 10 reels per page
     page = request.GET.get('page', 1)
     reels = paginator.get_page(page)
 
-    # If reel_id is provided, get the corresponding reel and reorder it to the first position
-    selected_reel = None
-    if reel_id:
-        selected_reel = get_object_or_404(Reel, id=reel_id)
-        # Move selected reel to the front if it exists
-        reels_list = list(reels_list)
-        reels_list.remove(selected_reel)
-        reels_list.insert(0, selected_reel)
-
     context = {
         'selected_reel': selected_reel,
-        'reels': reels,  # Only load the current page of reels
+        'reels': reels,
     }
     return render(request, 'reel_shorts.html', context)
 
