@@ -1,0 +1,27 @@
+<!-- templates/nexus/topic_detail.html -->
+{% extends "nexus/nexus_base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Topic: #{{ topic.name }}</h2>
+    <p>{{ topic.tweet_count }} tweets</p>  <!-- Optionally, show tweet count if available -->
+
+    <div class="tweet-list">
+        {% for tweet in tweets %}
+            <div class="tweet">
+                <p><strong>{{ tweet.registration.user.username }}</strong>: {{ tweet.content }}</p>
+                {% if tweet.media_url %}
+                    <img src="{{ tweet.media_url }}" alt="Tweet Media">
+                {% endif %}
+                <div class="tweet-info">
+                    <p>Likes: {{ tweet.likes_count }} | Retweets: {{ tweet.retweets_count }}</p>
+                    <a href="{% url 'like_tweet' tweet.id %}" class="like-btn">Like</a> |
+                    <a href="{% url 'retweet' tweet.id %}" class="retweet-btn">Retweet</a>
+                </div>
+            </div>
+        {% empty %}
+            <p>No tweets found for this topic.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

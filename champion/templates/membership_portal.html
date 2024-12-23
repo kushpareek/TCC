@@ -747,7 +747,8 @@
             <p>Note: This tier of service <strong>does not</strong> provide access to The Champions Club's Global Private Network.</p>
             <p>Applicants are permitted to apply <strong>once every 24 hours</strong> on a daily basis.</p>
             <p><strong>Acceptance Rate: N/A</strong><br>(Last updated 01/09/2024)</p>
-            <a href = "{% url 'associate_reg' %}"><button>Apply</button></a>
+            {% comment %} <a href = "{% url 'associate_reg' %}"><button>Apply</button></a> {% endcomment %}
+            <a href = "{% url 'associate_membership' %}"><button>Apply</button></a>
         </div>
     
         <div class="membership-card">
@@ -1046,13 +1047,13 @@ margin-bottom:30px;
 </style>  
 
     <!-- Video Section -->
-    <div class="video-section">
-        <h2>CELEBRATE LIFE WITH THE CHAMPIONS CLUB</h2>
-        <hr>
-        <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
-        </div>
-    </div>
+        {% comment %} <div class="video-section">
+            <h2>CELEBRATE LIFE WITH THE CHAMPIONS CLUB</h2>
+            <hr>
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div> {% endcomment %}
 
     <!-- Footer -->
     <section id="dividing-section">

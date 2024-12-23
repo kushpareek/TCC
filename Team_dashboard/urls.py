@@ -13,5 +13,6 @@ urlpatterns = [
     path('users/<int:pk>/reject/', views.user_reject, name='user-reject'),
     path('users/<int:pk>/edit/', views.user_edit, name='user-edit'),
     path('audit-log/', views.audit_log, name='audit-log'),
+    path('users/<int:pk>/send-approval-email/', views.send_approval_email, name='send-approval-email'),
     # Add more URLs as needed
 ]

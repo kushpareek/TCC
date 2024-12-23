@@ -68,5 +68,14 @@ urlpatterns = [
     path('news/', views.news_feed, name='news_feed'),
       # Donation form view
        path('tcc_academia/', views.tcc_academia_view, name='tcc_academia'),
-       path('course_soon/', views.course_soon, name='course_soon')
+       path('course_soon/', views.course_soon, name='course_soon'),
+       path('coming_soon/',views.coming_soon_page,name='coming_soon'),
+       path('credits/', views.credits,name='credits'),
+       path('epulum/',views.epulum, name='epulum'),
+       path('historia/',views.historia,name='historia'),
+       path('vita/',views.vita,name='vita'),
+       path('opus/',views.opus,name='opus'),
+       path('TCC_resources/',views.tcc_resources,name='resources'),
+       path('application_review/',views.underreview,name='underreview'),
+       path('associate/',views.associate_membership,name='associate_membership'),
 ]

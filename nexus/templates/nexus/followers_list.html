@@ -1,0 +1,16 @@
+{% extends 'nexus/nexus_base.html' %}
+
+{% block content %}
+<h2>Followers of {{ user_profile.registration.user.username }}</h2>
+<ul>
+    {% for follower in followers %}
+        <li>
+            <a href="{% url 'profile' follower.registration.user.username %}">
+                {{ follower.registration.user.username }}
+            </a>
+        </li>
+    {% empty %}
+        <p>No followers yet.</p>
+    {% endfor %}
+</ul>
+{% endblock %}

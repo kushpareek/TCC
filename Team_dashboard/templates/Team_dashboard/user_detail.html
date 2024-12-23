@@ -46,9 +46,13 @@
         {% if user.approved == 0 %}
         <a href="{% url 'Team_dashboard:user-approve' user.pk %}" class="btn btn-success">Approve</a>
         <a href="{% url 'Team_dashboard:user-reject' user.pk %}" class="btn btn-danger">Reject</a>
-        {% endif %}
-        <a href="{% url 'Team_dashboard:user-edit' user.pk %}" class="btn btn-secondary">Edit</a>
-        <a href="{% url 'Team_dashboard:user-list' %}" class="btn btn-outline-primary">Back to List</a>
-    </div>
+    {% endif %}
+    {% if user.approved == 1 %}
+        <!-- New Send Approval Email Button -->
+        <a href="{% url 'Team_dashboard:send-approval-email' user.pk %}" class="btn btn-primary">Send Approval Email</a>
+    {% endif %}
+    <a href="{% url 'Team_dashboard:user-edit' user.pk %}" class="btn btn-secondary">Edit</a>
+    <a href="{% url 'Team_dashboard:user-list' %}" class="btn btn-outline-primary">Back to List</a>
+</div>
 </div>
 {% endblock %}

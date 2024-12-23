@@ -1,0 +1,28 @@
+<!-- templates/nexus/suggested_users.html -->
+{% extends "nexus/nexus_base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Suggested Users to Follow</h2>
+    <ul>
+        {% for user in suggested_users %}
+            <li class="user-suggestion">
+                <p><strong>{{ user.registration.user.username }}</strong></p>
+                <p>{{ user.registration.user.email }}</p>
+                <form>
+                    <button type="button" class="follow-btn" data-username="{{ user.registration.user.username }}">
+                        {% if user in following_list %}
+                            Unfollow
+                        {% else %}
+                            Follow
+                        {% endif %}
+                    </button>
+                </form>
+                
+            </li>
+        {% empty %}
+            <p>No user suggestions available at the moment.</p>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

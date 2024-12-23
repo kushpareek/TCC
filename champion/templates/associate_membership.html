@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>TCC | Coming Soon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts for premium typography -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            margin: 0;
+            padding: 0;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 0 20px;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            font-weight: 500;
+            color: #E5C100; /* Gold color for a premium feel */
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease-in-out;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease-in-out;
+        }
+        /* Button Styling */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1em;
+            color: #000;
+            background-color: #E5C100;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            animation: fadeInUp 1s ease-in-out 0.5s;
+            animation-fill-mode: both;
+        }
+        .btn:hover {
+            background-color: #d4b000;
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            p {
+                font-size: 1em;
+            }
+            .btn {
+                padding: 12px 25px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Associate Membership Coming Soon</h1>
+        <p>
+            Unlock a world of exclusive readings and captivating videos with Epulum and Historia. Our Associate Membership offers an unparalleled journey into knowledge and entertainment, tailored for the discerning individual.
+        </p>
+        <a href="{% url 'home' %}" class="btn">Home</a>
+    </div>
+</body>
+</html>

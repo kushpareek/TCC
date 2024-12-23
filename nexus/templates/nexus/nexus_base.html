@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    
+    <meta charset="UTF-8mb4">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Nexus - A Twitter Clone</title>
+    
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'nexus_home' %}" class="navbar-brand">Nexus</a>
+            <ul class="navbar-nav">
+                <li><a href="{% url 'nexus_home' %}">Home</a></li>
+                <li><a href="{% url 'profile' request.user.username %}">Profile</a></li>
+                <li><a href="{% url 'notifications' %}">Notifications</a></li>
+                <li><a href="{% url 'trending_topics' %}">Trending</a></li>
+                <li><a href="{% url 'settings' %}">Settings</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; {{ year }} Nexus. All Rights Reserved.</p>
+    </footer>
+<!-- Include this script at the bottom of your template -->
+<script>
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // CSRF token
+    const csrfToken = getCookie("csrftoken");
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Like Button Functionality
+        document.querySelectorAll(".like-btn").forEach(button => {
+            button.addEventListener("click", function(event) {
+                event.preventDefault();
+                const tweetId = this.dataset.id;
+
+                fetch(`/nexus/ajax/like/${tweetId}/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const likeIcon = this.querySelector('i');
+                        const likeCount = this.querySelector('span');
+                        if (data.liked) {
+                            likeIcon.classList.add('liked');
+                        } else {
+                            likeIcon.classList.remove('liked');
+                        }
+                        likeCount.textContent = data.likes_count;
+                    } else {
+                        alert("An error occurred while processing your request.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+
+        // Follow Button Functionality
+        document.querySelectorAll(".follow-btn").forEach(button => {
+            button.addEventListener("click", function(event) {
+                event.preventDefault();
+                const username = this.dataset.username;
+
+                fetch(`/nexus/ajax/follow/${username}/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": csrfToken
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update button text
+                        this.textContent = data.is_following ? "Unfollow" : "Follow";
+                        // Optionally update button styling
+                    } else {
+                        alert("An error occurred while processing your request.");
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            });
+        });
+
+        // Retweet Button Functionality
+        document.addEventListener('click', function(event) {
+            // Retweet Button Click
+            if (event.target.closest('.retweet-btn')) {
+                event.preventDefault();
+                const retweetBtn = event.target.closest('.retweet-btn');
+                const tweetId = retweetBtn.dataset.id;
+                const retweetOptions = retweetBtn.nextElementSibling;
+                // Toggle retweet options dropdown
+                retweetOptions.style.display = retweetOptions.style.display === 'block' ? 'none' : 'block';
+            }
+
+            // Simple Retweet
+            if (event.target.matches('.simple-retweet')) {
+                event.preventDefault();
+                const tweetId = event.target.dataset.id;
+
+                fetch(`/nexus/ajax/retweet/${tweetId}/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ comment: "" })  // Simple retweet without comment
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update retweet count
+                        const retweetBtn = document.querySelector(`.retweet-btn[data-id="${tweetId}"]`);
+                        const retweetIcon = retweetBtn.querySelector('i');
+                        const retweetCount = retweetBtn.querySelector('span');
+
+                        if (data.retweeted) {
+                            retweetIcon.classList.add('retweeted');
+                        } else {
+                            retweetIcon.classList.remove('retweeted');
+                        }
+                        retweetCount.textContent = data.retweets_count;
+
+                        // Close retweet options
+                        const retweetOptions = retweetBtn.nextElementSibling;
+                        retweetOptions.style.display = 'none';
+                    } else {
+                        alert("An error occurred while processing your request.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            // Quote Retweet
+            if (event.target.matches('.quote-retweet')) {
+                event.preventDefault();
+                const tweetId = event.target.dataset.id;
+                // Open Quote Tweet Modal
+                openQuoteTweetModal(tweetId);
+            }
+
+            // Unretweet
+            if (event.target.closest('.unretweet-btn')) {
+                event.preventDefault();
+                const unretweetBtn = event.target.closest('.unretweet-btn');
+                const tweetId = unretweetBtn.dataset.id;
+
+                fetch(`/nexus/ajax/unretweet/${tweetId}/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update retweet count
+                        const retweetBtn = document.querySelector(`.retweet-btn[data-id="${tweetId}"]`);
+                        const retweetIcon = retweetBtn.querySelector('i');
+                        const retweetCount = retweetBtn.querySelector('span');
+
+                        retweetIcon.classList.remove('retweeted');
+                        retweetCount.textContent = data.retweets_count;
+
+                        // Replace unretweet button with retweet button
+                        const retweetDropdown = unretweetBtn.closest('.retweet-dropdown');
+                        retweetDropdown.innerHTML = `
+                            <button class="retweet-btn" data-id="${tweetId}">
+                                <i class="fa fa-retweet"></i>
+                                <span>${data.retweets_count}</span>
+                            </button>
+                            <div class="retweet-options" style="display: none;">
+                                <a href="#" class="simple-retweet" data-id="${tweetId}">Retweet</a>
+                                <a href="#" class="quote-retweet" data-id="${tweetId}">Quote Tweet</a>
+                            </div>
+                        `;
+                    } else {
+                        alert("An error occurred while processing your request.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+
+        // Reply Button Functionality
+        document.addEventListener('click', function(event) {
+            if (event.target.closest('.reply-btn')) {
+                event.preventDefault();
+                const replyBtn = event.target.closest('.reply-btn');
+                const tweetId = replyBtn.dataset.id;
+                // Open Reply Modal
+                openReplyModal(tweetId);
+            }
+        });
+
+        // Close Modals when clicking outside or on close button
+        window.addEventListener("click", function(event) {
+            const quoteTweetModal = document.getElementById("quoteTweetModal");
+            const replyModal = document.getElementById("replyModal");
+
+            if (event.target === quoteTweetModal) {
+                quoteTweetModal.style.display = "none";
+            }
+
+            if (event.target === replyModal) {
+                replyModal.style.display = "none";
+            }
+        });
+
+        document.querySelectorAll(".close-modal").forEach(closeBtn => {
+            closeBtn.addEventListener("click", function() {
+                this.closest(".modal").style.display = "none";
+            });
+        });
+
+        // Close modal when clicking the close button
+        document.querySelectorAll('.close-modal').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+    });
+
+    // Functions to open modals
+    function openQuoteTweetModal(tweetId) {
+        const quoteTweetModal = document.getElementById("quoteTweetModal");
+        const submitQuoteTweet = document.getElementById("submitQuoteTweet");
+        const quoteTweetComment = document.getElementById("quoteTweetComment");
+
+        submitQuoteTweet.dataset.id = tweetId;
+        quoteTweetComment.value = "";
+        quoteTweetModal.style.display = "flex";
+
+        // Submit Quote Tweet
+        submitQuoteTweet.onclick = function() {
+            const comment = quoteTweetComment.value;
+
+            fetch(`/nexus/ajax/retweet/${tweetId}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ comment: comment })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update retweet count
+                    const retweetBtn = document.querySelector(`.retweet-btn[data-id="${tweetId}"]`);
+                    const retweetIcon = retweetBtn.querySelector('i');
+                    const retweetCount = retweetBtn.querySelector('span');
+
+                    retweetIcon.classList.add('retweeted');
+                    retweetCount.textContent = data.retweets_count;
+
+                    quoteTweetModal.style.display = "none";
+                } else {
+                    alert("An error occurred while processing your request.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        };
+    }
+
+    function openReplyModal(tweetId) {
+        const replyModal = document.getElementById("replyModal");
+        const replyForm = document.getElementById("replyForm");
+        const parentTweetContentDiv = document.getElementById("parentTweetContent");
+        const tweetElement = document.querySelector(`.tweet[data-tweet-id="${tweetId}"]`);
+
+        // Get parent tweet content
+        const tweetHeader = tweetElement.querySelector('.tweet-header-info');
+        const username = tweetHeader.querySelector('strong').textContent;
+        const content = tweetElement.querySelector('p').textContent;
+
+        // Populate parent tweet content
+        parentTweetContentDiv.innerHTML = `
+            <div class="tweet-header">
+                <strong>${username}</strong>
+            </div>
+            <p>${content}</p>
+        `;
+
+        // Set tweet ID on the form
+        replyForm.dataset.tweetId = tweetId;
+
+        // Show modal
+        replyModal.style.display = "flex";
+
+        // Submit Reply
+        replyForm.onsubmit = function(event) {
+            event.preventDefault();
+            const replyContent = document.getElementById("replyContent").value;
+
+            fetch(`/nexus/ajax/comment/${tweetId}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ content: replyContent })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Optionally update the UI to show the new reply
+                    // For simplicity, reload the page
+                    location.reload();
+                } else {
+                    alert("An error occurred while processing your request.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        };
+    }
+</script>
+    
+</body>
+</html>

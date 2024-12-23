@@ -27,14 +27,16 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 #myVideo {
-    position: fixed;
-    right: 0;
+    position: absolute;
+    top:50%;
+    left: 50%; 
+    transform: translate(-50%, -60%);
+    width: 100%;
+    
+    object-fit: cover;
     z-index: -1;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
     filter: brightness(80%);
-  }
+}
 .hero-container {
     padding-top: 10px;
   position: relative;
@@ -43,13 +45,64 @@ body {
   color: white;
   
 }
-@media (max-width:1080px){
+@media (max-width:1280px){
     .hero-container {
         padding-top: 10px;
         position: relative;
         min-height: 550px;
         height: 60%;
         color: white;
+    }
+    #myVideo {
+        position: absolute;
+        top:50%;
+        left: 50%; 
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height:130%;
+        object-fit: cover;
+        z-index: -1;
+        filter: brightness(80%);
+    }
+}
+@media (max-width:1024px){
+    .hero-container {
+        padding-top: 10px;
+        position: relative;
+        min-height: 550px;
+        height: 60%;
+        color: white;
+    }
+    #myVideo {
+        position: absolute;
+        top:50%;
+        left: 50%; 
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height:150%;
+        object-fit: cover;
+        z-index: -1;
+        filter: brightness(80%);
+    }
+}
+@media (max-width:724px){
+    .hero-container {
+        padding-top: 10px;
+        position: relative;
+        min-height: 550px;
+        height: 60%;
+        color: white;
+    }
+    #myVideo {
+        position: absolute;
+        top:50%;
+        left: 50%; 
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height:120%;
+        object-fit: cover;
+        z-index: -1;
+        filter: brightness(80%);
     }
 }
 

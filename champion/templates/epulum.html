@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Coming Soon{% endblock %}
+{% load static %}
+{% block content %}
+<style>
+    body {
+        margin: 0;
+       
+        font-family: 'Montserrat', sans-serif;
+        color: #fff;
+    }
+
+    .container {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 20px;
+        z-index: -1;
+        position: relative;
+    }
+
+    .text-container {
+        margin-bottom: 20px;
+        max-width: 80%;
+        padding: 20px;
+        
+        border-radius: 10px;
+    }
+
+    .app-name {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #ff6f61;
+    }
+
+    .tagline {
+        font-size: 1.1rem;
+        font-weight: 400;
+        margin-bottom: 20px;
+        color: #ddd;
+        line-height: 1.6;
+    }
+
+    .coming-soon {
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #ff6f61;
+        margin-bottom: 40px;
+    }
+
+    .stars {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        background: #000;
+        
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+
+    .star {
+        position: absolute;
+        top: -10px;
+        width: 2px;
+        height: 2px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: fall 3s linear infinite;
+    }
+
+    @keyframes fall {
+        0% {
+            transform: translateY(-100vh);
+            
+        }
+        50% {
+           
+        }
+        100% {
+            transform: translateY(100vh);
+            
+        }
+    }
+
+  
+footer{
+    text-align:left;
+}
+   
+
+</style>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+    <div class="text-container">
+        <h1 class="app-name">Epulum</h1>
+        <p class="tagline">Get ready to immerse yourself in the ultimate streaming experience. Learning and video experience redefined, curated just for you.</p>
+        <p class="coming-soon">Coming Soon</p>
+    </div>
+</div>
+
+<script>
+    const starContainer = document.getElementById('stars');
+    const numberOfStars = 100;
+
+    for (let i = 0; i < numberOfStars; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.animationDuration = Math.random() * 3 + 2 + 's'; // Random duration between 2s and 5s
+        star.style.animationDelay = Math.random() * 5 + 's'; // Random delay
+        starContainer.appendChild(star);
+    }
+</script>
+{% endblock %}

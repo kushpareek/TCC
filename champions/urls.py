@@ -9,6 +9,7 @@ urlpatterns = [
     path('', include('champion.urls')),
     path('paypal/', include('paypal.standard.ipn.urls')),
     path('Team_dashboard/', include(('Team_dashboard.urls', 'Team_dashboard'), namespace='Team_dashboard')),
+    path('nexus/', include('nexus.urls')),
    
 ]
 if settings.DEBUG:

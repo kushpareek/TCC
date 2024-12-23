@@ -65,6 +65,6 @@ def send_email(subject, body, to_email, from_email=settings.DEFAULT_FROM_EMAIL, 
 
     try:
         api_response = api_instance.send_transac_email(email)
-        print("Email sent successfully via API!")
+        print("Email sent successfully via API!",api_response)
     except ApiException as e:
         print(f"Exception when sending email via API: {e}")

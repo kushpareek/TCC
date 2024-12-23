@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Coming Soon{% endblock %}
+{% load static %}
+{% block content %}
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: #000; /* Primary color preference */
+    color: #fff;
+    font-family: "Georgia", serif; 
+ /* Remove scroll if page fits in viewport */
+  }
+
+  .text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 2rem;
+    /* Subtle background pattern or gradient can be added here if desired */
+  }
+
+  /* Logo / Heading */
+  .app-name {
+    font-size: 4rem;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .line-divider {
+    width: 220px;
+    height: 3px;
+    background: linear-gradient(to right, #d4af37, #fff); /* Gold to white gradient */
+    margin: 0 auto 1.5rem auto;
+  }
+
+  /* Tagline */
+  .tagline {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #ffffffcc; /* Slightly lighter tone for subtlety */
+    margin-bottom: 3rem;
+    max-width: 600px;
+  }
+
+  /* Coming Soon Text */
+  .coming-soon {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #d4af37; /* Gold accent */
+    border: 2px solid #d4af37;
+    padding: 0.8rem 2rem;
+    border-radius: 2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Hover or focus effect for 'Coming Soon' to show interactivity */
+  .coming-soon:hover,
+  .coming-soon:focus {
+    color: #000;
+    background-color: #d4af37;
+    cursor: pointer;
+  }
+
+  /* Add a subtle fade-in on page load */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .text-container {
+    animation: fadeIn 1.2s ease-in-out;
+  }
+#footer{
+    text-align:left;
+}
+</style>
+
+
+<div class="text-container">
+  <h1 class="app-name">HISTORIA</h1>
+  <div class="line-divider"></div>
+  <p class="tagline">
+    "Unfold timeless tales and express your own stories."
+  </p>
+  <p class="coming-soon">Coming Soon</p>
+</div>
+   
+
+
+
+{% endblock %}

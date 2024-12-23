@@ -1,0 +1,18 @@
+<!-- templates/nexus/notifications.html -->
+{% extends "nexus/nexus_base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Notifications</h2>
+    <ul class="notifications-list">
+        {% for notification in notifications %}
+            <li class="notification-item">
+                <p>{{ notification.description }}</p>
+                <small>{{ notification.timestamp|date:"Y-m-d H:i" }}</small>
+            </li>
+        {% empty %}
+            <p>You have no notifications at the moment.</p>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

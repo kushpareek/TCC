@@ -1,0 +1,13 @@
+<!-- templates/nexus/settings.html -->
+{% extends "nexus/nexus_base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Account Settings</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

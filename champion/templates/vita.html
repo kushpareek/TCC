@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block title %}Coming Soon{% endblock %}
+{% load static %}
+{% block content %}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Montserrat', sans-serif;
+        background: #000;
+        color: #fff;
+       
+        
+    }
+
+    .background-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("{% static 'images/vita back.jpg' %}") no-repeat center center;
+        background-size: cover;
+        opacity: 0.3; /* Adjusts the visibility of the background image */
+        z-index: -1;
+    }
+
+    
+
+    .container {
+        position: relative;
+        top:100px;
+        z-index: 1;
+        height:70vh;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        text-align: center;
+        color: #fff;
+    }
+
+   
+    footer{
+        text-align:left;
+    }
+
+    .app-name {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+    }
+
+    .app-name span {
+        color: #e8b923; /* Gold color for emphasis */
+    }
+
+    .tagline {
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin-bottom: 30px;
+        color: #ccc;
+        line-height: 1.6;
+        font-style: italic;
+    }
+
+    .services {
+        font-size: 1.2rem;
+        color: #bbb;
+        margin-bottom: 40px;
+    }
+
+    .services span {
+        color: #e8b923;
+        font-weight: 500;
+    }
+
+    .coming-soon {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 50px;
+        text-transform: uppercase;
+    }
+
+    .line-divider {
+        width: 80px;
+        height: 2px;
+        background: #e8b923;
+        margin: 20px auto 40px;
+    }
+
+    .subscribe {
+        display: inline-block;
+        width: 100%;
+        max-width: 500px;
+        margin-bottom: 20px;
+    }
+
+    .subscribe input[type="email"] {
+        width: 70%;
+        padding: 15px;
+        border: 1px solid #444;
+        border-right: none;
+        border-radius: 30px 0 0 30px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        outline: none;
+        font-size: 1rem;
+    }
+
+    .subscribe button {
+        width: 30%;
+        padding: 15px;
+        border: 1px solid #e8b923;
+        border-left: none;
+        border-radius: 0 30px 30px 0;
+        background-color: #e8b923;
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .subscribe button:hover {
+        background-color: #d6a81e;
+    }
+
+    
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .app-name {
+            font-size: 2.5rem;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+        }
+
+        .services {
+            font-size: 1rem;
+        }
+
+        .coming-soon {
+            font-size: 1.5rem;
+        }
+
+        .subscribe input[type="email"],
+        .subscribe button {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .subscribe input[type="email"] {
+            margin-bottom: 10px;
+            border-right: 1px solid #444;
+        }
+
+        .subscribe button {
+            border-left: 1px solid #e8b923;
+        }
+    }
+</style>
+
+<div class="background-image"></div>
+<div class="overlay"></div>
+
+<div class="container">
+    <!-- Optional Logo -->
+    <!-- <div class="logo">
+        <img src="{% static 'images/vita_logo.png' %}" alt="VITA Logo">
+    </div> -->
+
+    <h1 class="app-name">V<span>ITA</span></h1>
+    <p class="tagline">Your lifestyle, reimagined with elegance and sophistication.</p>
+    <div class="line-divider"></div>
+    <p class="services">
+        Offering premier services in <span>Real Estate</span>, <span>Events</span>, <span>Hotels</span>, and more.
+    </p>
+    <p class="coming-soon">Coming Soon</p>
+
+</div>
+
+{% endblock %}

@@ -369,20 +369,19 @@ from .utils import send_email
 
 def home(request):
     try:
-        latest_blogs = Blog.objects.order_by('-created_at')[:3]
+        
         registration = request.user.registration
         reapply_date = registration.submission_date + timedelta(days=90)
     except AttributeError:
         registration = None
         reapply_date = None
     
-    courses = Course.objects.all()  # Fetch all courses
+    
 
     context = {
         'reapply_date': reapply_date,
         'registration': registration,
-        'courses': courses, 
-         'blogs': latest_blogs # Pass the courses to the context
+        # Pass the courses to the context
     }
     return render(request, 'index.html', context)
 
@@ -465,7 +464,6 @@ def video_home(request):
 
 def logout_view(request):
     logout(request)
-    messages.success(request, "You have successfully logged out.")
     return redirect('home')  
 
 def apply(request):
@@ -2507,3 +2505,24 @@ def tcc_academia_view(request):
 
 def course_soon(request):
     return render(request,'courses_coming_soon.html')
+
+
+def coming_soon_page(request):
+    return render(request,'coming_soon.html')
+def credits(request):
+    return render(request,'credits_assets.html')
+def epulum(request):
+    return render(request,'epulum.html')
+def historia(request):
+    return render(request,'historia.html')
+def vita(request):
+    return render(request,'vita.html')
+def opus(request):
+    return render(request,'opus.html')
+def tcc_resources(request):
+    return render(request,'TCC_resources.html')
+def underreview(request):
+    return render(request,'underreview.html')
+
+def associate_membership(request):
+    return render(request,'associate_membership.html')

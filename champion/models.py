@@ -86,111 +86,144 @@ class Registration(models.Model):
         subject = "Welcome to The Champions Club"
         verification_url = self.get_verification_url(request)
 
-    # HTML email content
-        html_message = f"""
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            body {{
-                font-family: 'Montserrat', sans-serif;
-                background-color: #000;
-                color: #333;
-                margin: 0;
-                padding: 20px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }}
-            .email-container {{
-                background-color: #000;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                max-width: 600px;
-                width: 100%;
-            }}
-            .email-header {{
-                text-align: center;
-                background-color: #333;
-                padding: 20px;
-                color: #ffffff;
-                border-radius: 8px 8px 0 0;
-            }}
-            .email-header h1 {{
-                font-size: 24px;
-                margin: 0;
-            }}
-            .email-body {{
-                padding: 20px;
-                background-color: #fff;
-                color: #333;
-            }}
-            .email-body h2 {{
-                color: #ffcc00;
-                margin-top: 0;
-            }}
-            .email-body p {{
-                line-height: 1.6;
-                font-size: 16px;
-            }}
-            .email-button {{
-                display: block;
-                width: 100%;
-                text-align: center;
-                margin-top: 20px;
-            }}
-            .email-button a {{
-                background-color: #ffcc00;
-                color: #000;
-                padding: 12px 20px;
-                text-decoration: none;
-                border-radius: 5px;
-                font-size: 18px;
-                font-weight: bold;
-            }}
-            .email-footer {{
-                text-align: center;
-                padding: 20px;
-                background-color: #333;
-                color: #fff;
-                border-radius: 0 0 8px 8px;
-            }}
-            .email-footer p {{
-                margin: 0;
-                font-size: 14px;
-            }}
-        </style>
-    </head>
-    <body>
-    
-        <div class="email-container">
-            <div class="email-header">
-                <h1>Welcome to The Champions Club</h1>
-            </div>
-            <div class="email-body">
-                <h2>Hi {self.user.first_name},</h2>
-                <p>
-                    Thank you for joining The Champions Club! We are thrilled to have you on board.
-                </p>
-                <p>
-                    Please verify your email address to complete your registration by clicking the button below.
-                </p>
-                <div class="email-button">
-                    <a href="{verification_url}">Verify Your Email</a>
-                </div>
-            </div>
-            <div class="email-footer">
-                <p>Thank you,</p>
-                <p>The Champions Club Team</p>
-            </div>
+    # HTML email content with escaped curly braces
+        html_message = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to The Global Elite Circle – Verify Your Membership</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {{
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }}
+        .email-container {{
+            background-color: #000;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: auto;
+        }}
+        .email-header {{
+            text-align: center;
+            background-color: #333;
+            padding: 20px;
+            color: #ffffff;
+            border-radius: 8px 8px 0 0;
+        }}
+        .email-header h1 {{
+            font-size: 24px;
+            margin: 0;
+        }}
+        .email-body {{
+            padding: 20px;
+            background-color: #fff;
+            color: #333;
+        }}
+        .email-body h2 {{
+            color: #ffcc00;
+            margin-top: 0;
+        }}
+        .email-body p {{
+            line-height: 1.6;
+            font-size: 16px;
+        }}
+        .email-list {{
+            margin: 20px 0;
+        }}
+        .email-list ul {{
+            list-style-type: disc;
+            padding-left: 20px;
+        }}
+        .email-button {{
+            text-align: center;
+            margin-top: 20px;
+        }}
+        .email-button a {{
+            background-color: #ffcc00;
+            color: #000;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+        }}
+        .email-footer {{
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+            border-radius: 0 0 8px 8px;
+        }}
+        .email-footer p {{
+            margin: 0;
+            font-size: 14px;
+        }}
+        .email-signature {{
+            margin-top: 40px;
+        }}
+        a {{
+            color: #ffcc00;
+            text-decoration: none;
+        }}
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <h1>Welcome to The Champions Club</h1>
         </div>
-    </body>
-    </html>
-    """
-
+        <div class="email-body">
+            <h2>Dear {self.user.first_name},</h2>
+            <p>
+                We are honored to extend a personal invitation to you to join <strong>The Champions Club</strong>, an exclusive, invitation-only network uniting the world's most influential and accomplished individuals.
+            </p>
+            <p>
+                Your interest in our distinguished community has been received with great enthusiasm. As a prospective member, you are poised to access unparalleled opportunities to connect with visionary leaders, engage in transformative experiences, and forge meaningful relationships that transcend borders and industries.
+            </p>
+            <p>
+                To complete your membership activation, please verify your email address by clicking the button below:
+            </p>
+            <div class="email-button">
+                <a href="{verification_url}">Verify Your Membership</a>
+            </div>
+            <p>
+                As a member of The Champions Club, you will enjoy privileges that are simply unattainable elsewhere:
+            </p>
+            <div class="email-list">
+                <ul>
+                    <li><strong>Exclusive Events:</strong> Gain access to private gatherings, symposiums, and galas featuring thought leaders and luminaries across various fields.</li>
+                    <li><strong>Global Connections:</strong> Network with a curated group of peers who share your level of success and sophistication.</li>
+                    <li><strong>Bespoke Opportunities:</strong> Receive personalized invitations to unique experiences tailored to your interests and aspirations.</li>
+                </ul>
+            </div>
+            <p>
+                We believe your exceptional achievements and discerning perspective will greatly enrich our community. We look forward to welcoming you into our circle of excellence.
+            </p>
+            <p class="email-signature">
+                Warmest regards,<br><br>
+                Shagun Kalash<br>
+                <br>
+                Founder & CEO.                
+                The Champions Club
+            </p>
+        </div>
+        <div class="email-footer">
+            <p>
+                Should you have any questions or require assistance, please contact our dedicated membership concierge at <a href="mailto:support@thechampionsclub.com">support@thechampionsclub.com</a>.
+            </p>
+            <p style="margin-top: 20px; font-size: 12px;">
+                *This email and any attachments are confidential and intended solely for the use of the individual or entity to whom they are addressed.*
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+"""
         send_email(
         subject=subject,
         body=html_message,

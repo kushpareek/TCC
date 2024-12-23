@@ -14,7 +14,7 @@
     position: fixed;
     width: 96%;
     top: 0;
-    z-index: 4;
+    z-index: 4; 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     opacity: 1;
 }
@@ -217,8 +217,8 @@
     display: none;
     position: absolute;
     background-color: #000;
-    top: 27px;
-    left:-30px;
+    top: 28px;
+    left:-6px;
     padding: 8px 0;
     min-width: 155px; /* Increased width */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);

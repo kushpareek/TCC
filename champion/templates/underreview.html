@@ -1,0 +1,130 @@
+
+
+
+{% load static %}
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Serif', serif;
+        background-color: #000;
+        color: #fff;
+        background-image: url("{% static 'images/luxury_background.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 0;
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 50px 20px;
+        text-align: center;
+        color: #fff;
+    }
+
+
+    .content {
+        background: rgba(0, 0, 0, 0.8);
+        padding: 60px;
+        border-radius: 10px;
+        
+    }
+
+    .content h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #e8b923;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .content p {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        margin-bottom: 40px;
+        color: #ddd;
+    }
+
+    .content p.signature {
+        font-size: 1rem;
+        font-style: italic;
+        color: #aaa;
+        margin-top: 60px;
+    }
+
+    .content .divider {
+        width: 80px;
+        height: 2px;
+        background: #e8b923;
+        margin: 40px auto;
+    }
+
+   
+
+    @media (max-width: 768px) {
+        .content h1 {
+            font-size: 2.5rem;
+        }
+
+        .content p {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .content h1 {
+            font-size: 2rem;
+        }
+
+        .content p {
+            font-size: 0.9rem;
+        }
+
+        .content {
+            padding: 40px 20px;
+        }
+    }
+</style>
+
+<div class="overlay"></div>
+
+<div class="container">
+    <!-- Optional Logo -->
+    <!-- <div class="logo">
+        <img src="{% static 'images/club_logo.png' %}" alt="Club Logo">
+    </div> -->
+
+    <div class="content">
+        <h1>Your Application is Under Review</h1>
+        <p>Dear Esteemed Applicant,</p>
+        <p>
+            Thank you for your interest in joining the <strong>THE CHAMPIONS CLUB</strong>. We are delighted to inform you that your application is currently under careful consideration by our membership committee.
+        </p>
+        <p>
+            We appreciate your patience during this process and will be reaching out to you via email with an update on your membership status soon.
+        </p>
+        <p>
+            Should you have any questions in the meantime, please do not hesitate to contact our concierge team at <a href="mailto:info@thechampionsclub.com" style="color: #e8b923; text-decoration: none;">info@thechampionsclub.com</a>.
+        </p>
+        <div class="divider"></div>
+        <p class="signature">With utmost regards,<br>The Champions Club Membership Committee</p>
+    </div>
+</div>
+
+
