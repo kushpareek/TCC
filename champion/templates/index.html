@@ -2400,7 +2400,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <h2>Transform Your Skills with Our Wealth-Making Courses</h2>
                 <p>Our courses are designed to equip you with the tools for success.</p>
-                <a href="{% url 'associate_reg' %}" class="learn-more-link"> LEARN
+                <a href="{% url 'associate_membership' %}" class="learn-more-link"> LEARN
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
                         <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
                     </svg>
@@ -2663,98 +2663,110 @@ document.addEventListener('DOMContentLoaded', () => {
 </section>
 
 <section id="take-action-section">
-    <div class="take-action-container">
+    <div class="take-action-wrapper">
+      <!-- Left Content -->
+      <div class="take-action-content">
         <h1>TAKE THE NEXT STEP TODAY</h1>
         <p>Join a Community of Champions and elevate your journey</p>
+      </div>
+  
+      <!-- Right Button -->
+      <div class="button-container">
+        <a href="{% url 'membership_portal' %}"><button>JOIN NOW</button></a>
+      </div>
     </div>
-    <div class="button-container">
-    <a href = "{% url 'membership_portal' %}"><button>JOIN NOW</button></a>
-</div>
-</section>
- 
-<style>
-    #take-action-section{
-        padding:100px 20px;
-        display: flex;
-        color: #fff;
-        width: 100%;
+  </section>
+  
+  <style>
+  /* Main Section */
+  #take-action-section {
     background-color: #000;
-        flex-direction: row;
-        gap:50px;
+    color: #fff;
+    width: 100%;
+    padding: 100px 20px; /* top/bottom = 100px; left/right = 20px */
+  }
+  
+  /* Wrap content to center and limit max width */
+  .take-action-wrapper {
+    max-width: 1600px;
+    margin: 0 auto; /* centers the wrapper horizontally */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  /* Left content area */
+  .take-action-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  /* Heading style */
+  .take-action-content h1 {
+    font-size: 38px;
+    margin: 0;
+  }
+  
+  /* Right button container */
+  .button-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Button styling */
+  #take-action-section button {
+    background-color: transparent;
+    width: 200px;
+    color: white;
+    padding: 15px 45px;
+    border: 1px solid white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  /* Decorative lines on the button */
+  #take-action-section button::before,
+  #take-action-section button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 2px;
+    background-color: white;
+    transform: translateY(-50%);
+  }
+  #take-action-section button::before {
+    left: 10px;
+  }
+  #take-action-section button::after {
+    right: 10px;
+  }
+  
+  /* Hover effect */
+  #take-action-section button:hover {
+    background-color: white;
+    color: #333;
+    border-color: #333;
+  }
+  
+  /* Responsive layout for smaller screens */
+  @media (max-width: 992px) {
+    .take-action-wrapper {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 30px;
     }
-    .take-action-container h1{
-        font-size: 38px;
+    .button-container {
+      margin-top: 20px;
     }
-    .take-action-container{
-        display: flex;
-        width: 80%;
-        margin-left: 50px;
-        flex-direction: column;
-        gap: 30px;
-    }
-#take-action-section button {
-        background-color: transparent;
-        width: 200px;
-        color: white;
-        
-        padding: 15px 45px;
-        border: 1px solid white;
-        margin-top: 0px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        z-index: 2;
-        position: relative;
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        
-    }
-    
-    #take-action-section button::before,
-    #take-action-section button::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        width: 20px;
-        height: 2px;
-        background-color: white;
-        transform: translateY(-50%);
-    }
-    
-    #take-action-section button::before {
-        left: 10px;
-    }
-    
-    #take-action-section button::after {
-        right: 10px;
-    }
-    
-    #take-action-section button:hover {
-        background-color: white;
-        color: #333;
-        border-color: #333;
-    }
-    @media (max-width:992px){
-        #take-action-section{
-        padding:100px 20px;
-        display: flex;
-        color: #fff;
-        width: 100%;
-    background-color: #000;
-        flex-direction: column;
-        gap:50px;
-        text-align: center;
-    }
-    .take-action-container{
-        display: flex;
-        width: 80%;
-        margin: 0px auto;
-        flex-direction: column;
-        gap: 30px;
-    }
-    }
-
-</style>
-
+  }
+  </style>
+  
 
 
 
