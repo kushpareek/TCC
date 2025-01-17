@@ -78,4 +78,5 @@ urlpatterns = [
        path('TCC_resources/',views.tcc_resources,name='resources'),
        path('application_review/',views.underreview,name='underreview'),
        path('associate/',views.associate_membership,name='associate_membership'),
+       path('background-music/', views.background_music, name='background_music'),
 ]

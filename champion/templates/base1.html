@@ -8,8 +8,788 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body>
+    <style>
+        /* Base Styles */
+       /* Base Styles */
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000;
+    color: #e0e0e0;
+    height: 10vh;
+    padding: 0 2%;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 4;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    opacity: 1;
+}
+
+.top-navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+}
+
+.top-navbar li {
+    margin: 0;
+}
+
+.top-navbar a {
+    text-decoration: none;
+    color: #ccc;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.top-navbar a:hover {
+    background-color: #ffcc00;
+    color: #111;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 204, 0, 0.3);
+}
+
+/* Logo Styles */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+    letter-spacing: 0.1em;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    max-height: 50px;
+    margin-right: 15px;
+}
+
+/* Full-Screen Overlay Navigation Styles */
+#nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    opacity: 0;
+    z-index: 3;
+}
+
+#nav-links.show {
+    transform: scaleY(1);
+    opacity: 1;
+}
+
+#nav-links li {
+    margin: 20px 0;
+}
+
+#nav-links a {
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+#nav-links a:hover {
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Menu Icon for Mobile */
+.menu-icon {
+    margin-right: 10px;
+    cursor: pointer;
+    width: 30px;
+    height: 25px;
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    z-index: 5;
+    transition: transform 0.3s ease;
+}
+
+.menu-icon div {
+    width: 100%;
+    height: 4px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.menu-icon .bar1 {
+    transform-origin: top left;
+}
+
+.menu-icon .bar3 {
+    transform-origin: bottom left;
+}
+
+/* Change to X when menu is open */
+.menu-icon.open .bar1 {
+    transform: rotate(40deg);
+    background-color: #fff;
+}
+
+.menu-icon.open .bar2 {
+    opacity: 0;
+}
+
+.menu-icon.open .bar3 {
+    transform: rotate(-40deg);
+    background-color: #fff;
+}
+
+/* Responsive Media Queries */
+@media (min-width: 769px) {
+    .menu-icon {
+        display: none;
+    }
+
+    .top-navbar {
+        justify-content: space-between;
+        opacity: 0.6;
+        position: relative;
+    }
+
+    #nav-links {
+        position: static;
+        transform: none;
+        background-color: transparent;
+        flex-direction: row;
+        justify-content: flex-end;
+        height: auto;
+        width: auto;
+        opacity: 1;
+    }
+
+    #nav-links li {
+        margin: 0 20px;
+    }
+
+    #nav-links a {
+        font-size: 16px;
+        
+    }
+
+    #nav-links a:hover {
+        color: #111;
+        background-color: #ffcc00;
+    }
+}
+
+/* Button Styles */
+.cta-btn {
+    background-color: #ffcc00;
+    color: #000;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.cta-btn:hover {
+    background-color: #e6b800;
+    color: #000;
+}
+
+/* Toggle Button Styles */
+.toggle {
+    position: relative;
+    display: inline-block;
+}
+
+.toggle__input {
+    display: none;
+}
+
+.toggle__label {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Montserrat';
+    font-weight: bold;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+.diagonal-line {
+    position: absolute;
+    top: 2px;
+    left: 75px;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transform: rotate(-210deg);
+    z-index: 2;
+    transition: width 0.4s ease-out;
+    transform-origin: left center;
+    pointer-events: none;
+}
+
+.toggle__input:checked + .toggle__label .diagonal-line {
+    width: 90%;
+}
+
+.toggle__label #buttonText {
+    z-index: 1;
+    position: relative;
+}
+
+/* Dropdown Styles */
+/* Base styles for the dropdown container */
+/* Base Dropdown */
+.dropdown {
+    position: relative;
+}
+
+/* Dropdown content - hidden by default */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #000;
+    top: 30px;
+    left: 0;
+    padding: 10px 0;
+    min-width: 150px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+/* Individual dropdown links inside the dropdown content */
+.dropdown-content a {
+    display: block;
+    padding: 10px 10px;
+    color: #e0e0e0;
+    font-size: 16px;
+    text-decoration: none;
+}
+.dropdown-link{
+    display: none;
+}
+
+/* Hover effect on links */
+.dropdown-content a:hover {
+    background-color: #ffcc00;
+    color: #111;
+}
+
+/* Show dropdown content on hover for desktop */
+@media (min-width: 769px) {
+    .dropdown:hover .dropdown-content {
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+    }
+    .dropdown:hover .dropdown-link{
+        display: block;
+    }
+}
+
+/* Mobile-specific dropdown behavior */
+@media (max-width: 768px) {
+    ul {
+        text-align: center;
+    }
+
+    /* Hide dropdown content by default for mobile */
+    .dropdown-content {
+        display: none;
+        position: static;
+        background-color: #000;
+        width: 100%;
+    }
+
+    /* When dropdown has 'show' class, display the content */
+    .dropdown.show .dropdown-content {
+        display: block;
+    }
+    .dropdown.show .dropdown-link {
+        display: block;
+    }
+   
+    /* Dropdown links styling */
+    .dropdown-content .dropdown-link {
+        display: none;
+        padding: 10px 20px;
+        color: #e0e0e0;
+    }
+
+    /* Hover effect on mobile */
+    .dropdown-content .dropdown-link a:hover {
+        background-color: #ffcc00;
+        color: #111;
+    }
+}.navbar-profile-img {
+            width: 35px;             /* Adjust width as needed */
+            height: 35px;  
+                      /* Adjust height as needed */
+            border-radius: 50%;      /* Makes the image circular */
+            object-fit: cover;       /* Ensures the image covers the container without distortion */
+            vertical-align: middle;  /* Aligns the image vertically */
+        }
+        .logo-link:hover{
+            background-color:transparent !important;
+            transition: none !important;
+            transform: translateY(0px) !important;
+    box-shadow: none !important;
+    padding:0 !important;
+        }
+        .logo-link{
+            padding:0 !important;
+        }
+
+    </style>
+<script>
+    
+function toggleMusic() {
+
+  const muteToggle = document.getElementById("muteToggle");
+  const backgroundMusic = document.getElementById("backgroundMusic");
+  const buttonText = document.getElementById("buttonText");
+
+  if (muteToggle.checked) {
+    backgroundMusic.muted = true; // Mute the music
+    buttonText.textContent = "MUSIC";
+  } else {
+    backgroundMusic.muted = false; // Unmute the music
+    buttonText.textContent = "MUSIC";
+  }
+}
+
+</script>
+    <nav class="top-navbar">
+        <!-- Logo on the left -->
+        <a class="logo-link" href="{% url 'home' %}"><div class="logo">
+            <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
+            THE CHAMPIONS CLUB
+        </div></a>
+
+        <!-- Menu Icon for Mobile -->
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <ul id="nav-links">
+          
+            <!-- <li><a href="{% url 'news_feed' %}">NEWS</a></li> -->
+            
+          
+    
+            <!-- Dropdown tab for Resources -->
+            <li class="dropdown">
+                <a href="#">RESOURCES</a>
+                <ul class="dropdown-content">
+                    <!-- <li class="dropdown-link"><a href="{% url 'blog_list' %}">BLOGS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
+                    <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
+                    <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
+                     -->
+                     <li class="dropdown-link"><a href="{% url 'vita' %}">VITA</a></li>
+                     <li class="dropdown-link"><a href="{% url 'opus' %}">OPUS</a></li>
+                     <li class="dropdown-link"><a href="{% url 'coming_soon' %}">NEXUS</a></li>
+                     <li class="dropdown-link"><a href="{% url 'epulum' %}">EPULUM</a></li>
+                     <li class="dropdown-link"><a href="{% url 'historia' %}">HISTORIA</a></li>
+                    
+                    
+                    
+                </ul>
+            </li>
+
+
+
+            
+            <li><a href="{% url 'support_request' %}">CONTACT</a></li>
+            
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
+            {% else %}
+            {% if registration.approved == 1 %}
+            {% if registration.membership_paid == 0 %}
+            <li class="dropdown">
+                <a href="#">
+                    {% if registration.profile_image %}
+                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                    {% else %}
+                        <i class="fa-solid fa-circle-user fa-xl"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'champions_dashboard' %}">BUY MEMBERSHIP TODAY</a></li>
+                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </li>
+            {% comment %} <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li> {% endcomment %}
+            {% else %}
+            {% comment %} <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> Dashboard</a></li> {% endcomment %}
+            <li class="dropdown">
+                <a href="#">
+                    {% if registration.profile_image %}
+                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                    {% else %}
+                        <i class="fa-solid fa-circle-user fa-xl"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> Dashboard</a></li>
+                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </li>
+            {% endif %}
+            {% else %}
+            <li class="dropdown">
+                <a href="#">
+                    {% if registration.profile_image %}
+                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
+                    {% else %}
+                        <i class="fa-solid fa-circle-user fa-xl"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-content">
+                    <li class="dropdown-link"><a href="{% url 'user_profile' %}">Profile</a></li>
+                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </li>
+            
+            {% endif %}
+            {% endif %}
+            {% comment %} <li>
+                <div class="toggle">
+                  <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                  <label for="muteToggle" class="toggle__label">
+                    <span id="buttonText">MUSIC</span>
+                    <div class="diagonal-line" id="diagonalLine"></div>
+                  </label>
+                </div>
+              </li> {% endcomment %}
+              <li>
+                <div class="dropdown">
+                  <button class="dropdown-toggle" onclick="toggleDropdown()" id="musicButton">
+                    MUSIC <i class="fas fa-chevron-down"></i>
+                  </button>
+                  <div class="dropdown-menu" id="musicDropdown">
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value="20"
+                      id="volumeSlider"
+                      oninput="adjustVolume(this.value)"
+                    >
+                    <button id="muteButton" onclick="toggleMute()">
+                      <i class="fas fa-volume-up"></i>
+                    </button>
+                  </div>
+                </div>
+              </li>
+<style>
+    /* Include Font Awesome for icons */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+/* Dropdown container */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown button */
+.dropdown-toggle {
+  background-color: #1e1e1e;
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-toggle i {
+  margin-left: 10px;
+}
+
+.dropdown-toggle:hover {
+  background-color: #333;
+}
+
+/* Dropdown content */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #2c2c2c;
+  min-width: 250px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  z-index: 1;
+  border-radius: 10px;
+  top: 50px;
+  right: 0px;
+}
+@media (max-width:992px){
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #2c2c2c;
+        min-width: 250px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        z-index: 1;
+        border-radius: 10px;
+        top: 50px;
+        right: -20px;
+      }
+}
+/* Show the dropdown menu when toggled */
+.show {
+  display: block;
+}
+
+/* Volume slider */
+#volumeSlider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #555;
+  outline: none;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+#volumeSlider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+/* Mute button */
+#muteButton {
+  background-color: transparent;
+  color: #fff;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  transition: color 0.3s ease;
+}
+
+#muteButton:hover {
+  color: #999;
+}
+.invisible-text{
+    visibility: hidden;
+   
+}
+@media (max-width:1200px){
+    .invisible-text{
+    display: none;
+   
+}
+}
+</style>    
+<script>
+    let isMuted = false;
+let lastVolume = 0.02; // Default volume (50%)
+
+function toggleDropdown() {
+  document.getElementById("musicDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('#musicButton') && !event.target.matches('#musicButton *')) {
+    let dropdowns = document.getElementsByClassName("dropdown-menu");
+    for (let i = 0; i < dropdowns.length; i++) {
+      let openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+function adjustVolume(value) {
+  let audio = document.getElementById('backgroundMusic'); // Updated ID
+  if (audio) {
+    audio.volume = value / 100;
+    let muteIcon = document.getElementById('muteButton').children[0];
+    if (audio.volume === 0) {
+      isMuted = true;
+      muteIcon.classList.remove('fa-volume-up');
+      muteIcon.classList.add('fa-volume-mute');
+    } else {
+      isMuted = false;
+      muteIcon.classList.remove('fa-volume-mute');
+      muteIcon.classList.add('fa-volume-up');
+    }
+  } else {
+    console.error("Audio element with ID 'backgroundMusic' not found.");
+  }
+}
+
+function toggleMute() {
+  let audio = document.getElementById('backgroundMusic'); // Updated ID
+  let volumeSlider = document.getElementById('volumeSlider');
+  let muteIcon = document.getElementById('muteButton').children[0];
+  if (audio) {
+    if (isMuted) {
+      audio.volume = lastVolume;
+      volumeSlider.value = lastVolume * 100;
+      isMuted = false;
+      muteIcon.classList.remove('fa-volume-mute');
+      muteIcon.classList.add('fa-volume-up');
+    } else {
+      lastVolume = audio.volume;
+      audio.volume = 0;
+      volumeSlider.value = 0;
+      isMuted = true;
+      muteIcon.classList.remove('fa-volume-up');
+      muteIcon.classList.add('fa-volume-mute');
+    }
+  } else {
+    console.error("Audio element with ID 'backgroundMusic' not found.");
+  }
+}
+
+
+</script>          
+            <!-- <li>
+                <div class="toggle">
+                    <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
+                    <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
+                       </div>
+                </li> -->
+        </ul>
+    </nav>
+
+    <!-- Add your page content here -->
+
+    <script>
+        function toggleMenu() {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.getElementById('nav-links');
+
+            menuIcon.classList.toggle('open');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+    <audio id="backgroundMusic" loop autoplay playsinline>
+        <source src="{% static 'audio/back_audio.mp3' %}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+<div class="progress-container">
+    <div class="progress-bar" id="myBar"></div>
+  </div>  
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const backgroundMusic = document.getElementById('backgroundMusic');
+  var audio = document.getElementById('backgroundMusic');
+
+  // Function to play audio after user interaction
+  function playBackgroundMusic() {
+    backgroundMusic.play()
+      .then(() => {
+        console.log('Audio started playing');
+      })
+      .catch(error => {
+        console.error('Failed to play audio:', error);
+      });
+    
+  }
+
+  // Add event listeners for user interaction
+  function enableAutoplay() {
+    document.addEventListener('click', startAudio);
+    document.addEventListener('touchstart', startAudio);
+  }
+
+  // Start playing the music and remove the event listener
+  function startAudio() {
+    playBackgroundMusic();
+    document.removeEventListener('click', startAudio);
+    document.removeEventListener('touchstart', startAudio);
+  }
+
+  enableAutoplay();
+});
+
+
+  // Toggle dropdown for mobile
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdownLinks = document.querySelectorAll('.dropdown > a');
+    
+    dropdownLinks.forEach(function(dropdownLink) {
+        dropdownLink.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            
+            const dropdown = this.parentElement; // Get the parent <li> element
+
+            // Toggle the 'show' class to show or hide the dropdown
+            dropdown.classList.toggle('show');
+
+            // Close any other open dropdowns
+            document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+                if (otherDropdown !== dropdown) {
+                    otherDropdown.classList.remove('show');
+                }
+            });
+        });
+    });
+});
+
+
+   function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    const menuIcon = document.querySelector('.menu-icon');
+    navLinks.classList.toggle('show');
+    menuIcon.classList.toggle('open');
+}
+
+
     {% block content %}{% endblock %}
-    <script src="{% static 'js/reels.js' %}"></script>
-    {% block extra_scripts %}{% endblock %}
+   
+   
+    
 </body>
 </html>

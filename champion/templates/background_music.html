@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <title>Background Music</title>
+</head>
+<body>
+    <audio id="backgroundMusic" autoplay loop>
+        <source src="{% static 'audio/back_audio.mp3' %}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        const audio = document.getElementById('backgroundMusic');
+
+        // Restore playback position
+        const savedTime = localStorage.getItem('musicTime');
+        if (savedTime) {
+            audio.currentTime = parseFloat(savedTime);
+        }
+
+        // Listen for time updates and save to localStorage
+        audio.addEventListener('timeupdate', () => {
+            localStorage.setItem('musicTime', audio.currentTime);
+        });
+
+        // Restore play state
+        const isPaused = localStorage.getItem('musicPaused');
+        if (isPaused === 'true') {
+            audio.pause();
+        }
+
+        // Save play/pause state
+        audio.addEventListener('pause', () => {
+            localStorage.setItem('musicPaused', 'true');
+        });
+
+        audio.addEventListener('play', () => {
+            localStorage.setItem('musicPaused', 'false');
+        });
+        const savedVolume = localStorage.getItem("musicVolume");
+        if (savedVolume) {
+            audio.volume = parseFloat(savedVolume);
+        }
+
+        // Restore mute state from localStorage
+        const isMuted = localStorage.getItem("isMuted");
+        if (isMuted === "true") {
+            audio.volume = 0;
+        }
+    </script>
+    <script>
+        
+
+        // Restore volume from localStorage
+        
+    </script>
+</body>
+</html>

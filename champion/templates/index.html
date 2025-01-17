@@ -820,11 +820,11 @@ document.addEventListener('DOMContentLoaded', () => {
       </section>
     <div class="hero-container">
         <video autoplay muted loop id="myVideo" webkit-playsinline playsinline disablePictureInPicture x-webkit-airplay="allow">
-            <source src="{% static 'videos/back_vid.mp4' %}" type="video/mp4">
+            <source src="{% static 'videos/backkk.mp4' %}" type="video/mp4">
         </video>
         <div class="pos-abs flex-cont text-container1">
             
-            <p class="hero-text{% if user.is_authenticated %} authenticated{% endif %}">FOR CHAMPIONS BY CHAMPIONS</p>
+            <p class="hero-text{% if user.is_authenticated %} authenticated{% else %} authenticated1{% endif %}">FOR CHAMPIONS BY CHAMPIONS</p>
           
         </div>
         <div class="pos-abs flex-cont text-container2">
@@ -897,8 +897,8 @@ document.addEventListener('DOMContentLoaded', () => {
     <section id="dividing-section"></section>
 <div class="marquee-container">
     <div class="marquee">
-        <span>Special Announcement: We are pleased to announce that our team has started filming new content. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>
-        <span>Special Announcement: We are pleased to announce that our team has started filming new content. &nbsp; &nbsp;</span>
+        <span>Special Announcement: We are currently in the process of making significant upgrades to our official website, we request your kind understanding and cooperation. Thank you. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>
+        
     </div>
 </div>
 
@@ -910,7 +910,9 @@ document.addEventListener('DOMContentLoaded', () => {
     <style>
         /* Marquee Styles */
 /* Marquee Styles */
-
+.marquee span{
+    text-transform: uppercase;
+}
 .marquee-container {
 
     
@@ -948,6 +950,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         .authenticated {
     transform: translateY(50px) !important;
+  }
+  .authenticated1 {
+    transform: translateY(0px) !important;
   }
             #who-is-a-champion3 {
         height: 200px;
@@ -1057,12 +1062,12 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="interactive-left-content">
             <div class="interactive-card-button active" id="interactive-card1" data-index="1">
                 <div class="icon">
-                    <img src="{% static 'images/network icon.png' %}" alt="Networking Icon">
+                    <img src="{% static 'images/TCC N.png' %}" alt="Networking Icon">
                 </div>
                 <div class="text">
                     <h4>TCC NETWORKING</h4>
-                    <p>We offer a global private network of like-minded individuals.</p>
-                    <a href="{% url 'membership_portal' %}" class="find-out-more-link">Find out more &rarr;</a>
+                    <p>STEP INTO A WORLD OF ABUNDANCE WHERE ACHIEVEMENTS MATTER.</p>
+                    <a href="{% url 'membership_portal' %}" class="find-out-more-link">CHECK YOUR ELIGIBLITY &rarr;</a>
                 </div>
             </div>
             <div class="interactive-card-button" id="interactive-card2" data-index="2">
@@ -1071,8 +1076,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="text">
                     <h4>TCC RESOURCES</h4>
-                    <p>Embark on a new journey with specialized learning paths.</p>
-                    <a href="{% url 'resources' %}" class="find-out-more-link">Find out more &rarr;</a>
+                    <p>EXPLORE OUR PREMIRE LIFESTYLE PRODUCTS AND SERVICES</p>
+                    <a href="{% url 'resources' %}" class="find-out-more-link">BROWSE OUR CATALOG &rarr;</a>
                 </div>
             </div>
             <div class="interactive-card-button" id="interactive-card3" data-index="3">
@@ -1081,8 +1086,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="text">
                     <h4>TCC BUSINESS</h4>
-                    <p>Create tailored business solutions with industry experts.</p>
-                    <a href="{% url 'register_partner' %}" class="find-out-more-link">Find out more &rarr;</a>
+                    <p>GROW WITH THOSE WHO STAND WITH YOU NO MATTER THE TIME OR PLACE</p>
+                    <a href="{% url 'register_partner' %}" class="find-out-more-link">SEND AN ENQUIRY &rarr;</a>
                 </div>
             </div>
         </div>
@@ -1090,17 +1095,17 @@ document.addEventListener('DOMContentLoaded', () => {
             
             <div class="interactive-content active" id="interactive-content1">
                 <h2>TCC NETWORKING</h2>
-                <p>Join our exclusive global network of like-minded individuals. Collaborate, share ideas, and grow together in a community that fosters success.</p>
-                <img src="{% static 'images/TCC (11).png' %}" alt="Networking Image">
+                <p>JOIN A COMMUNITY OF ACHIEVERS FROM ALL AROUND THE WORLD THAT IS AS EXCLUSIVE AS IT GETS. WE ARE THE 1% OF THE 1%, WE ARE THE BEST OF THE BEST. WE SERVE THE BEST AS WE LOOK FOR THE BEST, WE ARE CHAMPIONS AND WE MAKE NO EXCEPTIONS.</p>
+                <img src="{% static 'images/TCC (28).png' %}" alt="Networking Image">
             </div>
             <div class="interactive-content" id="interactive-content2">
                 <h2>TCC RESOURCES</h2>
-                <p>Advance your knowledge with our specialized learning paths. Gain access to premium educational resources and expert guidance.</p>
+                <p>FATE IS WRITTEN IN THE STARS AND DESTINY IS IN YOUR HANDS. CHART YOUR JOURNEY AWAY FROM CONVENTIONAL ONLINE RESOURCES AND LET US GUIDE YOU THROUGH LIFE WITH OUR TAILOR-MADE LIFESTYLE SOLUTIONS</p>
                 <img src="{% static 'images/TCC W (2).png' %}" alt="Academia Image">
             </div>
             <div class="interactive-content" id="interactive-content3">
                 <h2>TCC BUSINESS</h2>
-                <p>Leverage our expertise to create customized business solutions. Work with industry leaders to drive innovation and achieve your goals.</p>
+                <p>BRAINSTROM NEW IDEAS AND WORK WITH A TEAM OF EXPERTS THAT BRING THEORY INTO PRACTICE. EXPERIENCE WITH WORLD-CLASS CONSULTANCY SERVICES PROVIDED ON GLOBAL LEVEL.</p>
                 <img src="{% static 'images/TCC (19).png' %}" alt="Business Image">
             </div>
         </div>
@@ -1197,7 +1202,12 @@ document.addEventListener('DOMContentLoaded', () => {
     display: flex;
     flex-direction: column;
 }
-
+.interactive-card-button .text p{
+    color:#aaa;
+    font-family: 'roboto';
+    font-weight: 700;
+    font-size: 16px !important;
+}
 
 /* Interactive Section Styles */
 #interactive-section {
@@ -1252,8 +1262,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 .interactive-card-button .icon {
     flex-shrink: 0;
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     margin-right: 25px;
 }
 
@@ -1271,10 +1281,6 @@ document.addEventListener('DOMContentLoaded', () => {
     color: #fff;
 }
 
-.interactive-card-button .text p {
-    font-size: 18px;
-    color: #aaa;
-}
 
 .interactive-card-button:hover {
     background-color: #111;
@@ -1336,9 +1342,11 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 .interactive-content p {
-    font-size: 20px;
+    font-size: 16px;
     line-height: 1.8;
     margin-bottom: 40px;
+    font-family: 'Roboto';
+    font-weight: 400;
     color: #ccc;
 }
 
@@ -4452,9 +4460,13 @@ a:hover {
 
             </section>
             <div class="footer-bottom">
+               
                 <div class="trademark">The Champions Club</div>
-                <div class="copyright">Copyright © & Trademark ® 2024 The Champions Club™ - All Rights Reserved.</div>
+                <div class="copyright">Copyright © & Trademark ® <span id="year"></span> The Champions Club™ - All Rights Reserved.</div>
             </div>
+            <script>
+                document.getElementById("year").textContent = new Date().getFullYear();
+              </script>
         </footer>
 
         <style>

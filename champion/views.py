@@ -2501,28 +2501,164 @@ def news_feed(request):
     articles = paginator.get_page(page_number)
     return render(request, 'news_feed.html', {'articles': articles})
 def tcc_academia_view(request):
-    return render(request, 'TCCACA.html')
+    try:
+        registration = request.user.registration
+    except AttributeError:
+        registration = None
+        
+    
+    
+
+    context = {
+        
+        'registration': registration,
+        # Pass the courses to the context
+    }
+    return render(request, 'TCCACA.html',context)
 
 def course_soon(request):
+
     return render(request,'courses_coming_soon.html')
 
 
 def coming_soon_page(request):
-    return render(request,'coming_soon.html')
+    try:
+        registration = request.user.registration
+    except AttributeError:
+        registration = None
+        
+    
+    
+
+    context = {
+        
+        'registration': registration,
+        # Pass the courses to the context
+    }
+    return render(request,'coming_soon.html',context)
 def credits(request):
-    return render(request,'credits_assets.html')
+    try:
+        registration = request.user.registration
+    except AttributeError:
+        registration = None
+        
+    
+    
+
+    context = {
+        
+        'registration': registration,
+        # Pass the courses to the context
+    }
+    return render(request,'credits_assets.html',context)
 def epulum(request):
-    return render(request,'epulum.html')
+    try:
+        registration = request.user.registration
+    except AttributeError:
+        registration = None
+        
+    
+    
+
+    context = {
+        
+        'registration': registration,
+        # Pass the courses to the context
+    }
+    return render(request,'epulum.html',context)
 def historia(request):
-    return render(request,'historia.html')
+    try:
+        registration = request.user.registration
+    except AttributeError:
+        registration = None
+        
+    
+    
+
+    context = {
+        
+        'registration': registration,
+        # Pass the courses to the context
+    }
+    return render(request,'historia.html',context)
 def vita(request):
-    return render(request,'vita.html')
+    try:
+        registration = request.user.registration
+    except AttributeError:
+        registration = None
+        
+    
+    
+
+    context = {
+        
+        'registration': registration,
+        # Pass the courses to the context
+    }
+    return render(request,'vita.html',context)
 def opus(request):
-    return render(request,'opus.html')
+    try:
+        registration = request.user.registration
+    except AttributeError:
+        registration = None
+        
+    
+    
+
+    context = {
+        
+        'registration': registration,
+        # Pass the courses to the context
+    }
+    return render(request,'opus.html',context)
 def tcc_resources(request):
-    return render(request,'TCC_resources.html')
+    try:
+        registration = request.user.registration
+    except AttributeError:
+        registration = None
+        
+    
+    
+
+    context = {
+        
+        'registration': registration,
+        # Pass the courses to the context
+    }
+    return render(request,'TCC_resources.html',context)
 def underreview(request):
-    return render(request,'underreview.html')
+    try:
+        registration = request.user.registration
+    except AttributeError:
+        registration = None
+        
+    
+    
+
+    context = {
+        
+        'registration': registration,
+        # Pass the courses to the context
+    }
+    return render(request,'underreview.html',context)
 
 def associate_membership(request):
-    return render(request,'associate_membership.html')
+    try:
+        registration = request.user.registration
+    except AttributeError:
+        registration = None
+        
+    
+    
+
+    context = {
+        
+        'registration': registration,
+        # Pass the courses to the context
+    }
+    return render(request,'associate_membership.html',context)
+
+from django.shortcuts import render
+
+def background_music(request):
+    return render(request, 'background_music.html')
