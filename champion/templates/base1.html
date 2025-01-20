@@ -3,11 +3,17 @@
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    <title>{% block title %}Reels{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/reels.css' %}">
-    {% block extra_head %}{% endblock %}
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TCC | Careers{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/career_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 <body>
+  <section id='Navbar'>
     <style>
         /* Base Styles */
        /* Base Styles */
@@ -785,11 +791,221 @@ document.addEventListener('DOMContentLoaded', () => {
     navLinks.classList.toggle('show');
     menuIcon.classList.toggle('open');
 }
+</script>
+</section>
 
 
-    {% block content %}{% endblock %}
+{% block content %}{% endblock %}
    
    
+    <section id="dividing-section">
+
+    </section>
+            <footer id="footer" class="fade-in">
     
+    
+                <div class="footer-content">
+    
+                    <div class="footer-section">
+                        <img src="{% static 'images/logo.png' %}" alt="">
+                     </div>
+                    
+                    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Quick Links</h4>
+                        <a href="{% url 'support_request' %}" class="footer-link">Support</a>
+                        <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                        <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
+                        <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
+                        
+                        <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
+                    </div>
+    
+                    <div class="footer-section">
+                        <h4 class="footer-title">Company</h4>
+                        <a href="{% url 'register_partner' %}" class="footer-link">Become a Partner</a>
+                        <a href="{% url 'careers' %}" class="footer-link">Careers</a>
+                        <a href="{% url 'credits' %}" class="footer-link">Credits</a>
+                        
+                    </div>
+    
+                    <div class="footer-section">
+                        <h4 class="footer-title">STAY CONNECTED</h4>
+                        <div class="social-media">
+                            <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
+                                <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
+                            </a>
+                            <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+    
+                    </div>
+                    
+                </div>
+                <section id="dividing-section">
+    
+                </section>
+                <div class="footer-bottom">
+                   
+                    <div class="trademark">The Champions Club</div>
+                    <div class="copyright">Copyright © & Trademark ® <span id="year"></span> The Champions Club™ - All Rights Reserved.</div>
+                </div>
+                <script>
+                    document.getElementById("year").textContent = new Date().getFullYear();
+                  </script>
+            </footer>
+    
+            <style>
+            
+                .footer-section button{
+                    background-color: transparent;
+                    color: white;
+                    padding: 15px 45px;
+                    border: 1px solid white;
+                    margin-left: 15px;
+                    font-size: 15px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    z-index: 2;
+                    position: relative;
+                    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+                }
+                
+                .footer-section button::before,
+                .footer-section button::after {
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    width: 20px;
+                    height: 1px;
+                    background-color: white;
+                    transform: translateY(-50%);
+                }
+                .footer-section button::before {
+                    left: 10px;
+                }
+                
+                .footer-section button::after {
+                    right: 10px;
+                }
+                .footer-section button:hover {
+                    background-color: white;
+                    color: #333;
+                    border-color: #333;
+                }
+                
+                
+                
+                
+                
+                
+                #footer {
+                    background-color: #000;
+                    padding: 50px 100px;
+                    color: #f4f4f4;
+                    font-family: 'Roboto', sans-serif;
+                }
+                
+                .footer-content {
+                    display: flex;
+                    justify-content: space-between;
+                    flex-wrap: wrap;
+                    margin-bottom: 30px;
+                    
+                    padding-bottom: 20px;
+                }
+                
+                .footer-section {
+                    flex: 1;
+                    min-width: 200px;
+                    margin: 10px;
+                    margin-left: 100px;
+                }
+                
+                .footer-title {
+                    font-size: 1.2rem;
+                    margin-bottom: 15px;
+                    color: #f4f4f4;
+                    text-transform: uppercase;
+                    font-weight: 700;
+                }
+                
+                .footer-link {
+                    display: block;
+                    color: #f4f4f4;
+                    text-decoration: none;
+                    margin-bottom: 10px;
+                    font-size: 0.9rem;
+                    transition: color 0.3s ease;
+                }
+                
+                .footer-link:hover {
+                    color: #999;
+                }
+                
+                .social-media {
+                    display: flex;
+                    gap: 15px;
+                    margin-top: 10px;
+                }
+                
+                .social-icon {
+                    color: #f4f4f4;
+                    text-decoration: none;
+                    font-size: 1.1rem;
+                    transition: color 0.3s ease;
+                }
+                
+                .social-icon:hover {
+                    color: #999;
+                }
+                
+                .footer-bottom {
+                    text-align: center;
+                    margin-top: 20px;
+                }
+                
+                .trademark {
+                    font-size: 1rem;
+                    margin-bottom: 5px;
+                }
+                
+                .copyright {
+                    font-size: 0.8rem;
+                    color: #666;
+                }
+                
+                @media (max-width: 768px) {
+                    #footer{
+                        padding:0;
+                    }
+                    .footer-content {
+                        flex-direction: column;
+                        align-items: center;
+                        text-align: center;
+                    }
+                
+                    .footer-section {
+                        margin-bottom: 20px;
+                        margin-left: 0;
+                    }
+                
+                    .social-media {
+                        justify-content: center;
+                    }
+                }
+                #footer img{
+                    height: 150px;
+                    margin:0 auto;
+                }
+                #dividing-section{
+                        background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
+                        height: 1px;
+                    }
+                </style>
 </body>
 </html>
