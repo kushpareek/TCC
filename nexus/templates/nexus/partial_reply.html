@@ -1,0 +1,59 @@
+{# nexus/templates/nexus/partial_reply.html #}
+{% load static %}
+{% load media_extras %}
+{% load text_filters %}
+
+<div class="comment" style="margin-left: {{ depth|default:"0"|add:"0" }}em; border-left:1px solid #e1e8ed; padding-left:10px;">
+    <div class="comment-header" style="display:flex; align-items:flex-start; gap:10px; margin-bottom:8px;">
+        <img src="{{ reply.registration.profile_image.url }}" alt="Profile" style="width:40px;height:40px;border-radius:50%;">
+        <div class="comment-header-info" style="display:flex;flex-direction:column;">
+            <div class="user-line" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+                <span class="name" style="font-size:14px;font-weight:bold;color:#14171a;">
+                  {{ reply.registration.user.username }}
+                </span>
+                <span class="username" style="font-size:12px;color:#657786;">
+                  @{{ reply.registration.user.username }}
+                </span>
+                <span class="timestamp" style="font-size:12px;color:#657786;margin-left:5px;">
+                  · {{ reply.created_at|timesince }} ago
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="comment-content" style="font-size:14px;color:#14171a;line-height:1.4;">
+        <a href="{% url 'tweet_detail' reply.id %}" style="text-decoration: none; color: inherit;">
+            {{ reply.content }}
+        </a>
+    </div>
+
+    {# If it quotes a parent tweet, show it #}
+    {% if reply.parent_tweet and reply.parent_tweet != main_tweet %}
+      <div class="quoted-tweet" style="border:1px solid #e1e8ed; padding:10px; margin-top:10px; border-radius:8px;background:#f9f9f9;">
+        <p style="color:#657786;font-size:12px;">Original Post by @{{ reply.parent_tweet.registration.user.username }}:</p>
+        <p>{{ reply.parent_tweet.content }}</p>
+        {% if reply.parent_tweet.media_file %}
+            {% with reply.parent_tweet.media_file.url|media_type as mtype %}
+                {% if mtype == 'image' %}
+                    <img src="{{ reply.parent_tweet.media_file.url }}" alt="Original Tweet Image" style="margin-top:5px;max-width:100%;">
+                {% elif mtype == 'video' %}
+                    <video controls style="margin-top:5px;max-width:100%;">
+                        <source src="{{ reply.parent_tweet.media_file.url }}" type="video/{{ reply.parent_tweet.media_file.url|file_extension }}">
+                        Your browser does not support the video tag.
+                    </video>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# Render child replies recursively #}
+    {% with child_replies=reply.replies.all %}
+      {% if child_replies %}
+        <div class="replies-list" style="margin-top:10px;">
+          {% for child in child_replies %}
+            {% include "nexus/partial_reply.html" with reply=child depth=depth|add:"1" main_tweet=main_tweet %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+</div>
