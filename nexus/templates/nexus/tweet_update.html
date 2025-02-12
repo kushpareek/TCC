@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% load text_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Update Tweet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            padding-top: 70px;
+        }
+        .update-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .update-container h2 {
+            margin-bottom: 20px;
+            color: #14171a;
+        }
+        .update-container form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd6dd;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+        }
+        .update-container form button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 12px;
+            background-color: #1da1f2;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .update-container form button:hover {
+            background-color: #0d95e8;
+        }
+    </style>
+</head>
+<body>
+    <div class="update-container">
+        <h2>Update Tweet</h2>
+        <form method="POST" action="{% url 'tweet_update' tweet.id %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</body>
+</html>

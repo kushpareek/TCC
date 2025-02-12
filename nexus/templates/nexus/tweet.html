@@ -1,0 +1,85 @@
+<!-- templates/nexus/tweet.html -->
+{% load static %}
+{% load tweet_extras %}
+{% load media_extras %}
+{% load text_filters %}
+
+<div class="tweet" data-tweet-id="{{ tweet.id }}" data-tweet-user="{{ tweet.registration.user.username|escapejs }}" data-tweet-content="{{ tweet.content|escapejs }}">
+    <!-- Tweet Header -->
+    <div class="tweet-header">
+        <strong>{{ tweet.registration.user.username }}</strong>
+        <small>{{ tweet.created_at|timesince }} ago</small>
+    </div>
+
+    <!-- Replying to -->
+    {% if tweet.parent_tweet %}
+        <p class="replying-to">Replying to <a href="{% url 'profile' tweet.parent_tweet.registration.user.username %}">@{{ tweet.parent_tweet.registration.user.username }}</a></p>
+    {% endif %}
+
+    {% if tweet.replies.all %}
+        <div class="replies">
+            {% for reply in tweet.replies.all %}
+                {% include "nexus/tweet.html" with tweet=reply %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+    <!-- Tweet Content -->
+    <p>{{ tweet.content|process_mentions }}</p>
+
+    <!-- Media Content -->
+    {% if tweet.media_file %}
+        {% with tweet.media_file.url|media_type as mtype %}
+            {% if mtype == 'image' %}
+                <img src="{{ tweet.media_file.url }}" alt="Tweet Image">
+            {% elif mtype == 'video' %}
+                <video controls width="500">
+                    <source src="{{ tweet.media_file.url }}" type="video/{{ tweet.media_file.url|file_extension }}">
+                    Your browser does not support the video tag.
+                </video>
+            {% else %}
+                <p>Unsupported media type.</p>
+            {% endif %}
+        {% endwith %}
+    {% endif %}
+
+    <!-- Actions -->
+    <div class="tweet-actions">
+        {% comment %} <a href="{% url 'tweet_detail' tweet.id %}">View</a> | {% endcomment %}
+        <a href="#" class="like-btn" data-id="{{ tweet.id }}">
+            {% if tweet.is_liked %}
+            Unlike ({{ tweet.likes_count }})
+            {% else %}
+            Like ({{ tweet.likes_count }})
+            {% endif %}
+        </a> |
+        <div class="retweet-dropdown">
+            {% if tweet.is_retweeted %}
+            <button class="unretweet-btn" data-id="{{ tweet.id }}">
+                Unretweet ({{ tweet.retweets_count }})
+            </button>
+            {% else %}
+            <button class="retweet-btn" data-id="{{ tweet.id }}">
+                Retweet ({{ tweet.retweets_count }})
+            </button>
+            <div class="retweet-options" style="display: none;">
+                <a href="#" class="simple-retweet" data-id="{{ tweet.id }}">Retweet</a>
+                <a href="#" class="quote-retweet" data-id="{{ tweet.id }}">Quote Tweet</a>
+            </div>
+            {% endif %}
+            {% comment %} <button class="reply-btn" data-id="{{ tweet.id }}">Comment</button> {% endcomment %}
+            <button class="reply-btn" data-id="{{ tweet.id }}" data-tweet-user="{{ tweet.registration.user.username|escapejs }}" data-tweet-content="{{ tweet.content|escapejs }}">Reply</button>
+        </div>
+       
+    </div>
+
+    <!-- Replies -->
+    {% if tweet.replies.all and depth < 3 %}
+        <div class="replies">
+            {% for reply in tweet.replies.all %}
+                {% render_tweet reply depth=depth|add:"1" %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

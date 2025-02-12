@@ -1,0 +1,32 @@
+{% extends "nexus/nexus_base.html" %}
+
+{% block content %}
+<div class="notifications-container" style="max-width:800px; margin: 0 auto; background:#fff; padding:20px; border-radius:8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <h2 style="margin-bottom:20px;">Notifications</h2>
+    <ul>
+        {% for notification in notifications %}
+          <li>
+            <p>{{ notification.message }}</p>
+            {% if notification.target_tweet %}
+              <a href="{% url 'tweet_detail' tweet_id=notification.target_tweet.id %}">View Tweet</a>
+            {% else %}
+              <!-- Fallback or no link -->
+            {% endif %}
+          </li>
+        {% endfor %}
+    </ul>
+    <ul class="notifications-list" style="list-style: none; padding: 0;">
+        {% for notification in notifications %}
+            <li class="notification-item" style="padding: 10px; border-bottom: 1px solid #e1e8ed;">
+                <p>
+                    <strong>{{ notification.action|capfirst }}:</strong>
+                    {{ notification.description|safe }}
+                </p>
+                <small style="color:#657786;">{{ notification.timestamp|date:"Y-m-d H:i" }}</small>
+            </li>
+        {% empty %}
+            <li style="padding: 10px;">You have no notifications at the moment.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

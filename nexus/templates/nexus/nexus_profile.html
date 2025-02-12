@@ -1,0 +1,307 @@
+{% extends "nexus/nexus_base.html" %}
+{% load static %}
+{% load media_extras %}
+{% block content %}
+<div class="profile-page">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="cover-photo">
+            {% if user_profile.cover_photo %}
+                <img src="{{ user_profile.cover_photo.url }}" alt="Cover Photo">
+            {% else %}
+                <img src="{% static 'images/default_cover.jpg' %}" alt="Cover Photo">
+            {% endif %}
+        </div>
+        <div class="profile-info">
+            <div class="profile-picture">
+                {% if user_profile.registration.profile_image %}
+                    <img src="{{ user_profile.registration.profile_image.url }}" alt="Profile Picture">
+                {% else %}
+                    <img src="{% static 'images/default_avatar.png' %}" alt="Profile Picture">
+                {% endif %}
+            </div>
+            <div class="profile-details">
+                <h2>{{ user_profile.registration.user.get_full_name }}</h2>
+                <p>@{{ user_profile.registration.user.username }}</p>
+                {% if user_profile.bio %}
+                    <p>{{ user_profile.bio }}</p>
+                {% endif %}
+                <p>
+                    <a href="{% url 'followers_list' user_profile.registration.user.username %}">
+                        <strong id="followers-count">{{ user_profile.followers.count }}</strong> Followers
+                    </a> |
+                    <a href="{% url 'following_list' user_profile.registration.user.username %}">
+                        <strong id="following-count">{{ user_profile.following.count }}</strong> Following
+                    </a>
+                </p>
+                {% if user_profile.registration != request.user.registration %}
+                    <button class="follow-btn btn {% if is_following %}btn-secondary{% else %}btn-primary{% endif %}" data-username="{{ user_profile.registration.user.username }}">
+                        {% if is_following %}Unfollow{% else %}Follow{% endif %}
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Navigation Tabs -->
+    <div class="profile-navigation">
+        <ul>
+            <li class="tab-link active" data-tab="tweets-tab">Tweets</li>
+            <li class="tab-link" data-tab="replies-tab">Replies</li>
+            <li class="tab-link" data-tab="media-tab">Media</li>
+            {% if user_profile.registration == request.user.registration %}
+                <li class="tab-link" data-tab="likes-tab">Likes</li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Tab Content Sections -->
+    <!-- Tweets Tab -->
+    <div class="tab-content active" id="tweets-tab">
+        <div class="tweets-list">
+            {% for tweet in tweets %}
+                <div class="tweet">
+                    <p>{{ tweet.content }}</p>
+                    {% if tweet.media_url %}
+                        <img src="{{ tweet.media_url.url }}" alt="Tweet Media">
+                    {% endif %}
+                    <div class="tweet-actions">
+                        <span>{{ tweet.likes_count }} Likes</span> |
+                        <span>{{ tweet.retweets_count }} Retweets</span>
+                    </div>
+                </div>
+            {% empty %}
+                <p>This user hasn't tweeted yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Replies Tab -->
+    <div class="tab-content" id="replies-tab" style="display: none;">
+        <div class="replies-list">
+            {% for item in replies_and_retweets %}
+                <div class="tweet">
+                    {% if item.parent_tweet %}
+                        <!-- Reply -->
+                        <p><strong>Replying to @{{ item.parent_tweet.registration.user.username }}</strong></p>
+                        <p>{{ item.content }}</p>
+                        {% if item.media_url %}
+                            <img src="{{ item.media_url.url }}" alt="Reply Media">
+                        {% endif %}
+                    {% else %}
+                        <!-- Retweet -->
+                        <p><strong>{{ item.registration.user.username }}</strong> retweeted:</p>
+                        <p>{{ item.tweet.content }}</p>
+                        {% if item.comment %}
+                            <p><em>Comment: {{ item.comment }}</em></p>
+                        {% endif %}
+                        {% if item.tweet.media_url %}
+                            <img src="{{ item.tweet.media_url.url }}" alt="Retweet Media">
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p>No replies or retweets yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Media Tab -->
+    <div class="tab-content" id="media-tab" style="display: none;">
+        <div class="tweets-list">
+            {% for tweet in media_tweets %}
+                {% if tweet.media_url %}
+                    {% with tweet.media_url|media_type as mtype %}
+                        {% if mtype == 'image' %}
+                            <img src="{{ tweet.media_url }}" alt="Tweet Image">
+                        {% elif mtype == 'video' %}
+                            <video controls width="500">
+                                <source src="{{ tweet.media_url }}" type="video/{{ tweet.media_url|file_extension }}">
+                                Your browser does not support the video tag.
+                            </video>
+                        {% else %}
+                            <p>Unsupported media type.</p>
+                        {% endif %}
+                    {% endwith %}
+                {% endif %}
+            {% empty %}
+                <p>No media tweets yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Likes Tab (only for profile owner) -->
+    {% if user_profile.registration == request.user.registration %}
+        <div class="tab-content" id="likes-tab" style="display: none;">
+            <div class="tweets-list">
+                {% for tweet in liked_tweets %}
+                    <div class="tweet">
+                        <p>{{ tweet.content }}</p>
+                        {% if tweet.media_url %}
+                            <img src="{{ tweet.media_url.url }}" alt="Tweet Media">
+                        {% endif %}
+                        <div class="tweet-actions">
+                            <span>{{ tweet.likes_count }} Likes</span> |
+                            <span>{{ tweet.retweets_count }} Retweets</span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>You haven't liked any tweets yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Inline CSS for Profile Page -->
+<style>
+    a {
+        text-decoration: none;
+        color: #1da1f2;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    .profile-page {
+        width: 600px;
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+    }
+    .profile-header {
+        position: relative;
+    }
+    .cover-photo img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px 8px 0 0;
+    }
+    .profile-info {
+        display: flex;
+        position: relative;
+        top: -50px;
+        padding: 0 20px;
+        background: rgba(255,255,255,0.9);
+        border-radius: 0 0 8px 8px;
+    }
+    .profile-picture img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 4px solid white;
+    }
+    .profile-details {
+        margin-left: 20px;
+    }
+    .profile-details h2 {
+        margin: 0;
+        font-size: 24px;
+        color: #14171a;
+    }
+    .profile-details p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #657786;
+    }
+    .btn {
+        padding: 6px 12px;
+        margin-top: 10px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .btn-primary {
+        background-color: #1da1f2;
+        color: white;
+        border: none;
+    }
+    .btn-secondary {
+        background-color: #657786;
+        color: white;
+        border: none;
+    }
+    .profile-navigation {
+        border-bottom: 1px solid #e1e8ed;
+        margin-top: 10px;
+    }
+    .profile-navigation ul {
+        list-style: none;
+        display: flex;
+        padding: 0;
+        margin: 0;
+    }
+    .profile-navigation li {
+        padding: 15px 20px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        font-size: 16px;
+        color: #657786;
+    }
+    .profile-navigation li.active {
+        border-bottom: 2px solid #1da1f2;
+        font-weight: bold;
+        color: #14171a;
+    }
+    .tab-content {
+        display: none;
+        padding: 20px 0;
+    }
+    .tab-content.active {
+        display: block;
+    }
+    .tweets-list {
+        margin-top: 20px;
+    }
+    .tweet {
+        border-bottom: 1px solid #e1e8ed;
+        padding: 15px 0;
+    }
+    .tweet img {
+        max-width: 100%;
+        height: auto;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+    .tweet-actions {
+        color: #657786;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+</style>
+
+<!-- JavaScript for Tab Switching -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.tab-link');
+        const contents = document.querySelectorAll('.tab-content');
+
+        // Hide all tab contents except the active one
+        contents.forEach(function(content) {
+            if (!content.classList.contains('active')) {
+                content.style.display = 'none';
+            }
+        });
+
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                tabs.forEach(function(t) {
+                    t.classList.remove('active');
+                });
+                // Add active class to clicked tab
+                this.classList.add('active');
+
+                // Hide all content
+                contents.forEach(function(content) {
+                    content.classList.remove('active');
+                    content.style.display = 'none';
+                });
+                // Show the content corresponding to clicked tab
+                const tabId = this.getAttribute('data-tab');
+                const activeContent = document.getElementById(tabId);
+                activeContent.classList.add('active');
+                activeContent.style.display = 'block';
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        /* Reset & Global Styles */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            padding-top: 70px; /* For fixed navbar */
+        }
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 10000;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #14171a;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 5px 10px;
+            position: relative;
+        }
+        .nav-links a:hover { color: #1da1f2; }
+        .nav-links a.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #1da1f2;
+        }
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .nav-icons .icon {
+            position: relative;
+            cursor: pointer;
+        }
+        .nav-icons .icon .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e0245e;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 10px;
+            padding: 2px 5px;
+        }
+        .profile-dropdown {
+            position: relative;
+        }
+        .profile-dropdown .profile-trigger {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .profile-dropdown .profile-trigger img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .profile-dropdown .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 45px;
+            background: #fff;
+            border: 1px solid #ccd6dd;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            z-index: 10001;
+        }
+        .profile-dropdown .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #14171a;
+            font-size: 14px;
+        }
+        .profile-dropdown .dropdown-menu a:hover {
+            background-color: #f5f8fa;
+        }
+        /* Main Content Area */
+        .content {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #657786;
+        }
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="{% url 'nexus_home' %}" class="active">Home</a>
+                <a href="{% url 'profile' request.user.username %}">Profile</a>
+                <a href="{% url 'notifications' %}">Notifications</a>
+                <a href="{% url 'trending_topics' %}">Trending</a>
+                <a href="{% url 'settings' %}">Settings</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+            <div class="nav-icons">
+                <div class="icon">
+                    <i class="fa fa-bell"></i>
+                    {% if notifications_count > 0 %}
+                        <span class="badge">{{ notifications_count }}</span>
+                    {% endif %}
+                </div>
+                <div class="profile-dropdown">
+                    <div class="profile-trigger">
+                        <img src="{{ request.user.registration.profile_image.url }}" alt="Profile">
+                        <span>{{ request.user.username }}</span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'profile' request.user.username %}">View Profile</a>
+                        <a href="{% url 'settings' %}">Settings</a>
+                        <a href="{% url 'logout' %}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; {{ year }} Nexus. All Rights Reserved.</p>
+    </footer>
+    
+    <script>
+        // Toggle profile dropdown
+        document.addEventListener('DOMContentLoaded', function() {
+            var profileTrigger = document.querySelector('.profile-dropdown .profile-trigger');
+            var dropdownMenu = document.querySelector('.profile-dropdown .dropdown-menu');
+            profileTrigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+            });
+            window.addEventListener('click', function(e) {
+                if (!document.querySelector('.profile-dropdown').contains(e.target)) {
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <noscript>
+        <style>
+            .tab-content { display: none; }
+            #tweets-tab { display: block; }
+        </style>
+    </noscript>
+</body>
+</html>

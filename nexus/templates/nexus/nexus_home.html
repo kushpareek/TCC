@@ -1,0 +1,849 @@
+{% extends "nexus/nexus_base.html" %}
+{% load sanitize_tags %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load media_extras %}
+    {% load text_filters %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Home</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        /* Reset & Global Styles */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            padding-top: 70px; /* Space for fixed navbar */
+        }
+        
+        /* Navigation Bar (Fixed) */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 10000;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #14171a;
+            font-size: 16px;
+            font-weight: bold;
+            position: relative;
+            padding: 5px 10px;
+        }
+        .nav-links a:hover { color: #1da1f2; }
+        .nav-links a.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #1da1f2;
+        }
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .nav-icons .icon {
+            position: relative;
+            cursor: pointer;
+        }
+        .nav-icons .icon .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e0245e;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 10px;
+            padding: 2px 5px;
+        }
+        .profile-dropdown {
+            position: relative;
+        }
+        .profile-dropdown .profile-trigger {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .profile-dropdown .profile-trigger img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .profile-dropdown .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 45px;
+            background: #fff;
+            border: 1px solid #ccd6dd;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            z-index: 10001;
+        }
+        .profile-dropdown .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #14171a;
+            font-size: 14px;
+        }
+        .profile-dropdown .dropdown-menu a:hover {
+            background-color: #f5f8fa;
+        }
+        
+        /* Main Container Layout */
+        .main-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 20px;
+            padding: 20px;
+        }
+        /* Center Feed Column */
+        .center-feed {
+            flex: 1;
+            background-color: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Tweet Box Enhancements */
+        .tweet-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tweet-box img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .tweet-box form {
+            flex: 1;
+        }
+        .tweet-box textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd6dd;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: none;
+        }
+        .tweet-box input[type="file"] { margin-top: 10px; }
+        .tweet-box .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background-color: #1da1f2;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .tweet-box .btn-primary:hover { background-color: #0d95e8; }
+        
+        /* Feed Tabs */
+        .feed-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e1e8ed;
+        }
+        .feed-tabs a {
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            text-decoration: none;
+            color: #657786;
+            font-size: 16px;
+            font-weight: normal;
+            position: relative;
+        }
+        .feed-tabs a.active {
+            color: #14171a;
+            font-weight: bold;
+        }
+        .feed-tabs a.active::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #1da1f2;
+        }
+        
+        /* Tweets List & Tweet Styling */
+        .tweets-list .tweet {
+            padding: 15px 0;
+            border-bottom: 1px solid #e1e8ed;
+            position: relative;
+        }
+        .tweet-header, .reply-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .profile-image {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .tweet-header-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .user-line {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .user-line .name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #14171a;
+        }
+        .user-line .username {
+            font-size: 14px;
+            color: #657786;
+        }
+        .user-line .timestamp {
+            font-size: 14px;
+            color: #657786;
+            margin-left: 5px;
+        }
+        .reply-context {
+            font-size: 12px;
+            color: #657786;
+            margin-top: 2px;
+            padding-left: 2px;
+        }
+        .tweet-content a {
+            text-decoration: none;
+            color: #14171a;
+        }
+        .tweet-content a:hover { text-decoration: underline; }
+        .tweet img, .tweet video {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        /* Options Menu (Three Dots) */
+        .options-menu {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .options-dropdown {
+            display: none;
+            position: absolute;
+            top: 25px;
+            right: 10px;
+            background: #fff;
+            border: 1px solid #ccd6dd;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            z-index: 100;
+        }
+        .options-dropdown a {
+            display: block;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #14171a;
+            font-size: 14px;
+        }
+        .options-dropdown a:hover {
+            background-color: #f5f8fa;
+        }
+        /* Tweet Actions */
+        .tweet-actions {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+        .tweet-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #657786;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        .tweet-actions button i { margin-right: 5px; }
+        .tweet-actions .liked { color: #e0245e; }
+        
+        /* Right Sidebar Styling */
+        .right-sidebar {
+            width: 300px;
+        }
+        .trending-topics, .suggested-users {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .trending-topics h3, .suggested-users h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #14171a;
+        }
+        .trending-topics ul, .suggested-users ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .trending-topics li, .suggested-users li { margin-bottom: 10px; }
+        .trending-topics li a {
+            text-decoration: none;
+            color: #1da1f2;
+            font-weight: bold;
+        }
+        .trending-topics li a:hover { text-decoration: underline; }
+        .suggested-user {
+            display: flex;
+            align-items: center;
+        }
+        .suggested-user .user-info {
+            flex: 1;
+            margin-left: 10px;
+        }
+        .suggested-user .user-info p { margin: 0; }
+        .follow-btn {
+            background-color: #1da1f2;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .follow-btn:hover { background-color: #0d95e8; }
+        
+        /* Modal Styling */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        @media (max-width: 768px) {
+            .main-container { flex-direction: column; }
+            .right-sidebar { width: 100%; }
+            .center-feed { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    {% comment %} <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="{% url 'nexus_home' %}" class="active">Home</a>
+                <a href="{% url 'profile' request.user.username %}">Profile</a>
+                <a href="{% url 'notifications' %}">Notifications</a>
+                <a href="{% url 'trending_topics' %}">Trending</a>
+                <a href="{% url 'settings' %}">Settings</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+            <a href="{% url 'notifications' %}" class="icon">
+                <i class="fa fa-bell"></i>
+                {% if notifications_count > 0 %}
+                    <span class="badge">{{ notifications_count }}</span>
+                {% endif %}
+            </a>
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown">
+                    <div class="profile-trigger">
+                        <img src="{{ request.user.registration.profile_image.url }}" alt="Profile">
+                        <span>{{ request.user.username }}</span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'profile' request.user.username %}">View Profile</a>
+                        <a href="{% url 'settings' %}">Settings</a>
+                        <a href="{% url 'logout' %}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navigation Bar --> {% endcomment %}
+    
+    <div class="main-container">
+        <!-- Center Feed Column -->
+        <div class="center-feed">
+            <!-- Tweet Box -->
+            <div class="tweet-box">
+                <img src="{{ request.user.registration.profile_image.url }}" alt="Profile Image">
+                <form id="tweetForm" method="POST" action="{% url 'post_tweet' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <textarea name="content" id="tweetContent" rows="4" placeholder="What's happening?" required>{{ tweet_form.content.value|default_if_none:"" }}</textarea>
+                    <input type="file" name="media_file" id="tweetMedia" accept="image/*,video/*">
+                    <button type="submit" class="btn-primary">Tweet</button>
+                </form>
+            </div>
+            <!-- Feed Tabs -->
+            <div class="feed-tabs">
+                <a href="?feed=for_you" class="{% if feed_type == 'for_you' %}active{% endif %}">For You</a>
+                <a href="?feed=following" class="{% if feed_type == 'following' %}active{% endif %}">Following</a>
+            </div>
+            <!-- Tweets List -->
+            <div class="tweets-list">
+                {% for tweet in tweets %}
+                <div class="tweet" data-tweet-id="{{ tweet.id }}">
+                    <!-- Options Menu (Three Dots) for Delete (Edit option removed) -->
+                    {% if tweet.registration == request.user.registration %}
+                    <div class="options-menu">
+                        <i class="fa fa-ellipsis-h"></i>
+                        <div class="options-dropdown">
+                            <a href="#" class="delete-btn" data-id="{{ tweet.id }}">Delete</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <!-- Tweet Header -->
+                    <div class="tweet-header">
+                        <img src="{{ tweet.registration.profile_image.url }}" alt="Profile Image" class="profile-image">
+                        <div class="tweet-header-info">
+                            <div class="user-line">
+                                <span class="name">{{ tweet.registration.user.username }}</span>
+                                <span class="username">@{{ tweet.registration.user.username }}</span>
+                                <span class="timestamp">· {{ tweet.created_at|timesince }} ago</span>
+                            </div>
+                            {% if tweet.parent_tweet %}
+                            <div class="reply-context">
+                                Retweeted from @{{ tweet.parent_tweet.registration.user.username }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Tweet Content (escaped for security) -->
+                    <p class="tweet-content">
+                        <a href="{% url 'tweet_detail' tweet_id=tweet.id %}" style="text-decoration: none; color: inherit;">
+                            {{ tweet.content|sanitize_tweet }}
+                        </a>
+                    </p>
+                    <!-- Media (if any) -->
+                    {% if tweet.media_file %}
+                        {% with tweet.media_file.url|media_type as mtype %}
+                            {% if mtype == 'image' %}
+                                <img src="{{ tweet.media_file.url }}" alt="Tweet Image">
+                            {% elif mtype == 'video' %}
+                                <video controls width="100%">
+                                    <source src="{{ tweet.media_file.url }}" type="video/{{ tweet.media_file.url|file_extension }}">
+                                    Your browser does not support the video tag.
+                                </video>
+                            {% else %}
+                                <p>Unsupported media type.</p>
+                            {% endif %}
+                        {% endwith %}
+                    {% endif %}
+                    <!-- Tweet Actions -->
+                    <div class="tweet-actions">
+                        <!-- Reply Button: Redirects to tweet detail page -->
+                        <button class="reply-btn" data-id="{{ tweet.id }}">
+                            <i class="fa fa-comment"></i>
+                            <span>{{ tweet.replies.count }}</span>
+                        </button>
+                        <button class="like-btn" data-id="{{ tweet.id }}">
+                            <i class="fa fa-heart {% if tweet.is_liked %}liked{% endif %}"></i>
+                            <span>{{ tweet.likes_count }}</span>
+                        </button>
+                        <button class="share-btn">
+                            <details class="forward-details" style="display:inline-block;">
+                                <summary style="cursor:pointer;">Forward</summary>
+                                <div class="popup-content" style="background:#f9f9f9; border:1px solid #e1e8ed; padding:10px; border-radius:8px; margin-top:5px; min-width:200px;">
+                                    <p style="margin:0 0 5px;">Share link to this post:</p>
+                                    <input
+                                      id="forwardLink-{{ tweet.id }}"
+                                      type="text"
+                                      value="{{ request.scheme }}://{{ request.get_host }}{% url 'tweet_detail' tweet.id %}"
+                                      readonly
+                                      style="width:100%; border:1px solid #ccd6dd; border-radius:4px; padding:5px;"
+                                    >
+                                    {% comment %} <button
+                                      class="copy-forward-btn"
+                                      data-tweet-id="{{ tweet.id }}"
+                                      style="margin-top:8px; background:#1da1f2; color:#fff; border:none; border-radius:4px; padding:5px 10px; cursor:pointer;"
+                                    >
+                                      Copy Link
+                                    </button> {% endcomment %}
+                                </div>
+                              </details>
+                        </button>
+                        <button class="forward-btn">
+                            <i class="fa fa-external-link-alt"></i>
+                            <span>{{ tweet.forwards_count }}</span>
+                         </button>
+                    </div>
+                    <!-- Note: Comments are hidden on homepage -->
+                </div>
+                {% empty %}
+                    <p>No tweets to show. Follow some users to see their tweets!</p>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <div class="trending-topics">
+                <h3>Trending Topics</h3>
+                <ul>
+                    {% for topic in trending_topics %}
+                    <li>
+                        <a href="{% url 'topic_detail' topic.id %}">#{{ topic.name }}</a> ({{ topic.tweet_count }} tweets)
+                    </li>
+                    {% empty %}
+                        <p>No trending topics at the moment.</p>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="suggested-users">
+                <h3>Who to Follow</h3>
+                <ul>
+                    {% for user in suggested_users %}
+                    <li>
+                        <div class="suggested-user">
+                            <img src="{{ user.registration.profile_image.url }}" alt="Profile Image" class="profile-image">
+                            <div class="user-info">
+                                <p><strong>{{ user.registration.user.username }}</strong></p>
+                                <p>{{ user.registration.user.email }}</p>
+                            </div>
+                            <button class="follow-btn" data-username="{{ user.registration.user.username }}">
+                                {% if user.is_followed %}Unfollow{% else %}Follow{% endif %}
+                            </button>
+                        </div>
+                    </li>
+                    {% empty %}
+                        <p>No suggestions available</p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quote Tweet Modal (Not used since retweet options removed) -->
+    <div id="quoteTweetModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Quote Tweet</h2>
+            <textarea id="quoteTweetComment" rows="4" placeholder="Add a comment..."></textarea>
+            <button id="submitQuoteTweet" data-id="">Tweet</button>
+        </div>
+    </div>
+    
+    <!-- Reply Modal (Not used on homepage) -->
+    <div id="replyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="parentTweetContent" class="parent-tweet">
+                <!-- Parent tweet content will be inserted here if needed -->
+            </div>
+            <form id="replyForm">
+                {% csrf_token %}
+                <textarea name="content" id="replyContent" rows="4" placeholder="Tweet your reply" required></textarea>
+                <button type="submit" class="btn-primary">Reply</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Font Awesome (if not already loaded in head) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    
+    <script>
+        // Function to get CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    cookie = cookie.trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        const csrfToken = getCookie("csrftoken");
+        let tweetToDelete = null;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Toggle dropdown for profile in navbar
+            document.querySelector('.profile-dropdown .profile-trigger').addEventListener('click', function(e) {
+                e.stopPropagation();
+                var dropdown = document.querySelector('.profile-dropdown .dropdown-menu');
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+            // Close dropdown when clicking outside
+            window.addEventListener('click', function(e) {
+                if (!document.querySelector('.profile-dropdown').contains(e.target)) {
+                    document.querySelector('.profile-dropdown .dropdown-menu').style.display = 'none';
+                }
+            });
+            
+            // Options Menu Toggle (Three Dots)
+            document.querySelectorAll('.options-menu').forEach(menu => {
+                menu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const dropdown = this.querySelector('.options-dropdown');
+                    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+            window.addEventListener('click', function() {
+                document.querySelectorAll('.options-dropdown').forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+            });
+            
+            // Delete Button Functionality
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    tweetToDelete = this.dataset.id;
+                    document.getElementById("deleteModal").style.display = "flex";
+                });
+            });
+            
+            // Get modal elements
+            const deleteModal = document.getElementById("deleteModal");
+            const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+            const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+            const closeModal = document.querySelector("#deleteModal .close-modal");
+            
+            // When the user clicks "Yes, Delete"
+            confirmDeleteBtn.addEventListener("click", function() {
+                if (tweetToDelete) {
+                    fetch(`/nexus/ajax/delete/${tweetToDelete}/`, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": csrfToken,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({}) // Send an empty JSON object
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                    // For example, if on the home page, remove the tweet element or redirect
+                    // Here we redirect back to home:
+                            window.location.href = "/nexus/home/";
+                        } else {
+                            alert("Failed to delete post: " + (data.error || "Unknown error"));
+                        }
+                        deleteModal.style.display = "none";
+                        tweetToDelete = null;
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        deleteModal.style.display = "none";
+                        tweetToDelete = null;
+                    });
+                }
+            });
+            
+            // When the user clicks "Cancel" or the close icon
+            cancelDeleteBtn.addEventListener("click", function() {
+                deleteModal.style.display = "none";
+                tweetToDelete = null;
+            });
+            closeModal.addEventListener("click", function() {
+                deleteModal.style.display = "none";
+                tweetToDelete = null;
+            });
+            
+            // Hide modal if clicking outside of the modal-content area
+            window.addEventListener("click", function(event) {
+                if (event.target === deleteModal) {
+                    deleteModal.style.display = "none";
+                    tweetToDelete = null;
+                }
+            });
+        
+            
+            // Like Button Functionality
+            document.querySelectorAll(".like-btn").forEach(button => {
+                button.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    const tweetId = this.dataset.id;
+                    fetch(`/nexus/ajax/like/${tweetId}/`, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": csrfToken,
+                            "Content-Type": "application/json"
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const likeIcon = this.querySelector('i');
+                            const likeCount = this.querySelector('span');
+                            if (data.liked) {
+                                likeIcon.classList.add('liked');
+                            } else {
+                                likeIcon.classList.remove('liked');
+                            }
+                            likeCount.textContent = data.likes_count;
+                        } else {
+                            alert("An error occurred while processing your request.");
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            });
+            
+            // Follow Button Functionality
+            document.querySelectorAll(".follow-btn").forEach(button => {
+                button.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    const username = this.dataset.username;
+                    fetch(`/nexus/ajax/follow/${username}/`, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": csrfToken
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.textContent = data.is_following ? "Unfollow" : "Follow";
+                        } else {
+                            alert("An error occurred while processing your request.");
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+                });
+            });
+            
+            // Reply Button Functionality: Redirect to Tweet Detail Page
+            document.addEventListener('click', function(event) {
+                if (event.target.closest('.reply-btn')) {
+                    event.preventDefault();
+                    const tweetId = event.target.closest('.reply-btn').dataset.id;
+                    window.location.href = "/nexus/tweet/" + tweetId + "/";
+                }
+            });
+            // CSRF token retrieval function
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== "") {
+                    const cookies = document.cookie.split(";");
+                    for (let cookie of cookies) {
+                        cookie = cookie.trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrfToken = getCookie("csrftoken");
+
+            
+            
+            // Quote Tweet Modal Functionality (if needed; not used now)
+            function openQuoteTweetModal(tweetId) {
+                const quoteTweetModal = document.getElementById("quoteTweetModal");
+                const submitQuoteTweet = document.getElementById("submitQuoteTweet");
+                const quoteTweetComment = document.getElementById("quoteTweetComment");
+                submitQuoteTweet.dataset.id = tweetId;
+                quoteTweetComment.value = "";
+                quoteTweetModal.style.display = "flex";
+                submitQuoteTweet.onclick = function() {
+                    const comment = quoteTweetComment.value;
+                    fetch(`/nexus/ajax/retweet/${tweetId}/`, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": csrfToken,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ comment: comment })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const retweetBtn = document.querySelector(`.retweet-btn[data-id="${tweetId}"]`);
+                            const retweetIcon = retweetBtn.querySelector('i');
+                            const retweetCount = retweetBtn.querySelector('span');
+                            retweetIcon.classList.add('retweeted');
+                            retweetCount.textContent = data.retweets_count;
+                            quoteTweetModal.style.display = "none";
+                        } else {
+                            alert("An error occurred while processing your request.");
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                };
+            }
+        });
+    </script>
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+          <span class="close-modal">&times;</span>
+          <h2>Confirm Deletion</h2>
+          <p>Are you sure you want to delete this post?</p>
+          <button id="confirmDeleteBtn" class="btn-primary">Yes, Delete</button>
+          <button id="cancelDeleteBtn" class="btn-secondary">Cancel</button>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}
