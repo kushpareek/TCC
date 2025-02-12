@@ -18,9 +18,9 @@ class Migration(migrations.Migration):
         #     model_name='activitylog',
         #     name='related_tweet',
         # ),
-        migrations.AddField(
-            model_name='activitylog',
-            name='action',
-            field=models.CharField(blank=True, choices=[('like', 'Like'), ('retweet', 'Retweet'), ('follow', 'Follow'), ('post', 'Post')], max_length=50),
-        ),
+        # migrations.AddField(
+        #     model_name='activitylog',
+        #     name='action',
+        #     field=models.CharField(blank=True, choices=[('like', 'Like'), ('retweet', 'Retweet'), ('follow', 'Follow'), ('post', 'Post')], max_length=50),
+        # ),
     ]

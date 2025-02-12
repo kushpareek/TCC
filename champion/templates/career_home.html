@@ -2,8 +2,11 @@
 
 {% extends 'base1.html' %}
 
-{% block title %}Careers{% endblock %}
-
+{% block title %}TCC | Careers{% endblock %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/career_styles.css' %}">
+{% endblock %}
 {% block content %}
 <!-- Hero Section -->
 <section class="hero">

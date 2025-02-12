@@ -1,13 +1,17 @@
 <!DOCTYPE html>
+{% extends 'base1.html' %}
 <html lang="en">
-<head>
+
     {% load static %}
     <meta charset="UTF-8">
-    <title>TCC | Coming Soon</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Fonts for premium typography -->
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Roboto:wght@300&display=swap" rel="stylesheet">
+    {% block title %}TCC | Associate Membership{% endblock %}
+   
+    
+    {% block content %}
+
+
+    
+    
     <style>
         body {
             background-color: #000;
@@ -15,6 +19,7 @@
             padding: 0;
             color: #ffffff;
             font-family: 'Roboto', sans-serif;
+            font-weight:400;
             overflow-x: hidden;
         }
         .container {
@@ -27,7 +32,7 @@
             padding: 0 20px;
         }
         h1 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Montserrat', serif;
             font-size: 3em;
             font-weight: 500;
             color: #E5C100; /* Gold color for a premium feel */
@@ -79,8 +84,6 @@
             }
         }
     </style>
-</head>
-<body>
     <div class="container">
         <h1>Associate Membership Coming Soon</h1>
         <p>
@@ -88,5 +91,5 @@
         </p>
         <a href="{% url 'home' %}" class="btn">Home</a>
     </div>
-</body>
+    {% endblock %}
 </html>

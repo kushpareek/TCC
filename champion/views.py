@@ -381,6 +381,8 @@ def home(request):
     context = {
         'reapply_date': reapply_date,
         'registration': registration,
+        'hide_special_button': True,
+        'navbar_opacity': 0.6,
         # Pass the courses to the context
     }
     return render(request, 'index.html', context)
@@ -2265,6 +2267,7 @@ def careers_home(request):
         'categories': categories,
         'featured_jobs': featured_jobs,
         'registration': registration,
+         
     }
     return render(request, 'career_home.html', context)
 # careers/views.py

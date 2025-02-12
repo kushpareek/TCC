@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
+    {% extends 'base1.html' %}
 <head>
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCC | Home</title>
+    
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link
   rel="stylesheet"
@@ -13,13 +13,13 @@
 />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.5/css/swiper.min.css">
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    {% load static %}
+  
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
@@ -27,797 +27,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     
-   
+    {% block title %} TCC | Home {% endblock %}
       
 </head>
 <!-- Google tag (gtag.js) -->
 
 
 
-<body>
-    <style>
-        /* Base Styles */
-       /* Base Styles */
-.top-navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #000;
-    color: #e0e0e0;
-    height: 10vh;
-    padding: 0 2%;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 4;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    opacity: 1;
-}
 
-.top-navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 10px;
-}
-
-.top-navbar li {
-    margin: 0;
-}
-
-.top-navbar a {
-    text-decoration: none;
-    color: #ccc;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 10px 20px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-}
-
-.top-navbar a:hover {
-    background-color: #ffcc00;
-    color: #111;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 204, 0, 0.3);
-}
-
-/* Logo Styles */
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-    letter-spacing: 0.1em;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-}
-
-.logo img {
-    max-height: 50px;
-    margin-right: 15px;
-}
-
-/* Full-Screen Overlay Navigation Styles */
-#nav-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw;
-    background-color: #000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-    opacity: 0;
-    z-index: 3;
-}
-
-#nav-links.show {
-    transform: scaleY(1);
-    opacity: 1;
-}
-
-#nav-links li {
-    margin: 20px 0;
-}
-
-#nav-links a {
-    text-decoration: none;
-    font-size: 24px;
-    font-weight: bold;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-#nav-links a:hover {
-    color: white;
-    transform: translateY(-2px);
-}
-
-/* Menu Icon for Mobile */
-.menu-icon {
-    margin-right: 10px;
-    cursor: pointer;
-    width: 30px;
-    height: 25px;
-    position: relative;
-    display: flex;
-    justify-content: space-around;
-    flex-direction: column;
-    z-index: 5;
-    transition: transform 0.3s ease;
-}
-
-.menu-icon div {
-    width: 100%;
-    height: 4px;
-    background-color: #fff;
-    transition: all 0.3s ease;
-}
-
-.menu-icon .bar1 {
-    transform-origin: top left;
-}
-
-.menu-icon .bar3 {
-    transform-origin: bottom left;
-}
-
-/* Change to X when menu is open */
-.menu-icon.open .bar1 {
-    transform: rotate(40deg);
-    background-color: #fff;
-}
-
-.menu-icon.open .bar2 {
-    opacity: 0;
-}
-
-.menu-icon.open .bar3 {
-    transform: rotate(-40deg);
-    background-color: #fff;
-}
-
-/* Responsive Media Queries */
-@media (min-width: 769px) {
-    .menu-icon {
-        display: none;
-    }
-
-    .top-navbar {
-        justify-content: space-between;
-        opacity: 0.6;
-        position: relative;
-    }
-
-    #nav-links {
-        position: static;
-        transform: none;
-        background-color: transparent;
-        flex-direction: row;
-        justify-content: flex-end;
-        height: auto;
-        width: auto;
-        opacity: 1;
-    }
-
-    #nav-links li {
-        margin: 0 20px;
-    }
-
-    #nav-links a {
-        font-size: 16px;
-        
-    }
-
-    #nav-links a:hover {
-        color: #111;
-        background-color: #ffcc00;
-    }
-}
-
-/* Button Styles */
-.cta-btn {
-    background-color: #ffcc00;
-    color: #000;
-    font-size: 18px;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.cta-btn:hover {
-    background-color: #e6b800;
-    color: #000;
-}
-
-/* Toggle Button Styles */
-.toggle {
-    position: relative;
-    display: inline-block;
-}
-
-.toggle__input {
-    display: none;
-}
-
-.toggle__label {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    font-family: 'Montserrat';
-    font-weight: bold;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    transition: background-color 0.3s ease;
-}
-
-.diagonal-line {
-    position: absolute;
-    top: 2px;
-    left: 75px;
-    width: 0;
-    height: 2px;
-    background-color: white;
-    transform: rotate(-210deg);
-    z-index: 2;
-    transition: width 0.4s ease-out;
-    transform-origin: left center;
-    pointer-events: none;
-}
-
-.toggle__input:checked + .toggle__label .diagonal-line {
-    width: 90%;
-}
-
-.toggle__label #buttonText {
-    z-index: 1;
-    position: relative;
-}
-
-/* Dropdown Styles */
-/* Base styles for the dropdown container */
-/* Base Dropdown */
-.dropdown {
-    position: relative;
-}
-
-/* Dropdown content - hidden by default */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #000;
-    top: 30px;
-    left: 0;
-    padding: 10px 0;
-    min-width: 150px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-}
-
-/* Individual dropdown links inside the dropdown content */
-.dropdown-content a {
-    display: block;
-    padding: 10px 10px;
-    color: #e0e0e0;
-    font-size: 16px;
-    text-decoration: none;
-}
-.dropdown-link{
-    display: none;
-}
-
-/* Hover effect on links */
-.dropdown-content a:hover {
-    background-color: #ffcc00;
-    color: #111;
-}
-
-/* Show dropdown content on hover for desktop */
-@media (min-width: 769px) {
-    .dropdown:hover .dropdown-content {
-        display: block;
-        visibility: visible;
-        opacity: 1;
-        transition: opacity 0.3s ease-in-out;
-    }
-    .dropdown:hover .dropdown-link{
-        display: block;
-    }
-}
-
-/* Mobile-specific dropdown behavior */
-@media (max-width: 768px) {
-    ul {
-        text-align: center;
-    }
-
-    /* Hide dropdown content by default for mobile */
-    .dropdown-content {
-        display: none;
-        position: static;
-        background-color: #000;
-        width: 100%;
-    }
-
-    /* When dropdown has 'show' class, display the content */
-    .dropdown.show .dropdown-content {
-        display: block;
-    }
-    .dropdown.show .dropdown-link {
-        display: block;
-    }
-   
-    /* Dropdown links styling */
-    .dropdown-content .dropdown-link {
-        display: none;
-        padding: 10px 20px;
-        color: #e0e0e0;
-    }
-
-    /* Hover effect on mobile */
-    .dropdown-content .dropdown-link a:hover {
-        background-color: #ffcc00;
-        color: #111;
-    }
-}.navbar-profile-img {
-            width: 35px;             /* Adjust width as needed */
-            height: 35px;  
-                      /* Adjust height as needed */
-            border-radius: 50%;      /* Makes the image circular */
-            object-fit: cover;       /* Ensures the image covers the container without distortion */
-            vertical-align: middle;  /* Aligns the image vertically */
-        }
-        .logo-link:hover{
-            background-color:transparent !important;
-            transition: none !important;
-            transform: translateY(0px) !important;
-    box-shadow: none !important;
-    padding:0 !important;
-        }
-        .logo-link{
-            padding:0 !important;
-        }
-
-    </style>
-<script>
-    
-function toggleMusic() {
-
-  const muteToggle = document.getElementById("muteToggle");
-  const backgroundMusic = document.getElementById("backgroundMusic");
-  const buttonText = document.getElementById("buttonText");
-
-  if (muteToggle.checked) {
-    backgroundMusic.muted = true; // Mute the music
-    buttonText.textContent = "MUSIC";
-  } else {
-    backgroundMusic.muted = false; // Unmute the music
-    buttonText.textContent = "MUSIC";
-  }
-}
-
-</script>
-    <nav class="top-navbar">
-        <!-- Logo on the left -->
-        <a class="logo-link" href="{% url 'home' %}"><div class="logo">
-            <img src="{% static 'images/android.png' %}" alt="Champions Club Logo"> <!-- Add your logo image -->
-            THE CHAMPIONS CLUB
-        </div></a>
-
-        <!-- Menu Icon for Mobile -->
-        <div class="menu-icon" onclick="toggleMenu()">
-            <div class="bar1"></div>
-            <div class="bar2"></div>
-            <div class="bar3"></div>
-        </div>
-
-        <!-- Navigation Links -->
-        <ul id="nav-links">
-          
-            <!-- <li><a href="{% url 'news_feed' %}">NEWS</a></li> -->
-            
-          
-    
-            <!-- Dropdown tab for Resources -->
-            <li class="dropdown">
-                <a href="#">RESOURCES</a>
-                <ul class="dropdown-content">
-                    <!-- <li class="dropdown-link"><a href="{% url 'blog_list' %}">BLOGS</a></li>
-                    <li class="dropdown-link"><a href="{% url 'reel_grid' %}">SHORTS</a></li>
-                    <li class="dropdown-link"><a href="{% url 'events' %}">EVENTS</a></li>
-                    <li class="dropdown-link"><a href="{% url 'course_list' %}">COURSES</a></li>
-                    <li class="dropdown-link"><a href="{% url 'video_home' %}">PODCASTS</a></li>
-                     -->
-                     <li class="dropdown-link"><a href="{% url 'vita' %}">VITA</a></li>
-                     <li class="dropdown-link"><a href="{% url 'opus' %}">OPUS</a></li>
-                     <li class="dropdown-link"><a href="{% url 'coming_soon' %}">NEXUS</a></li>
-                     <li class="dropdown-link"><a href="{% url 'epulum' %}">EPULUM</a></li>
-                     <li class="dropdown-link"><a href="{% url 'historia' %}">HISTORIA</a></li>
-                    
-                    
-                    
-                </ul>
-            </li>
-
-
-
-            
-            <li><a href="{% url 'support_request' %}">CONTACT</a></li>
-            
-            {% if not user.is_authenticated %}
-            <li><a href="{% url 'login' %}"><i class="fa-solid fa-circle-user fa-xl"></i> LOGIN</a></li>
-            {% else %}
-            {% if registration.approved == 1 %}
-            {% if registration.membership_paid == 0 %}
-            <li class="dropdown">
-                <a href="#">
-                    {% if registration.profile_image %}
-                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
-                    {% else %}
-                        <i class="fa-solid fa-circle-user fa-xl"></i>
-                    {% endif %}
-                </a>
-                <ul class="dropdown-content">
-                    <li class="dropdown-link"><a href="{% url 'champions_dashboard' %}">BUY MEMBERSHIP TODAY</a></li>
-                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
-            </li>
-            {% comment %} <li><a href="{% url 'champions_dashboard' %} ">BUY MEMBERSHIP TODAY</a></li> {% endcomment %}
-            {% else %}
-            {% comment %} <li><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> Dashboard</a></li> {% endcomment %}
-            <li class="dropdown">
-                <a href="#">
-                    {% if registration.profile_image %}
-                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
-                    {% else %}
-                        <i class="fa-solid fa-circle-user fa-xl"></i>
-                    {% endif %}
-                </a>
-                <ul class="dropdown-content">
-                    <li class="dropdown-link"><a href="{% url 'champions_dashboard' %}"><i class="fa-solid fa-circle-user fa-xl"></i> Dashboard</a></li>
-                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
-            </li>
-            {% endif %}
-            {% else %}
-            <li class="dropdown">
-                <a href="#">
-                    {% if registration.profile_image %}
-                        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="navbar-profile-img">
-                    {% else %}
-                        <i class="fa-solid fa-circle-user fa-xl"></i>
-                    {% endif %}
-                </a>
-                <ul class="dropdown-content">
-                    <li class="dropdown-link"><a href="{% url 'user_profile' %}">Profile</a></li>
-                    <li class="dropdown-link"><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
-            </li>
-            
-            {% endif %}
-            {% endif %}
-            {% comment %} <li>
-                <div class="toggle">
-                  <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
-                  <label for="muteToggle" class="toggle__label">
-                    <span id="buttonText">MUSIC</span>
-                    <div class="diagonal-line" id="diagonalLine"></div>
-                  </label>
-                </div>
-              </li> {% endcomment %}
-              <li>
-                <div class="dropdown">
-                  <button class="dropdown-toggle" onclick="toggleDropdown()" id="musicButton">
-                    MUSIC <i class="fas fa-chevron-down"></i>
-                  </button>
-                  <div class="dropdown-menu" id="musicDropdown">
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value="20"
-                      id="volumeSlider"
-                      oninput="adjustVolume(this.value)"
-                    >
-                    <button id="muteButton" onclick="toggleMute()">
-                      <i class="fas fa-volume-up"></i>
-                    </button>
-                  </div>
-                </div>
-              </li>
-<style>
-    /* Include Font Awesome for icons */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-
-/* Dropdown container */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Dropdown button */
-.dropdown-toggle {
-  background-color: #1e1e1e;
-  color: #fff;
-  padding: 12px 20px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-  border-radius: 30px;
-  transition: background-color 0.3s ease;
-}
-
-.dropdown-toggle i {
-  margin-left: 10px;
-}
-
-.dropdown-toggle:hover {
-  background-color: #333;
-}
-
-/* Dropdown content */
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  background-color: #2c2c2c;
-  min-width: 250px;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  z-index: 1;
-  border-radius: 10px;
-  top: 50px;
-  right: 0px;
-}
-@media (max-width:992px){
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        background-color: #2c2c2c;
-        min-width: 250px;
-        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
-        padding: 20px;
-        z-index: 1;
-        border-radius: 10px;
-        top: 50px;
-        right: -20px;
-      }
-}
-/* Show the dropdown menu when toggled */
-.show {
-  display: block;
-}
-
-/* Volume slider */
-#volumeSlider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 8px;
-  background: #555;
-  outline: none;
-  border-radius: 5px;
-  margin-bottom: 15px;
-}
-
-#volumeSlider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  background: #fff;
-  cursor: pointer;
-  border-radius: 50%;
-}
-
-#volumeSlider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: #fff;
-  cursor: pointer;
-  border-radius: 50%;
-}
-
-/* Mute button */
-#muteButton {
-  background-color: transparent;
-  color: #fff;
-  padding: 0;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  transition: color 0.3s ease;
-}
-
-#muteButton:hover {
-  color: #999;
-}
-.invisible-text{
-    visibility: hidden;
-   
-}
-@media (max-width:1200px){
-    .invisible-text{
-    display: none;
-   
-}
-}
-</style>    
-<script>
-    let isMuted = false;
-let lastVolume = 0.02; // Default volume (50%)
-
-function toggleDropdown() {
-  document.getElementById("musicDropdown").classList.toggle("show");
-}
-
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('#musicButton') && !event.target.matches('#musicButton *')) {
-    let dropdowns = document.getElementsByClassName("dropdown-menu");
-    for (let i = 0; i < dropdowns.length; i++) {
-      let openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}
-
-function adjustVolume(value) {
-  let audio = document.getElementById('backgroundMusic'); // Updated ID
-  if (audio) {
-    audio.volume = value / 100;
-    let muteIcon = document.getElementById('muteButton').children[0];
-    if (audio.volume === 0) {
-      isMuted = true;
-      muteIcon.classList.remove('fa-volume-up');
-      muteIcon.classList.add('fa-volume-mute');
-    } else {
-      isMuted = false;
-      muteIcon.classList.remove('fa-volume-mute');
-      muteIcon.classList.add('fa-volume-up');
-    }
-  } else {
-    console.error("Audio element with ID 'backgroundMusic' not found.");
-  }
-}
-
-function toggleMute() {
-  let audio = document.getElementById('backgroundMusic'); // Updated ID
-  let volumeSlider = document.getElementById('volumeSlider');
-  let muteIcon = document.getElementById('muteButton').children[0];
-  if (audio) {
-    if (isMuted) {
-      audio.volume = lastVolume;
-      volumeSlider.value = lastVolume * 100;
-      isMuted = false;
-      muteIcon.classList.remove('fa-volume-mute');
-      muteIcon.classList.add('fa-volume-up');
-    } else {
-      lastVolume = audio.volume;
-      audio.volume = 0;
-      volumeSlider.value = 0;
-      isMuted = true;
-      muteIcon.classList.remove('fa-volume-up');
-      muteIcon.classList.add('fa-volume-mute');
-    }
-  } else {
-    console.error("Audio element with ID 'backgroundMusic' not found.");
-  }
-}
-
-
-</script>          
-            <!-- <li>
-                <div class="toggle">
-                    <input type="checkbox" id="muteToggle" onclick="toggleMusic()" class="toggle__input">
-                    <label for="muteToggle" class="toggle__label"></label><div class="music-toggle">
-                       </div>
-                </li> -->
-        </ul>
-    </nav>
-
-    <!-- Add your page content here -->
-
-    <script>
-        function toggleMenu() {
-            const menuIcon = document.querySelector('.menu-icon');
-            const navLinks = document.getElementById('nav-links');
-
-            menuIcon.classList.toggle('open');
-            navLinks.classList.toggle('show');
-        }
-    </script>
-    <audio id="backgroundMusic" loop autoplay playsinline>
-        <source src="{% static 'audio/back_audio.mp3' %}" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-<div class="progress-container">
-    <div class="progress-bar" id="myBar"></div>
-  </div>  
-
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const backgroundMusic = document.getElementById('backgroundMusic');
-  var audio = document.getElementById('backgroundMusic');
-
-  // Function to play audio after user interaction
-  function playBackgroundMusic() {
-    backgroundMusic.play()
-      .then(() => {
-        console.log('Audio started playing');
-      })
-      .catch(error => {
-        console.error('Failed to play audio:', error);
-      });
-    
-  }
-
-  // Add event listeners for user interaction
-  function enableAutoplay() {
-    document.addEventListener('click', startAudio);
-    document.addEventListener('touchstart', startAudio);
-  }
-
-  // Start playing the music and remove the event listener
-  function startAudio() {
-    playBackgroundMusic();
-    document.removeEventListener('click', startAudio);
-    document.removeEventListener('touchstart', startAudio);
-  }
-
-  enableAutoplay();
-});
-
-
-  // Toggle dropdown for mobile
-  document.addEventListener('DOMContentLoaded', function() {
-    const dropdownLinks = document.querySelectorAll('.dropdown > a');
-    
-    dropdownLinks.forEach(function(dropdownLink) {
-        dropdownLink.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default link behavior
-            
-            const dropdown = this.parentElement; // Get the parent <li> element
-
-            // Toggle the 'show' class to show or hide the dropdown
-            dropdown.classList.toggle('show');
-
-            // Close any other open dropdowns
-            document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
-                if (otherDropdown !== dropdown) {
-                    otherDropdown.classList.remove('show');
-                }
-            });
-        });
-    });
-});
-
-
-   function toggleMenu() {
-    const navLinks = document.getElementById('nav-links');
-    const menuIcon = document.querySelector('.menu-icon');
-    navLinks.classList.toggle('show');
-    menuIcon.classList.toggle('open');
-}
-
-
-    </script>
-      <section id="dividing-section">
-
-      </section>
+    {% block content %}
     <div class="hero-container">
         <video autoplay muted loop id="myVideo" webkit-playsinline playsinline disablePictureInPicture x-webkit-airplay="allow">
             <source src="{% static 'videos/backkk.mp4' %}" type="video/mp4">
@@ -833,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="hero-text2">WINNERS UNITED</p>
                 <p class="hero-text3"> <span class="invisible-text">hello this is to make</span>THE GLOBAL PRIVATE NETWORK<span class="invisible-text"> make animation work</span> </p>
                 {% if not user.is_authenticated %}
-                <a href="#interactive-section" class="hero-text4"><button>EXPLORE TCC</button></a>
+                <a href="#dis" class="hero-text4"><button>LEARN MORE</button></a>
                 {% endif %}
             </div>
         </div>
@@ -897,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <section id="dividing-section"></section>
 <div class="marquee-container">
     <div class="marquee">
-        <span>Special Announcement: We are currently in the process of making significant upgrades to our official website, we request your kind understanding and cooperation. Thank you. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>
+        <span>Special Announcement: We are currently in the process of making significant upgrades to our official website, we request your kind understanding and cooperation. Thank you.</span>
         
     </div>
 </div>
@@ -914,39 +132,39 @@ document.addEventListener('DOMContentLoaded', () => {
     
 }
 .marquee-container {
-
-    
-    background-color: #000;
-    overflow: hidden;
-    height: 90px;
-    position: relative;
-    font-family: 'Roboto';
-    font-weight: 400;
-}
-
-.marquee {
-    display: flex;
-    width: max-content; /* Width adjusts to content size */
-    animation: marquee-animation 15s linear infinite;
-}
-
-.marquee span {
-    padding: 30px;
-    display: inline-block;
-    font-size: 28px; /* Adjust the font size as needed */
-    color: #fff; /* Gold color for text */
-    white-space: nowrap;
-}
-
-@keyframes marquee-animation {
-    0% {
-        transform: translateX(0);
+      background-color: #000;
+      overflow: hidden;
+      height: 90px;
+      position: relative;
+      font-family: 'Roboto';
+      font-weight: 400;
     }
-    100% {
-        transform: translateX(-50%);
-    }
-}
 
+    .marquee {
+      display: flex;
+      /* The width can be max-content, or you can omit it 
+         if you plan to duplicate the elements. */
+      animation: marquee-animation 17s linear infinite;
+      /* If you see a gap, try 30s so it scrolls slower, 
+         or adjust to fit your text. */
+    }
+
+    .marquee span {
+      padding: 30px;
+      display: inline-block;
+      font-size: 28px; 
+      color: #fff;      /* or #FFD700 if you prefer a more gold-like color */
+      white-space: nowrap;
+    }
+
+    @keyframes marquee-animation {
+      0% {
+        transform: translateX(100%);  /* start off the right edge */
+      }
+      100% {
+        transform: translateX(-110%); /* move to the left edge */
+      }
+    }
 
         .authenticated {
     transform: translateY(50px) !important;
@@ -1067,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="text">
                     <h4>TCC NETWORKING</h4>
                     <p>Step into world of abundance where achievements matter</p>
-                    <a href="{% url 'membership_portal' %}" class="find-out-more-link">CHECK YOUR ELIGIBLITY &rarr;</a>
+                    <a href="#join-private-network" class="find-out-more-link">Check Your Eligilibity &rarr;</a>
                 </div>
             </div>
             <div class="interactive-card-button" id="interactive-card2" data-index="2">
@@ -1077,17 +295,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="text">
                     <h4>TCC RESOURCES</h4>
                     <p>Explore our premier life style and services</p>
-                    <a href="{% url 'resources' %}" class="find-out-more-link">BROWSE OUR CATALOG &rarr;</a>
+                    <a href="{% url 'resources' %}" class="find-out-more-link">Browse Our Catalog &rarr;</a>
                 </div>
             </div>
             <div class="interactive-card-button" id="interactive-card3" data-index="3">
                 <div class="icon">
-                    <img src="{% static 'images/business icon.png' %}" alt="Business Icon">
+                    <img src="{% static 'images/TCC B.gif' %}" alt="Business Icon">
                 </div>
                 <div class="text">
                     <h4>TCC BUSINESS</h4>
                     <p>Grow with those who stand with you no matter the time or place</p>
-                    <a href="{% url 'register_partner' %}" class="find-out-more-link">SEND AN ENQUIRY &rarr;</a>
+                    <a href="{% url 'register_partner' %}" class="find-out-more-link">Send An Enquiry &rarr;</a>
                 </div>
             </div>
         </div>
@@ -1095,17 +313,17 @@ document.addEventListener('DOMContentLoaded', () => {
             
             <div class="interactive-content active" id="interactive-content1">
                 <h2>TCC NETWORKING</h2>
-                <p>JOIN A COMMUNITY OF ACHIEVERS FROM ALL AROUND THE WORLD THAT IS AS EXCLUSIVE AS IT GETS. WE ARE THE 1% OF THE 1%, WE ARE THE BEST OF THE BEST. WE SERVE THE BEST AS WE LOOK FOR THE BEST, WE ARE CHAMPIONS AND WE MAKE NO EXCEPTIONS.</p>
-                <img src="{% static 'images/TCC (28).png' %}" alt="Networking Image">
+                <p>Join a community of achievers from all around the world that is as exclusive as it gets. We are the 1% of the 1%, we are the best of the best. We serve the best as we look for the best, we are champions and we make no exceptions.</p>
+                <img src="{% static 'images/TCC (33).png' %}" alt="Networking Image">
             </div>
             <div class="interactive-content" id="interactive-content2">
                 <h2>TCC RESOURCES</h2>
-                <p>FATE IS WRITTEN IN THE STARS AND DESTINY IS IN YOUR HANDS. CHART YOUR JOURNEY AWAY FROM CONVENTIONAL ONLINE RESOURCES AND LET US GUIDE YOU THROUGH LIFE WITH OUR TAILOR-MADE LIFESTYLE SOLUTIONS</p>
+                <p>Fate is written in the stars and destiny is in your hands. Chart your journey away from conventional online resources and let us guide you through life with our tailor-made lifestyle solutions</p>
                 <img src="{% static 'images/TCC W (2).png' %}" alt="Academia Image">
             </div>
             <div class="interactive-content" id="interactive-content3">
                 <h2>TCC BUSINESS</h2>
-                <p>BRAINSTROM NEW IDEAS AND WORK WITH A TEAM OF EXPERTS THAT BRING THEORY INTO PRACTICE. EXPERIENCE WITH WORLD-CLASS CONSULTANCY SERVICES PROVIDED ON GLOBAL LEVEL.</p>
+                <p>Brainstorm new ideas and work with a team of experts that bring theory into practice. Experience with world-class consultancy services provided on global level.</p>
                 <img src="{% static 'images/TCC (19).png' %}" alt="Business Image">
             </div>
         </div>
@@ -1348,6 +566,7 @@ document.addEventListener('DOMContentLoaded', () => {
     font-family: 'Roboto';
     font-weight: 400;
     color: #ccc;
+    
 }
 
 .interactive-content img {
@@ -1406,25 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <a href="{% url 'membership_portal' %}"><button>CHECK YOUR ELIGIBILITY</button></a>
         </div>
     </section> -->
-    <section id="dividing-section">
     
-    </section>
-
-    <section id="strength">
-        
-        
-        <h1 class="strength-heading">FOR CHAMPIONS BY CHAMPIONS</h1>
-        <h3 class="strength-subheading">STRENGTH ABOVE ALL</h3>
-        <hr class="strength-divider">
-        
-        
-        
-        <p class="strength-text">MENTAL - PHYSICAL - SPIRITUAL</p>
-        <p class="strength-text">A community of achievers who reject the ordinary and challenge the extraordinary.</p>
-        <p class="strength-text">We celebrate Champions and nurture new talent by example.</p>
-        <p class="strength-quote"><i>"For Champions, by Champions." - The Champions Club</i></p>
-
-    </section>
     <section id="dividing-section">
     
     </section>
@@ -1445,9 +646,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </section>
     
 
-<section id="dividing-section">
 
-</section>
 <style> 
     #dividing-section{
         background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
@@ -1710,12 +909,6 @@ document.addEventListener('DOMContentLoaded', () => {
         align-items: center;
         margin: 30px auto;
     }
-       
-    
-
-
-
-
     @media (max-width: 768px) {
         #who-is-a-champion {
             padding: 60px 10px;
@@ -1734,14 +927,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     </style>
     </style>
-    <section id="dividing-section"></section>
-    <section id="who-is-a-champion" >
+    <section id="dividing-section">
+    
+    </section>
+
+    <section id="strength">
+        
+        
+        <h1 class="strength-heading">FOR CHAMPIONS BY CHAMPIONS</h1>
+        <h3 class="strength-subheading">STRENGTH ABOVE ALL</h3>
+        <hr class="strength-divider">
+        
+        
+        
+        <p class="strength-text">MENTAL - PHYSICAL - SPIRITUAL</p>
+        <p class="strength-text">A community of achievers who reject the ordinary and challenge the extraordinary.</p>
+        <p class="strength-text">We celebrate Champions and nurture new talent by example.</p>
+        <p class="strength-quote"><i>"For Champions, by Champions." - The Champions Club</i></p>
+
+    </section>
+    <!-- <section id="dividing-section"></section> -->
+    <!-- <section id="who-is-a-champion" >
 
     <div class="who-is-a-champion">
         <h1>WHO IS A CHAMPION?</h1>
         <a href="{% url 'learnmore' %}"><button>LEARN MORE</button></a>
     </div>
-</section>
+</section> -->
 
 
 
@@ -1759,13 +971,13 @@ document.addEventListener('DOMContentLoaded', () => {
             </ul>
             <div class="cta-buttons">
                 <a href = "{% url 'membership_portal' %}"><button class="join-btn">JOIN</button></a>
-                <a href="{% url 'membership_portal' %}" class="learn-more-link">Learn More <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+                <!-- <a href="{% url 'membership_portal' %}" class="learn-more-link">Learn More <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
                     <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
-                </svg></a>
+                </svg></a> -->
             </div>
         </div>
         <div class="join-network-image">
-            <img class="join-private-network-img" src="{% static 'images/laptop3.png' %}" alt="Exclusive Network">
+            <img class="join-private-network-img" src="{% static 'images/TCC (40).png' %}" alt="Exclusive Network">
         </div>
     </div>
 </section>
@@ -1837,13 +1049,19 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 #join-private-network h1 {
-    font-size: 40px;
+    font-size: 35px;
     line-height: 1.3;
     margin-bottom: 30px;
     font-weight: 700;
     text-transform: uppercase;
 }
+#join-private-network p{
+    font-family: 'Roboto';
+    font-size: 18px;
+    font-weight: 400;
 
+
+}
 .connect-heading {
     font-size: 18px;
     font-weight: 600;
@@ -1866,7 +1084,10 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 .benefits-list li {
-    font-size: 18px;
+
+    font-size: 16px;
+    font-family: 'Roboto';
+    font-weight: 400;
     margin-bottom: 15px;
     line-height: 1.6;
 }
@@ -1986,11 +1207,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="cta-buttons">
                 <a href="{% url 'resources' %}"><button class="join-btn">JOIN</button></a>
-                <a href="{% url 'resources' %}" class="learn-more-link">LEARN MORE 
+                <!-- <a href="{% url 'resources' %}" class="learn-more-link">LEARN MORE 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
                         <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
                     </svg>
-                </a>
+                </a> -->
             </div>
         </div>
     </div>
@@ -2031,7 +1252,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 #unlock-potential-section h1 {
-    font-size: 40px;
+    font-size: 35px;
     line-height: 1.3;
     margin-bottom: 20px;
     font-weight: 700;
@@ -2039,6 +1260,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 .unlock-potential-content p {
     font-size: 18px;
+    font-family: 'Roboto';
+    font-weight: 400;
     line-height: 1.6;
     margin-bottom: 30px;
     color: #ddd;
@@ -2075,7 +1298,7 @@ document.addEventListener('DOMContentLoaded', () => {
         padding: 15px 45px;
         border: 1px solid white;
         margin-top: 0px;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
         cursor: pointer;
         z-index: 2;
@@ -2117,7 +1340,7 @@ document.addEventListener('DOMContentLoaded', () => {
 .learn-more-link {
     display: inline-flex;
     align-items: center;
-    font-size: 18px;
+    font-size: 16px;
     color: #fff;
     text-decoration: none;
     padding-left: 10px;
@@ -2204,11 +1427,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="cta-buttons">
                 <a href="{% url 'membership_portal' %}"><button class="join-btn">SCHEDULE A MEETING</button></a>
-                <a href="{% url 'register_partner' %}" class="learn-more-link">LEARN MORE 
+                <!-- <a href="{% url 'register_partner' %}" class="learn-more-link">LEARN MORE 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
                         <path d="M9.70703 17.4496L15.414 11.7426L9.70703 6.03564L8.29303 7.44964L12.586 11.7426L8.29303 16.0356L9.70703 17.4496Z" fill="white"/>
                     </svg>
-                </a>
+                </a> -->
             </div>
         </div>
         <div class="business-potential-image">
@@ -2245,7 +1468,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 #business-potential-section h1 {
-    font-size: 38px;
+    font-size: 35px;
     line-height: 1.3;
     margin-bottom: 20px;
     font-weight: 700;
@@ -2253,6 +1476,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 .business-potential-content p {
     font-size: 18px;
+    font-family: 'Roboto';
+    font-weight: 400;
     line-height: 1.6;
     margin-bottom: 30px;
     color: #ddd;
@@ -2278,13 +1503,13 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 #business-potential-section button {
         background-color: transparent;
-        width: 300px;
+        width: 270px;
         color: white;
         
         padding: 15px 45px;
         border: 1px solid white;
         margin-top: 0px;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
         cursor: pointer;
         z-index: 2;
@@ -3574,7 +2799,7 @@ a:hover {
 
 
 
-<section id="dividing-section">
+<!-- <section id="dividing-section">
 
 </section>
 <section id="choose-your-path-section">
@@ -3606,7 +2831,7 @@ a:hover {
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 
 <style>
@@ -4167,552 +3392,312 @@ a:hover {
 
 <section id="faq-section">
     <div class="faq-container">
-        <div class="faq-info">
-            <h2>Frequently Asked Questions</h2>
-            <p>All content and training within The Champions Club is provided for educational purposes only. Success depends on each member's dedication, effort, and application of the strategies taught.</p> <p>The Champions Club does not promise or guarantee any specific financial outcomes or achievements.</p>
-            <ul>
-               
-            </ul>
-            <div class="support">
-                <p>Support</p>
-                <a href="mailto:support@thechampionsclub.com">Support@thechampionsclub.com</a>
-            </div>
-            
+      <!-- TOP SECTION: HEADING + DISCLAIMERS + SUPPORT -->
+      <div class="faq-top">
+        <h2>Frequently Asked Questions</h2>
+        <p>
+          All content and training within The Champions Club is provided 
+          for educational purposes only. Success depends on each member's 
+          dedication, effort, and application of the strategies taught.
+        </p>
+        <p>
+          The Champions Club does not promise or guarantee any specific 
+          financial outcomes or achievements.
+        </p>
+        <div class="support">
+          <p>Support</p>
+          <a href="mailto:support@thechampionsclub.com">Support@thechampionsclub.com</a>
         </div>
-        <div class="faq-items">
-            <div class="faq-item">
-                <button class="faq-question">Who is eligible to join The Champions Club? <span>+</span></button>
-                <div class="faq-answer">
-                    <p>Membership is by invitation only and is extended to individuals who have demonstrated exceptional achievements and possess a significant net worth. Candidates are carefully vetted to ensure they align with our community's values and standards.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">What are the benefits of becoming a member? <span>+</span></button>
-                <div class="faq-answer">
-                    <p>Members gain exclusive access to high-profile networking events, bespoke experiences, and a global network of influential peers across various industries. Additional benefits include personalized services and investment opportunities.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">How do I apply for membership? <span>+</span></button>
-                <div class="faq-answer">
-                    <p>Since our network is invitation-only, eligible individuals are typically referred by current members or identified by our membership committee. However, you may express your interest by registering through our membership Portal.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">Is there a membership fee? <span>+</span></button>
-                <div class="faq-answer">
-                    <p>Yes, an annual membership fee is required, which grants you full access to all the privileges, events, and services at a discounted price offered by The Champions Club. Details about the fee structure will be provided upon acceptance.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">How does The Champions Club ensure privacy and confidentiality? <span>+</span></button>
-                <div class="faq-answer">
-                    <p>We prioritize the utmost privacy and confidentiality of our members through strict data protection policies, secure communication platforms, and non-disclosure agreements where necessary.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">Can I refer someone for membership? <span>+</span></button>
-                <div class="faq-answer">
-                    <p>Yes, current members can refer individuals who they believe would be a valuable addition to our community. All referrals undergo a thorough vetting process by our membership committee.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">What types of events does the network host? <span>+</span></button>
-                <div class="faq-answer">
-                    <p>We host a variety of exclusive events, including private galas, thought leadership conferences, investment forums, and intimate gatherings with industry pioneers and cultural icons.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">How can I maximize my experience within the network? <span>+</span></button>
-                <div class="faq-answer">
-                    <p>Engage actively by attending events, participating in discussions, and utilizing our bespoke services. The more you interact with fellow members and the resources available, the more value you'll derive from your membership.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">What industries are represented within The Champions Club? <span>+</span></button>
-                <div class="faq-answer">
-                    <p>Our members come from a diverse range of industries, including finance, technology, real estate, art, philanthropy, and more. This diversity fosters a rich environment for cross-industry collaboration and innovation.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">Still have questions? <span>+</span></button>
-                <div class="faq-answer">
-                    <p>Feel free to contact our dedicated membership team at <a href="mailto:support@thechampionsclub.com">Support@thechampionsclub.com</a> for any additional inquiries.</p>
-                </div>
-            </div>
+      </div>
+  
+      <!-- FAQ ITEMS IN A TWO-COLUMN LAYOUT -->
+      <div class="faq-items">
+        <div class="faq-item">
+          <button class="faq-question">
+            Who is eligible to join The Champions Club?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Membership is by invitation only and is extended to individuals
+              who have demonstrated exceptional achievements and possess a 
+              significant net worth. Candidates are carefully vetted to ensure 
+              they align with our community's values and standards.
+            </p>
+          </div>
         </div>
-        
+  
+        <div class="faq-item">
+          <button class="faq-question">
+            What are the benefits of becoming a member?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Members gain exclusive access to high-profile networking events,
+              bespoke experiences, and a global network of influential peers
+              across various industries. Additional benefits include
+              personalized services and investment opportunities.
+            </p>
+          </div>
         </div>
+  
+        <div class="faq-item">
+          <button class="faq-question">
+            How do I apply for membership?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Since our network is invitation-only, eligible individuals are 
+              typically referred by current members or identified by our
+              membership committee. However, you may express your interest 
+              by registering through our membership Portal.
+            </p>
+          </div>
+        </div>
+  
+        <div class="faq-item">
+          <button class="faq-question">
+            Is there a membership fee?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Yes, an annual membership fee is required, which grants you full
+              access to all the privileges, events, and services at a
+              discounted price offered by The Champions Club. Details about
+              the fee structure will be provided upon acceptance.
+            </p>
+          </div>
+        </div>
+  
+        <div class="faq-item">
+          <button class="faq-question">
+            How does The Champions Club ensure privacy and confidentiality?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              We prioritize the utmost privacy and confidentiality of our
+              members through strict data protection policies, secure
+              communication platforms, and non-disclosure agreements where
+              necessary.
+            </p>
+          </div>
+        </div>
+  
+        <div class="faq-item">
+          <button class="faq-question">
+            Can I refer someone for membership?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Yes, current members can refer individuals who they believe
+              would be a valuable addition to our community. All referrals
+              undergo a thorough vetting process by our membership committee.
+            </p>
+          </div>
+        </div>
+  
+        <div class="faq-item">
+          <button class="faq-question">
+            What types of events does the network host?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              We host a variety of exclusive events, including private galas,
+              thought leadership conferences, investment forums, and intimate
+              gatherings with industry pioneers and cultural icons.
+            </p>
+          </div>
+        </div>
+  
+        <div class="faq-item">
+          <button class="faq-question">
+            How can I maximize my experience within the network?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Engage actively by attending events, participating in
+              discussions, and utilizing our bespoke services. The more you
+              interact with fellow members and the resources available, the
+              more value you'll derive from your membership.
+            </p>
+          </div>
+        </div>
+  
+        <div class="faq-item">
+          <button class="faq-question">
+            What industries are represented within The Champions Club?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Our members come from a diverse range of industries, including
+              finance, technology, real estate, art, philanthropy, and more.
+              This diversity fosters a rich environment for cross-industry
+              collaboration and innovation.
+            </p>
+          </div>
+        </div>
+  
+        <div class="faq-item">
+          <button class="faq-question">
+            Still have questions?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Feel free to contact our dedicated membership team at
+              <a href="mailto:support@thechampionsclub.com">Support@thechampionsclub.com</a>
+              for any additional inquiries.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-</section>
-<style>
+  </section>
+  
+  <style>
+    /*=== Existing aesthetic: same colors, font, etc. ===*/
     #faq-section {
-        font-family: 'Roboto';
-        font-weight: 500;
-        padding: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        background-color: #000; /* Dark grey/black background for a modern look */
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      padding: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background-color: #000; /* Keep dark background */
     }
-    
+  
     .faq-container {
-        display: flex;
-        max-width: 1200px;
-        width: 100%;
-        gap: 40px;
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      flex-direction: column; /* Stack everything vertically now */
+      gap: 40px; /* Spacing between the top section and the FAQ grid */
     }
-    
-    .faq-info {
-        width: 40%;
-        padding-right: 20px;
+  
+    /*---------------------------------------
+     * TOP SECTION (Heading, disclaimers, support)
+     *--------------------------------------*/
+    .faq-top {
+      text-align: center; /* Center heading and disclaimers */
     }
-    
-    .faq-info h2 {
-        font-size: 36px;
-        font-weight: 700;
-        margin-bottom: 20px;
-        color: #f1f1f1; /* Subtle light grey text for elegance */
+  
+    .faq-top h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #f1f1f1; 
     }
-    
-    .faq-info p {
-        font-size: 16px;
-        line-height: 1.6;
-        margin-bottom: 20px;
-        color: #d3d3d3; /* Softer grey for supporting text */
+  
+    .faq-top p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      color: #d3d3d3; 
     }
-    
-    .faq-info ul {
-        margin-bottom: 20px;
+  
+    .support p {
+      margin-bottom: 8px;
+      color: #d3d3d3;
     }
-    
-    .faq-info ul li {
-        display: inline-block;
-        margin-right: 20px;
+  
+    .support a {
+      color: #ffd700; 
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
     }
-    
-    .faq-info ul li a {
-        text-decoration: none;
-        color: #d3d3d3; /* Grey for links */
-        font-weight: 600;
-        transition: color 0.3s ease;
+    .support a:hover {
+      color: #fff; /* Optional subtle hover effect */
     }
-    
-    .faq-info ul li a:hover {
-        color: #ffd700; /* Soft gold hover effect for links */
-    }
-    
-    .faq-info .support {
-        margin-bottom: 20px;
-    }
-    
-    .faq-info .login-btn {
-        background-color: #ffd700; /* Soft gold button */
-        color: #1a1a1a; /* Dark text color */
-        padding: 12px 20px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 18px;
-        transition: background-color 0.3s ease;
-    }
-    
-    .faq-info .login-btn:hover {
-        background-color: #e0b800; /* Slightly darker gold on hover */
-    }
-    
+  
+    /*---------------------------------------
+     * FAQ ITEMS in TWO COLUMNS
+     *--------------------------------------*/
     .faq-items {
-        width: 60%;
+      display: grid;              /* Grid for two-column layout */
+      grid-template-columns: 1fr 1fr;
+      column-gap: 40px;           /* Space between columns */
+      row-gap: 20px;              /* Space between rows */
     }
-    
+  
     .faq-item {
-        margin-bottom: 10px;
+      /* Each FAQ item is still a block within the grid. */
     }
-    .support a{
-        color:#ffd700
-    }
+  
     .faq-question {
-        width: 100%;
-        background-color: #262626; /* Slightly lighter grey/black for contrast */
-        color: #f1f1f1; /* Light grey/white text */
-        font-size: 18px;
-        padding: 15px;
-        border: none;
-        border-radius: 10px;
-        text-align: left;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        outline: none;
-        transition: background-color 0.3s ease;
+      width: 100%;
+      background-color: #262626;
+      color: #f1f1f1;
+      font-size: 18px;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      outline: none;
+      transition: background-color 0.3s ease;
     }
-    
+  
     .faq-question:hover {
-        background-color: #333; /* Subtle hover effect on FAQ buttons */
+      background-color: #333;
     }
-    
+  
     .faq-question span {
-        font-size: 24px;
-        color: #ffd700; /* Soft gold for the '+' icon */
+      font-size: 24px;
+      color: #ffd700;
     }
-    
+  
     .faq-answer {
-        display: none;
-        background-color: #333; /* Slightly lighter grey */
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 5px;
+      display: none;
+      background-color: #333;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 5px;
     }
-    
+  
     .faq-answer p {
-        font-size: 16px;
-        margin: 0;
-        color: #d3d3d3; /* Softer grey text for answers */
+      font-size: 16px;
+      margin: 0;
+      color: #d3d3d3;
     }
-    
+  
+    /*---------------------------------------
+     * RESPONSIVE ADJUSTMENTS for Mobile
+     *--------------------------------------*/
     @media (max-width: 768px) {
-        .faq-container {
-            flex-direction: column;
-            gap: 30px;
-        }
-    
-        .faq-info {
-            width: 100%;
-        }
-    
-        .faq-items {
-            width: 100%;
-        }
+      .faq-items {
+        grid-template-columns: 1fr; /* Single column on mobile */
+      }
     }
-    
-    
-</style>
-<script>
+  </style>
+  
+  <script>
+    // Same FAQ toggle script
     document.querySelectorAll('.faq-question').forEach(button => {
-        button.addEventListener('click', () => {
-            const answer = button.nextElementSibling;
-    
-            // Toggle active class
-            button.classList.toggle('active');
-    
-            // Toggle the answer visibility
-            if (answer.style.display === "block") {
-                answer.style.display = "none";
-                button.querySelector('span').textContent = '+';
-            } else {
-                answer.style.display = "block";
-                button.querySelector('span').textContent = '-';
-            }
-        });
+      button.addEventListener('click', () => {
+        const answer = button.nextElementSibling;
+        button.classList.toggle('active');
+        if (answer.style.display === "block") {
+          answer.style.display = "none";
+          button.querySelector('span').textContent = '+';
+        } else {
+          answer.style.display = "block";
+          button.querySelector('span').textContent = '-';
+        }
+      });
     });
-    
-</script>
-<section id="dividing-section">
+  </script>
+  
 
-</section>
-        <footer id="footer" class="fade-in">
-
-
-            <div class="footer-content">
-
-                <div class="footer-section">
-                    <img src="{% static 'images/logo.png' %}" alt="">
-                 </div>
-                
-                
-                <div class="footer-section">
-                    <h4 class="footer-title">Quick Links</h4>
-                    <a href="{% url 'support_request' %}" class="footer-link">Support</a>
-                    <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
-                    <a href="{% url 'terms_conditions' %}" class="footer-link">Terms and Conditions</a>
-                    <a href="{% url 'refund_policy' %}" class="footer-link">Refund Policy</a>
-                    
-                    <a href="{% url 'about' %}" class="footer-link">About The Champions Club</a>
-                </div>
-
-                <div class="footer-section">
-                    <h4 class="footer-title">Company</h4>
-                    <a href="{% url 'register_partner' %}" class="footer-link">Become a Partner</a>
-                    <a href="{% url 'careers' %}" class="footer-link">Careers</a>
-                    <a href="{% url 'credits' %}" class="footer-link">Credits</a>
-                    
-                </div>
-
-                <div class="footer-section">
-                    <h4 class="footer-title">STAY CONNECTED</h4>
-                    <div class="social-media">
-                        <a href="https://twitter.com" class="social-icon" aria-label="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="https://facebook.com" class="social-icon" aria-label="Facebook">
-                            <i class="fa-brands fa-linkedin" style="color: #ededed;"></i>
-                        </a>
-                        <a href="https://instagram.com" class="social-icon" aria-label="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-
-                </div>
-                
-            </div>
-            <section id="dividing-section">
-
-            </section>
-            <div class="footer-bottom">
-               
-                <div class="trademark">The Champions Club</div>
-                <div class="copyright">Copyright © & Trademark ® <span id="year"></span> The Champions Club™ - All Rights Reserved.</div>
-            </div>
-            <script>
-                document.getElementById("year").textContent = new Date().getFullYear();
-              </script>
-        </footer>
-
-        <style>
-        
-            .footer-section button{
-                background-color: transparent;
-                color: white;
-                padding: 15px 45px;
-                border: 1px solid white;
-                margin-left: 15px;
-                font-size: 15px;
-                font-weight: bold;
-                cursor: pointer;
-                z-index: 2;
-                position: relative;
-                transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-            }
-            
-            .footer-section button::before,
-            .footer-section button::after {
-                content: "";
-                position: absolute;
-                top: 50%;
-                width: 20px;
-                height: 1px;
-                background-color: white;
-                transform: translateY(-50%);
-            }
-            .footer-section button::before {
-                left: 10px;
-            }
-            
-            .footer-section button::after {
-                right: 10px;
-            }
-            .footer-section button:hover {
-                background-color: white;
-                color: #333;
-                border-color: #333;
-            }
-            
-            
-            
-            
-            
-            
-            #footer {
-                background-color: #000;
-                padding: 50px 100px;
-                color: #f4f4f4;
-                font-family: 'Roboto', sans-serif;
-            }
-            
-            .footer-content {
-                display: flex;
-                justify-content: space-between;
-                flex-wrap: wrap;
-                margin-bottom: 30px;
-                
-                padding-bottom: 20px;
-            }
-            
-            .footer-section {
-                flex: 1;
-                min-width: 200px;
-                margin: 10px;
-                margin-left: 100px;
-            }
-            
-            .footer-title {
-                font-size: 1.2rem;
-                margin-bottom: 15px;
-                color: #f4f4f4;
-                text-transform: uppercase;
-                font-weight: 700;
-            }
-            
-            .footer-link {
-                display: block;
-                color: #f4f4f4;
-                text-decoration: none;
-                margin-bottom: 10px;
-                font-size: 0.9rem;
-                transition: color 0.3s ease;
-            }
-            
-            .footer-link:hover {
-                color: #999;
-            }
-            
-            .social-media {
-                display: flex;
-                gap: 15px;
-                margin-top: 10px;
-            }
-            
-            .social-icon {
-                color: #f4f4f4;
-                text-decoration: none;
-                font-size: 1.1rem;
-                transition: color 0.3s ease;
-            }
-            
-            .social-icon:hover {
-                color: #999;
-            }
-            
-            .footer-bottom {
-                text-align: center;
-                margin-top: 20px;
-            }
-            
-            .trademark {
-                font-size: 1rem;
-                margin-bottom: 5px;
-            }
-            
-            .copyright {
-                font-size: 0.8rem;
-                color: #666;
-            }
-            
-            @media (max-width: 768px) {
-                #footer{
-                    padding:0;
-                }
-                .footer-content {
-                    flex-direction: column;
-                    align-items: center;
-                    text-align: center;
-                }
-            
-                .footer-section {
-                    margin-bottom: 20px;
-                    margin-left: 0;
-                }
-            
-                .social-media {
-                    justify-content: center;
-                }
-            }
-            #footer img{
-                height: 150px;
-                margin:0 auto;
-            }
-            #dividing-section{
-                    background: linear-gradient(to right, #000000d7, #bf943fe3, #b38728a8, #fbf5b7ea, #AA771C, #181818);
-                    height: 1px;
-                }
-            </style>
-        <script src="scripts.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
-        <script type="application/json" src="./js/animation.js"></script>
-       
-        <script>
-            var timeline = gsap.timeline();
-        
-            // Initial text appearance animation
-            timeline.fromTo(
-                ".hero-text",
-                { y: "70px", opacity: 0 },
-                { y: "0px", opacity: 1, stagger: 0.5 },
-                "+=1"
-            );
-        
-            // Adding a slight delay before starting the erase animation
-            timeline.to(".hero-text", { opacity: 1 }, "+=.5");
-        
-            // Reveal box appears to "erase" the hero text
-            timeline.fromTo(
-                ".reveal-box",
-                { opacity: 0, width: "0%", left: "-1%" },
-                { opacity: 1, width: "0%", right: "100%", immediateRender: false }
-            );
-        
-            // Animate the reveal-box to cover hero text (right to left)
-            timeline.to(".reveal-box", {
-                width: "100%",
-                duration: 0.8,
-                ease: "power1.inOut",
-            });
-        
-            // Make hero text invisible as it's "erased"
-            timeline.to(".hero-text", { opacity: 0 }, "-=0.6");
-        
-            // Animate reveal-box to shrink and disappear
-            timeline.to(".reveal-box", {
-                width: "0%",
-                duration: 0.5,
-                ease: "power1.inOut",
-            });
-        
-            // Hero-text2 appears after the reveal-box erases
-            timeline.fromTo(
-                ".hero-text2",
-                { opacity: 0 },
-                { opacity: 1, duration: 0.8 },
-                "-=0.3"
-            );
-        
-            // Continue animations for hero-text3 and hero-text4
-            timeline.fromTo(".hero-text3", { opacity: 0 }, { opacity: 1 }, "-=.5");
-            timeline.fromTo(".hero-text4", { opacity: 0 }, { opacity: 1 }, "-=.5");
-        </script>
-        
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const faders = document.querySelectorAll('.fade-in');
-
-                const appearOptions = {
-                    threshold: 0.1, // Trigger when 50% of the section is visible
-                    rootMargin: "0px 0px -10px 0px" // Slight offset to start the animation a bit earlier
-                };
-
-                const appearOnScroll = new IntersectionObserver(function (entries, appearOnScroll) {
-                    entries.forEach(entry => {
-                        if (!entry.isIntersecting) {
-                            return;
-                        } else {
-                            entry.target.classList.add('visible');
-                            appearOnScroll.unobserve(entry.target);
-                        }
-                    });
-                }, appearOptions);
-
-                faders.forEach(fader => {
-                    appearOnScroll.observe(fader);
-                });
-            });
-
-        </script>
-       
-            <script>
-// When the user scrolls the page, execute myFunction 
-window.onscroll = function() {myFunction()};
-
-function myFunction() {
-  var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-  var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  var scrolled = (winScroll / height) * 100;
-  document.getElementById("myBar").style.width = scrolled + "%";
-}
-</script>
-       
-    </body>
-
-</html>
+{% endblock %}

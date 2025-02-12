@@ -17,11 +17,11 @@ class Migration(migrations.Migration):
         #     model_name='activitylog',
         #     name='actor',
         # ),
-        migrations.AlterField(
-            model_name='activitylog',
-            name='action',
-            field=models.CharField(max_length=100),
-        ),
+        # migrations.AlterField(
+        #     model_name='activitylog',
+        #     name='action',
+        #     field=models.CharField(max_length=100),
+        # ),
         migrations.AlterField(
             model_name='activitylog',
             name='description',

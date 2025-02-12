@@ -13,47 +13,56 @@
     <script>
         const audio = document.getElementById('backgroundMusic');
 
-        // Restore playback position
+        // 1) Restore playback position
         const savedTime = localStorage.getItem('musicTime');
         if (savedTime) {
             audio.currentTime = parseFloat(savedTime);
         }
-
-        // Listen for time updates and save to localStorage
         audio.addEventListener('timeupdate', () => {
             localStorage.setItem('musicTime', audio.currentTime);
         });
 
-        // Restore play state
+        // 2) Restore paused state
         const isPaused = localStorage.getItem('musicPaused');
         if (isPaused === 'true') {
             audio.pause();
+        } else {
+            // Attempt auto-play if not paused
+            audio.play().catch((err) => {
+                console.log("Autoplay blocked or error:", err);
+            });
         }
-
-        // Save play/pause state
         audio.addEventListener('pause', () => {
             localStorage.setItem('musicPaused', 'true');
         });
-
         audio.addEventListener('play', () => {
             localStorage.setItem('musicPaused', 'false');
         });
-        const savedVolume = localStorage.getItem("musicVolume");
+
+        // 3) Restore volume
+        //    First set volume from savedVolume...
+        const savedVolume = localStorage.getItem('musicVolume');
         if (savedVolume) {
-            audio.volume = parseFloat(savedVolume);
+            audio.volume = parseFloat(savedVolume); // e.g., 0.5
         }
 
-        // Restore mute state from localStorage
-        const isMuted = localStorage.getItem("isMuted");
-        if (isMuted === "true") {
+        //    Then if user was muted, override volume to 0
+        const isMuted = localStorage.getItem('isMuted');
+        if (isMuted === 'true') {
             audio.volume = 0;
         }
-    </script>
-    <script>
-        
 
-        // Restore volume from localStorage
-        
+        // 4) Keep saving volume changes
+        audio.addEventListener('volumechange', () => {
+            // Save the current volume
+            localStorage.setItem('musicVolume', audio.volume);
+            // If volume is 0, we can also store isMuted = 'true'; if > 0, isMuted='false'
+            if (audio.volume === 0) {
+                localStorage.setItem('isMuted', 'true');
+            } else {
+                localStorage.setItem('isMuted', 'false');
+            }
+        });
     </script>
 </body>
 </html>
