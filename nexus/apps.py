@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from django.apps import AppConfig
 
 

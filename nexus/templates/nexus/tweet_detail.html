@@ -1,47 +1,4 @@
-{% extends "nexus/nexus_base.html" %}
 
-{% block content %}
-<div class="container">
-    <!-- Main Tweet -->
-    <div class="tweet">
-        <h2>Tweet by {{ tweet.registration.user.username }}</h2>
-        <p>{{ tweet.content }}</p>
-        {% if tweet.media_url %}
-            <img src="{{ tweet.media_url }}" alt="Tweet Media">
-        {% endif %}
-        <div class="tweet-info">
-            <p>Likes: {{ tweet.likes_count }} | Retweets: {{ tweet.retweets_count }} | Replies: {{ tweet.reply_count }}</p>
-            <a href="{% url 'like_tweet' tweet.id %}" class="like-btn">Like</a> |
-            <a href="{% url 'retweet' tweet.id %}" class="retweet-btn">Retweet</a>
-        </div>
-    </div>
-
-    <!-- Replies Thread -->
-    <div class="replies">
-        <h3>Replies</h3>
-        {% for reply in replies %}
-            <div class="tweet reply">
-                <p><strong>{{ reply.registration.user.username }}</strong>: {{ reply.content }}</p>
-                {% if reply.media_url %}
-                    <img src="{{ reply.media_url }}" alt="Reply Media">
-                {% endif %}
-                <div class="tweet-info">
-                    <p>Likes: {{ reply.likes_count }} | Retweets: {{ reply.retweets_count }}</p>
-                    <a href="#" class="like-btn" data-id="{{ tweet.id }}">
-                        {{ tweet.likes_count }} Like
-                    </a>
-                    
-                    <a href="{% url 'retweet' reply.id %}" class="retweet-btn">Retweet</a>
-                </div>
-            </div>
-        {% empty %}
-            <p>No replies yet.</p>
-        {% endfor %}
-    </div>
-</div>
-{% endblock %}
-||||||| empty tree
-=======
 {% extends "nexus/nexus_base.html" %}
 {% load sanitize_tags %}
 {% block content %}
@@ -571,4 +528,4 @@
 </body>
 </html>
 {% endblock %}
->>>>>>> origin/nexus
+
