@@ -1,972 +1,534 @@
 <!DOCTYPE html>
 <html lang="en">
     {% extends 'base1.html' %}
-    {% block title %}TCC | Business{% endblock %}
-{% load static %}
-{% block content %}
-        <style>
-            .top-navbar{
-               
-            }
-            .navbar-profile-img {
-                width: 35px;             /* Adjust width as needed */
-                height: 35px;  
-                          /* Adjust height as needed */
-                border-radius: 50%;      /* Makes the image circular */
-                object-fit: cover;       /* Ensures the image covers the container without distortion */
-                vertical-align: middle;  /* Aligns the image vertically */
-            }
-            .highlight{
-                color:#fff;
-            }
-            /* Hero Section */
-.hero {
-    padding: 100px 20px;
-    background-color: #000;
-}
+    {% load static %}
+    {% block title %}TCC Consulting | Premium Business Solutions{% endblock %}
+    {% block content %}
+    <!-- Google Fonts: Montserrat for headings, Roboto for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
-.hero-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1400px;
-    margin: 0 auto;
-    flex-wrap: wrap;
-}
-
-.hero-content {
-    flex: 1 1 50%;
-    max-width: 600px;
-}
-
-.hero-content h1 {
-    font-size: 60px;
-    font-weight: 700;
-    color: #ffd700;
-    margin-bottom: 20px;
-}
-
-
-
-.hero-content p {
-    font-size: 24px;
-    font-weight: 300;
-    line-height: 1.5;
-    margin-bottom: 40px;
-    color: #e0e0e0;
-}
-
-.hero-content .cta-button {
-    padding: 15px 40px;
-    font-size: 18px;
-    font-weight: 600;
-    color: #000;
-    background-color: #ffd700;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.hero-content .cta-button:hover {
-    background-color: #e5c100;
-}
-
-.hero-image {
-    flex: 1 1 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.hero-image img {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Responsive Styles */
-@media (max-width: 992px) {
-    .hero-container {
-        flex-direction: column-reverse;
-        align-items: center;
-    }
-
-    .hero-content {
-        text-align: center;
-        max-width: 100%;
-        flex: none;
-    }
-
-    .hero-content h1 {
-        font-size: 48px;
-    }
-
-    .hero-content p {
-        font-size: 20px;
-    }
-
-    .hero-image {
-        margin-bottom: 40px;
-    }
-}
-
-@media (max-width: 576px) {
-    .hero-content h1 {
-        font-size: 36px;
-    }
-
-    .hero-content p {
-        font-size: 18px;
-    }
-
-    .hero-content .cta-button {
-        font-size: 16px;
-        padding: 12px 30px;
-    }
-}
-/* Idea to Reality Section */
-.idea-to-reality {
-    padding: 80px 20px;
-    background-color: #111;
-    color: #fff;
-}
-
-.idea-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    flex-wrap: wrap;
-}
-
-.idea-content {
-    flex: 1 1 50%;
-    max-width: 600px;
-}
-
-.idea-content h2 {
-    font-size: 48px;
-    color: #ffd700;
-    margin-bottom: 10px;
-}
-
-.idea-content h3 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    color: #fff;
-}
-
-.idea-content p {
-    font-size: 18px;
-    line-height: 1.6;
-    margin-bottom: 30px;
-    color: #ccc;
-}
-
-.idea-content .cta-button {
-    padding: 15px 30px;
-    font-size: 18px;
-    font-weight: 600;
-    color: #000;
-    background-color: #ffd700;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.idea-content .cta-button:hover {
-    background-color: #e5c100;
-}
-
-.idea-image {
-    flex: 1 1 40%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.idea-image img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-}
-
-/* Responsive Styles */
-@media (max-width: 992px) {
-    .idea-container {
-        flex-direction: column;
-    }
-
-    .idea-content,
-    .idea-image {
-        flex: none;
-        max-width: 100%;
-    }
-
-    .idea-content {
-        text-align: center;
-    }
-
-    .idea-content h2 {
-        font-size: 40px;
-    }
-
-    .idea-content h3 {
-        font-size: 28px;
-    }
-
-    .idea-content p {
-        font-size: 16px;
-    }
-
-    .idea-image {
-        margin-top: 40px;
-    }
-}
-
-@media (max-width: 576px) {
-    .idea-content h2 {
-        font-size: 32px;
-    }
-
-    .idea-content h3 {
-        font-size: 24px;
-    }
-
-    .idea-content p {
-        font-size: 14px;
-    }
-
-    .idea-content .cta-button {
-        font-size: 16px;
-        padding: 12px 25px;
-    }
-}
-
-/* Why Choose Us Section */
-.why-choose-us {
-    padding: 80px 20px;
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-}
-
-.why-choose-us h2 {
-    font-size: 42px;
-    color: #ffd700;
-    margin-bottom: 60px;
-}
-
-.reasons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 40px;
-}
-
-.reason-item {
-    background-color: #1e1e1e;
-    padding: 30px;
-    border-radius: 10px;
-    flex: 1 1 calc(30% - 80px);
-    max-width: calc(30% - 80px);
-    box-sizing: border-box;
-    text-align: center;
-    color: #fff;
-}
-
-.reason-item i {
-    font-size: 48px;
-    color: #ffd700;
-    margin-bottom: 20px;
-}
-
-.reason-item h3 {
-    font-size: 24px;
-    color: #ffd700;
-    margin-bottom: 15px;
-}
-
-.reason-item p {
-    font-size: 16px;
-    line-height: 1.6;
-    color: #ccc;
-}
-
-/* Responsive Styles */
-@media (max-width: 992px) {
-    .reason-item {
-        flex: 1 1 calc(45% - 80px);
-        max-width: calc(45% - 80px);
-    }
-}
-
-@media (max-width: 768px) {
-    .reason-item {
-        flex: 1 1 100%;
-        max-width: 100%;
-    }
-}
-
-        </style>
-        <style>
-            /* General Styles */
-            body {
-                font-family: 'Montserrat', sans-serif;
-                background-color: #000;
-                color: #fff;
-                margin: 0;
-                padding: 0;
-                overflow-x: hidden;
-            }
-    
-            a {
-                color: inherit;
-                text-decoration: none;
-            }
-    
-            /* Hero Section */
-            
-            /* Services Section */
-            .services {
-                margin:0 auto;
-                max-width:1400px;
-                padding: 50px 20px;
-                background-color: #111;
-                border-radius:10px;
-            }
-    
-            .services h2 {
-                font-size: 42px;
-                color: #ffd700;
-                text-align: center;
-                margin-bottom: 60px;
-            }
-    
-            .services .service-items {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 40px;
-            }
-    
-            .service-item {
-                background-color: #1e1e1e;
-                padding: 30px;
-                border-radius: 10px;
-                flex: 1 1 calc(33% - 80px);
-                max-width: calc(33% - 80px);
-                box-sizing: border-box;
-                text-align: center;
-                color: #fff;
-            }
-    
-            .service-item h3 {
-                font-size: 24px;
-                color: #ffd700;
-                margin-bottom: 20px;
-            }
-    
-            .service-item p {
-                font-size: 16px;
-                line-height: 1.6;
-                color: #ccc;
-            }
-    
-            /* Industries Section */
-            .industries {
-                margin:0 auto;
-                
-                padding: 80px 20px;
-                background-color: #000;
-            }
-    
-            .industries h2 {
-                font-size: 42px;
-                color: #ffd700;
-                text-align: center;
-                margin-bottom: 60px;
-            }
-    
-            .industries .industry-items {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 40px;
-            }
-    
-            .industry-item {
-                background-color: #1e1e1e;
-                padding: 30px;
-                border-radius: 10px;
-                flex: 1 1 calc(25% - 80px);
-                max-width: calc(25% - 80px);
-                box-sizing: border-box;
-                text-align: center;
-                color: #fff;
-            }
-    
-            .industry-item h3 {
-                font-size: 22px;
-                color: #ffd700;
-                margin-bottom: 15px;
-            }
-    
-            .industry-item p {
-                font-size: 14px;
-                line-height: 1.6;
-                color: #ccc;
-            }
-    
-            /* Products & Solutions Section */
-            .products {
-                padding: 80px 20px;
-                background-color: #111;
-            }
-    
-            .products h2 {
-                font-size: 42px;
-                color: #ffd700;
-                text-align: center;
-                margin-bottom: 60px;
-            }
-    
-            .products .product-items {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 40px;
-            }
-    
-            .product-item {
-                background-color: #1e1e1e;
-                padding: 30px;
-                border-radius: 10px;
-                flex: 1 1 calc(33% - 80px);
-                max-width: calc(33% - 80px);
-                box-sizing: border-box;
-                text-align: center;
-                color: #fff;
-            }
-    
-            .product-item h3 {
-                font-size: 24px;
-                color: #ffd700;
-                margin-bottom: 20px;
-            }
-    
-            .product-item p {
-                font-size: 16px;
-                line-height: 1.6;
-                color: #ccc;
-                margin-bottom: 20px;
-            }
-    
-            .product-item a {
-                color: #ffd700;
-                font-weight: 600;
-                text-decoration: underline;
-            }
-    
-            /* Technologies Section */
-            .technologies {
-                max-width:1400px;
-                padding: 80px 20px;
-                background-color: #000;
-                margin:0 auto;
-            }
-    
-            .technologies h2 {
-                font-size: 42px;
-                color: #ffd700;
-                text-align: center;
-                margin-bottom: 60px;
-            }
-    
-            .technologies .tech-items {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 40px;
-            }
-    
-            .tech-item {
-                width: 150px;
-                height: 150px;
-                background-color:#fff;
-                border-radius: 10px;
-                
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 10px;
-            }
-    
-            .tech-item img {
-                max-width: 100%;
-                max-height: 100%;
-            }
-    
-            /* Process Section */
-            .process {
-                padding: 80px 20px;
-                background-color: #111;
-            }
-    
-            .process h2 {
-                font-size: 42px;
-                color: #ffd700;
-                text-align: center;
-                margin-bottom: 60px;
-            }
-    
-            .process .steps {
-                display: flex;
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        /* Gradient Text for All Headings */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        a {
+            color: #ffd700;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #e5c100;
+        }
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+        .section-header {
+            text-align: center;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #ffd700;
+        }
+        .section-header p {
+            font-size: 18px;
+            color: #ccc;
+        }
+        /* Button */
+        .cta-button {
+            display: inline-block;
+            background-color: #ffd700;
+            color: #000;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        .cta-button:hover {
+            background-color: #e5c100;
+        }
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 100px 0;
+        }
+        .hero-content {
+            flex: 1 1 50%;
+            padding-right: 20px;
+        }
+        .hero-content h1 {
+            font-size: 56px;
+            margin-bottom: 20px;
+        }
+        .hero-content p {
+            font-size: 20px;
+            color: #e0e0e0;
+            margin-bottom: 30px;
+        }
+        .hero-image {
+            flex: 1 1 45%;
+            text-align: center;
+        }
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        /* Services Section */
+        .services {
+            background-color: #000;
+            padding: 80px 0;
+        }
+        .service-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+        }
+        .service-item {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            flex: 1 1 calc(33% - 40px);
+            max-width: calc(33% - 40px);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .service-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+        }
+        .service-item h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .service-item p {
+            font-size: 16px;
+            color: #ccc;
+        }
+        /* Business Consulting Section */
+        .business-consulting {
+            padding: 80px 0;
+        }
+        .business-consulting .content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .business-consulting .text {
+            flex: 1 1 50%;
+            padding-right: 20px;
+        }
+        .business-consulting .text h2 {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        .business-consulting .text p {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        .business-consulting .image {
+            flex: 1 1 45%;
+            text-align: center;
+        }
+        .business-consulting .image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        /* AI & Data Analytics Section */
+        .ai-data {
+            background-color: #000;
+            padding: 80px 0;
+        }
+        .ai-data .content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .ai-data .image {
+            flex: 1 1 45%;
+            text-align: center;
+        }
+        .ai-data .image img {
+            max-width: 100%;
+            border-radius:10px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .ai-data .text {
+            flex: 1 1 50%;
+            padding-left: 20px;
+        }
+        .ai-data .text h2 {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        .ai-data .text p {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        /* Game Development & Project Management Section */
+        .game-dev {
+            padding: 80px 0;
+        }
+        .game-dev .content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .game-dev .text {
+            flex: 1 1 50%;
+            padding-right: 20px;
+        }
+        .game-dev .text h2 {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        .game-dev .text p {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        .game-dev .image {
+            flex: 1 1 45%;
+            text-align: center;
+        }
+        .game-dev .image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        /* Process Section */
+        .process {
+            background-color: #111;
+            padding: 80px 0;
+        }
+        .process .steps {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+        .step-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-right: 20px;
+            min-width: 50px;
+            text-align: center;
+        }
+        .step-description {
+            font-size: 18px;
+            color: #e0e0e0;
+        }
+        /* Contact Section */
+        .contact {
+            padding: 80px 0;
+        }
+        .contact .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #1e1e1e;
+            color: #fff;
+            font-size: 16px;
+        }
+        .form-control::placeholder {
+            color: #bbb;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #ffd700;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #e5c100;
+        }
+        /* Footer */
+        .footer {
+            background-color: #111;
+            padding: 20px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero, 
+            .business-consulting .content, 
+            .ai-data .content, 
+            .game-dev .content {
                 flex-direction: column;
-                gap: 40px;
-                max-width: 800px;
-                margin: 0 auto;
-            }
-    
-            .step {
-                display: flex;
-                align-items: center;
-                gap: 20px;
-            }
-    
-            .step-number {
-                font-size: 36px;
-                font-weight: 700;
-                color: #ffd700;
-                min-width: 60px;
                 text-align: center;
             }
-    
-            .step-description {
-                font-size: 18px;
-                line-height: 1.6;
-                color: #e0e0e0;
+            .hero-content, 
+            .business-consulting .text, 
+            .ai-data .text, 
+            .game-dev .text {
+                padding: 0;
             }
-    
-            /* Contact Section */
-            .contact {
-                padding: 80px 20px;
-                background-color: #000;
+            .business-consulting .image, 
+            .ai-data .image, 
+            .game-dev .image {
+                margin-top: 30px;
             }
-    
-            .contact h2 {
-                font-size: 42px;
-                color: #ffd700;
-                text-align: center;
-                margin-bottom: 60px;
-            }
-    
-            .contact-form {
-                max-width: 600px;
-                margin: 0 auto;
-            }
-    
-            .form-control {
-                width: 100%;
-                padding: 15px;
-                margin-bottom: 20px;
-                border: none;
-                border-radius: 8px;
-                background-color: #1e1e1e;
-                color: #fff;
-                font-size: 16px;
-            }
-    
-            .form-control::placeholder {
-                color: #bbb;
-            }
-    
-            .form-control:focus {
-                outline: none;
-                box-shadow: 0px 0px 5px #ffd700;
-            }
-    
-            .submit-btn {
-                width: 100%;
-                padding: 15px;
-                background-color: #ffd700;
-                color: #000;
-                border: none;
-                border-radius: 8px;
-                cursor: pointer;
-                font-size: 18px;
-            }
-    
-            .submit-btn:hover {
-                background-color: #e5c100;
-            }
-    
-            /* Footer */
-            .footer {
-                padding: 20px;
-                text-align: center;
-                background-color: #111;
-                color: #777;
-                font-size: 14px;
-            }
-    
-            /* Responsive Styles */
-            @media (max-width: 992px) {
-                .service-item, .product-item {
-                    flex: 1 1 calc(50% - 80px);
-                    max-width: calc(50% - 80px);
-                }
-    
-                .industry-item {
-                    flex: 1 1 calc(50% - 80px);
-                    max-width: calc(50% - 80px);
-                }
-            }
-    
-            @media (max-width: 768px) {
-                .service-item, .product-item, .industry-item {
-                    flex: 1 1 100%;
-                    max-width: 100%;
-                }
-    
-                .hero h1 {
-                    font-size: 48px;
-                }
-    
-                .hero p {
-                    font-size: 20px;
-                }
-    
-                .services h2, .technologies h2, .process h2, .contact h2, .industries h2, .products h2 {
-                    font-size: 36px;
-                }
-    
-                .step {
-                    flex-direction: column;
-                    align-items: flex-start;
-                }
-    
-                .step-number {
-                    font-size: 28px;
-                    margin-bottom: 10px;
-                }
-            }
-    
-            @media (max-width: 576px) {
-                .hero h1 {
-                    font-size: 36px;
-                }
-    
-                .hero p {
-                    font-size: 18px;
-                }
-    
-                .hero .cta-button {
-                    font-size: 16px;
-                    padding: 12px 30px;
-                }
-    
-                .services h2, .technologies h2, .process h2, .contact h2, .industries h2, .products h2 {
-                    font-size: 32px;
-                }
-    
-                .step-number {
-                    font-size: 24px;
-                }
-    
-                .process .steps {
-                    gap: 30px;
-                }
-    
-                .submit-btn {
-                    font-size: 16px;
-                }
-            }
-        </style>
+        }
+    </style>
+
     <!-- Hero Section -->
-  <!-- Hero Section -->
-<section class="hero">
-    <div class="hero-container">
+    <section class="hero container">
         <div class="hero-content">
-            <h1><span class="highlight">Empower Your Business with</span> TCC Consulting</h1>
-            <p>Transforming ideas into reality through innovative solutions and strategic expertise. Let's build the future of your business together.</p>
-            <a href="#contact" class="cta-button">Get Started</a>
+            <h1>Transforming Vision into Legacy</h1>
+            <p>At TCC Consulting, we offer premium business consulting, AI-powered solutions, and strategic project management. Our bespoke services empower elite clients to thrive in an ever-evolving market.</p>
+            <a href="#contact" class="cta-button">Begin Your Journey</a>
         </div>
         <div class="hero-image">
-            <img src="{% static 'images/TCC (19).png' %}" alt="Service Demonstration on Laptop">
-        </div>
-    </div>
-</section>
-
-    <!-- Services Section -->
-   <!-- Services Section -->
-<section class="services">
-    <h2>Our Expertise</h2>
-    <div class="service-items">
-        <div class="service-item">
-            <h3>Data Strategy & Consulting</h3>
-            <p>Develop comprehensive data strategies to align with your business goals and drive growth.</p>
-        </div>
-        <div class="service-item">
-            <h3>Data Analytics & Business Intelligence</h3>
-            <p>Transform raw data into actionable insights to make informed business decisions.</p>
-        </div>
-        <div class="service-item">
-            <h3>Big Data Solutions</h3>
-            <p>Implement scalable big data technologies to handle large volumes of data efficiently.</p>
-        </div>
-        <div class="service-item">
-            <h3>Predictive Analytics & AI</h3>
-            <p>Utilize AI and machine learning to predict trends and optimize business operations.</p>
-        </div>
-        <div class="service-item">
-            <h3>Data Integration & Management</h3>
-            <p>Integrate disparate data sources and manage data lifecycle effectively.</p>
-        </div>
-        <div class="service-item">
-            <h3>Business Growth Consulting</h3>
-            <p>Provide strategic consulting to identify growth opportunities and improve performance.</p>
-        </div>
-        <!-- Add more services as needed -->
-    </div>
-</section>
-
-
-    <!-- Industries Section -->
-    <section class="industries">
-        <h2>Industries We Serve</h2>
-        <div class="industry-items">
-            <div class="industry-item">
-                <h3>Finance & Banking</h3>
-                <p>Offering solutions that streamline operations, enhance security, and improve customer experiences in the financial sector.</p>
-            </div>
-            <div class="industry-item">
-                <h3>Healthcare</h3>
-                <p>Providing innovative technologies to improve patient care, data management, and operational efficiency.</p>
-            </div>
-            <div class="industry-item">
-                <h3>Retail & E-commerce</h3>
-                <p>Enhancing online and in-store experiences through cutting-edge solutions and data analytics.</p>
-            </div>
-            <div class="industry-item">
-                <h3>Manufacturing</h3>
-                <p>Implementing IoT and automation technologies to optimize production and supply chain management.</p>
-            </div>
-            <div class="industry-item">
-                <h3>Education</h3>
-                <p>Developing e-learning platforms and digital tools to facilitate modern education.</p>
-            </div>
-            <div class="industry-item">
-                <h3>Logistics & Transportation</h3>
-                <p>Optimizing logistics operations with AI-driven analytics and real-time tracking solutions.</p>
-            </div>
-            <div class="industry-item">
-                <h3>Energy & Utilities</h3>
-                <p>Implementing smart grid technologies and sustainable solutions for efficient energy management.</p>
-            </div>
-            <div class="industry-item">
-                <h3>Telecommunications</h3>
-                <p>Enhancing connectivity and customer service with advanced network solutions and analytics.</p>
-            </div>
-            <!-- Add more industries as needed -->
+            <img src="{% static 'images/TCC (19).png' %}" alt="Premium Business Consulting">
         </div>
     </section>
 
-    <!-- Products & Solutions Section -->
-    <!-- Products & Solutions Section -->
-<!-- Products & Solutions Section -->
-<section class="products">
-    <h2>Our Products & Solutions</h2>
-    <div class="product-items">
-        <!-- Existing Product Items -->
-        <div class="product-item">
-            <h3>AI Business Intelligence Suite</h3>
-            <p>An advanced AI-powered platform that provides deep data analytics and actionable insights to drive strategic decisions.</p>
-           
+    <!-- Services Section -->
+    <section class="services container">
+        <div class="section-header">
+            <h2>Our Signature Services</h2>
+            <p>Crafted for discerning clients seeking excellence and innovation.</p>
         </div>
-        <div class="product-item">
-            <h3>Cloud Data Warehouse Solutions</h3>
-            <p>Scalable and secure cloud-based data warehousing solutions to centralize your data and improve accessibility.</p>
-            
+        <div class="service-items">
+            <div class="service-item">
+                <h3>Strategic Consulting</h3>
+                <p>Bespoke business strategies designed to elevate your brand and drive sustainable growth.</p>
+            </div>
+            <div class="service-item">
+                <h3>AI & Analytics</h3>
+                <p>Cutting-edge AI solutions that transform raw data into strategic insights for your enterprise.</p>
+            </div>
+            <div class="service-item">
+                <h3>Digital Transformation</h3>
+                <p>Innovative digital strategies that seamlessly integrate technology with business operations.</p>
+            </div>
+            <div class="service-item">
+                <h3>Creative Game Development</h3>
+                <p>Exceptional game development and project management services that captivate and inspire.</p>
+            </div>
+            <div class="service-item">
+                <h3>Project Management</h3>
+                <p>Expert oversight ensuring each project is delivered with precision, quality, and on time.</p>
+            </div>
         </div>
-        <div class="product-item">
-            <h3>Data Integration & ETL Tools</h3>
-            <p>Efficient tools for extracting, transforming, and loading data from various sources into a unified system.</p>
-           
-        </div>
-        <!-- New Product Item -->
-        <div class="product-item">
-            <h3>Game Development Services</h3>
-            <p>Creating immersive and engaging games with cutting-edge technology and innovative design.</p>
-          
-        </div>
-        <!-- Continue with other products -->
-       
-        <div class="product-item">
-            <h3>Data Governance Framework</h3>
-            <p>Comprehensive solutions for data governance to ensure data quality, compliance, and security.</p>
-          
-        </div>
-        <div class="product-item">
-            <h3>Predictive Analytics Solutions</h3>
-            <p>Leverage advanced analytics to predict trends and make proactive business decisions.</p>
-       
-        </div>
-        <!-- Add more products as needed -->
-    </div>
-</section>
+    </section>
 
-<!-- Idea to Reality Section -->
-<section class="idea-to-reality">
-    <div class="idea-container">
-        <div class="idea-content">
-            <h2>Have an Idea?</h2>
-            <h3>Transform It into Reality with TCC</h3>
-            <p>Our team of experts is ready to bring your vision to life. Whether it's a groundbreaking app, a data-driven solution, or an innovative game, we have the expertise to make it happen.</p>
-            <a href="#contact" class="cta-button">Let's Get Started</a>
+    <!-- Business Consulting Section -->
+    <section class="business-consulting container">
+        <div class="content">
+            <div class="text">
+                <h2>Excellence in Business Consulting</h2>
+                <p>Our seasoned consultants provide a deep understanding of your industry challenges, crafting bespoke solutions that not only meet but exceed expectations. With a focus on innovation and strategic insight, we ensure your business is positioned for long-term success and market leadership.</p>
+                <p>From market analysis to operational optimization, our consulting services embody precision, creativity, and excellence—tailored for a clientele that demands the very best.</p>
+                <a href="#contact" class="cta-button">Discover Our Approach</a>
+            </div>
+            <div class="image">
+                <img src="{% static 'images/consulting.jpg' %}" alt="Business Consulting Excellence">
+            </div>
         </div>
-        <div class="idea-image">
-            <img src="{% static 'images/idea.png' %}" alt="Lightbulb representing ideas">
-        </div>
-    </div>
-</section>
+    </section>
 
+    <!-- AI & Data Analytics Section -->
+    <section class="ai-data container">
+        <div class="content">
+            <div class="image">
+                <img src="{% static 'images/aianddata.jpg' %}" alt="AI & Data Analytics Solutions">
+            </div>
+            <div class="text">
+                <h2>Innovative AI & Data Analytics</h2>
+                <p>Unlock the potential of your data with our advanced AI solutions and data analytics services. We convert complex data sets into actionable insights, empowering you to make informed decisions that drive growth and foster innovation.</p>
+                <p>Our holistic approach integrates technology and strategy, ensuring your enterprise remains agile and ahead of the curve in today’s competitive landscape.</p>
+                <a href="#contact" class="cta-button">Explore Our Solutions</a>
+            </div>
+        </div>
+    </section>
 
-    <!-- Technologies Section -->
- <!-- Technologies We Excel In -->
-<section class="technologies">
-    <h2>Technologies We Excel In</h2>
-    <div class="tech-items">
-        <!-- Retained Technologies -->
-        <div class="tech-item">
-            <img src="{% static 'images/hadoop_logo.png' %}" alt="Hadoop">
+    <!-- Game Development & Project Management Section -->
+    <section class="game-dev container">
+        <div class="content">
+            <div class="text">
+                <h2>Game Development & Project Mastery</h2>
+                <p>Experience the synergy of creativity and technical expertise with our game development and project management services. We bring visionary concepts to life, delivering immersive experiences that captivate audiences and set new standards in digital entertainment.</p>
+                <p>Our meticulous process ensures every project is managed with the utmost precision, resulting in innovative products that reflect our commitment to excellence.</p>
+                <a href="#contact" class="cta-button">See Our Work</a>
+            </div>
+            <div class="image">
+                <img src="{% static 'images/gamedev.jpg' %}" alt="Creative Game Development">
+            </div>
         </div>
-        <div class="tech-item">
-            <img src="{% static 'images/pyspark_logo.webp' %}" alt="Apache Spark">
-        </div>
-        <div class="tech-item">
-            <img src="{% static 'images/Tableau-Logo.png' %}" alt="Tableau">
-        </div>
-        <div class="tech-item">
-            <img src="{% static 'images/PBI_logo.png' %}" alt="Power BI">
-        </div>
-        <div class="tech-item">
-            <img src="{% static 'images/Snowflake_logo.png' %}" alt="Snowflake">
-        </div>
-        <div class="tech-item">
-            <img src="{% static 'images/kafka_logo.png' %}" alt="Apache Kafka">
-        </div>
-        <div class="tech-item">
-            <img src="{% static 'images/alteryx_logo.png' %}" alt="Alteryx">
-        </div>
-        <div class="tech-item">
-            <img src="{% static 'images/qlikview_logo.png' %}" alt="QlikView">
-        </div>
-        <!-- Game-Related Technologies -->
-        <div class="tech-item">
-            <img src="{% static 'images/Unity_logo.png' %}" alt="Unity">
-        </div>
-        
-        <!-- Cloud Platforms -->
-        <div class="tech-item">
-            <img src="{% static 'images/aws_logo.svg' %}" alt="AWS">
-        </div>
-        <div class="tech-item">
-            <img src="{% static 'images/Azure_logo.svg' %}" alt="Azure">
-        </div>
-        <!-- Add more tech items as needed -->
-    </div>
-</section>
-<!-- Why Choose Us Section -->
-<section class="why-choose-us">
-    <h2>Why Choose Us</h2>
-    <div class="reasons">
-        <div class="reason-item">
-            <i class="fas fa-award"></i>
-            <h3>Expertise & Experience</h3>
-            <p>Our team consists of seasoned professionals with extensive experience in data analytics and business growth strategies.</p>
-        </div>
-        <div class="reason-item">
-            <i class="fas fa-user-friends"></i>
-            <h3>Client-Centric Approach</h3>
-            <p>We prioritize our clients' needs, offering personalized solutions that align with their unique objectives.</p>
-        </div>
-        <div class="reason-item">
-            <i class="fas fa-lightbulb"></i>
-            <h3>Innovative Solutions</h3>
-            <p>We leverage cutting-edge technologies to deliver innovative solutions that drive competitive advantage.</p>
-        </div>
-        <div class="reason-item">
-            <i class="fas fa-chart-line"></i>
-            <h3>Proven Results</h3>
-            <p>Our track record demonstrates our ability to help businesses achieve significant growth and operational efficiency.</p>
-        </div>
-        <div class="reason-item">
-            <i class="fas fa-shield-alt"></i>
-            <h3>Trust & Reliability</h3>
-            <p>We are committed to building long-term relationships based on trust, transparency, and reliability.</p>
-        </div>
-        <div class="reason-item">
-            <i class="fas fa-globe"></i>
-            <h3>Global Reach</h3>
-            <p>With a global presence, we have the insights and resources to support businesses worldwide.</p>
-        </div>
-    </div>
-</section>
+    </section>
 
     <!-- Process Section -->
-    <section class="process">
-        <h2>Our Process</h2>
+    <section class="process container">
+        <div class="section-header">
+            <h2>Our Refined Process</h2>
+            <p>From inception to execution, we deliver excellence at every stage.</p>
+        </div>
         <div class="steps">
             <div class="step">
                 <div class="step-number">1</div>
                 <div class="step-description">
-                    <strong>Discovery & Analysis:</strong> We begin by understanding your business goals, challenges, and requirements.
+                    <strong>Insight & Analysis:</strong> Deep-dive into your business landscape to identify opportunities and challenges.
                 </div>
             </div>
             <div class="step">
                 <div class="step-number">2</div>
                 <div class="step-description">
-                    <strong>Strategic Planning:</strong> Crafting a tailored strategy that aligns with your objectives and market trends.
+                    <strong>Strategic Design:</strong> Craft bespoke solutions that align with your vision and market dynamics.
                 </div>
             </div>
             <div class="step">
                 <div class="step-number">3</div>
                 <div class="step-description">
-                    <strong>Design & Development:</strong> Developing innovative solutions with cutting-edge technologies.
+                    <strong>Innovative Development:</strong> Utilize state-of-the-art technology and creativity to bring ideas to life.
                 </div>
             </div>
             <div class="step">
                 <div class="step-number">4</div>
                 <div class="step-description">
-                    <strong>Testing & Quality Assurance:</strong> Ensuring the highest quality through rigorous testing procedures.
+                    <strong>Quality Assurance:</strong> Rigorous testing and refinement to ensure perfection in every detail.
                 </div>
             </div>
             <div class="step">
                 <div class="step-number">5</div>
                 <div class="step-description">
-                    <strong>Deployment & Support:</strong> Launching your solution and providing ongoing support and optimization.
+                    <strong>Launch & Optimization:</strong> Seamless deployment with continuous support for sustained excellence.
                 </div>
             </div>
         </div>
     </section>
-<!-- Contact Us Directly Section -->
-
 
     <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <h2>Let's Start a Conversation</h2>
-        <div class="contact-form">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
+   <!-- Redesigned Contact / Partner Registration Section -->
+<section class="contact container" id="contact">
+    <div class="section-header">
+        <h2>Connect with Our Experts</h2>
+        <p>Begin a partnership built on innovation, trust, and excellence.</p>
+    </div>
+    <div class="contact-form">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.name }}
+            </div>
+            <div class="form-group">
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                {{ form.company_name }}
+            </div>
+            <div class="form-group">
+                {{ form.website }}
+            </div>
+            <div class="form-group">
+                {{ form.phone }}
+            </div>
+            <div class="form-group">
+                {{ form.message }}
+            </div>
+            <button type="submit" class="submit-btn">Get in Touch</button>
+        </form>
+    </div>
+</section>
 
-                <button type="submit" class="submit-btn">Contact Us</button>
-            </form>
-        </div>
-    </section>
-    
+<!-- Elegant CSS for the Redesigned Form -->
+<style>
+    .contact-form {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        margin-top: 40px;
+        backdrop-filter: blur(10px);
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-control {
+        width: 100%;
+        padding: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        background-color: transparent;
+        color: #fff;
+        font-size: 16px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-control::placeholder {
+        color: #bbb;
+    }
+    .form-control:focus {
+        border-color: #ffd700;
+        box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        outline: none;
+    }
+    .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background-color: #ffd700;
+        color: #000;
+        border: none;
+        border-radius: 4px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .submit-btn:hover {
+        background-color: #e5c100;
+    }
+</style>
+
+
+    <!-- Footer -->
+   
     {% endblock %}
 </html>

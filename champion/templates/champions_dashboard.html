@@ -6,8 +6,8 @@
 {% block title %}TCC | DASHBOARD{% endblock %}
 
 {% block content %}
-<!-- Load a premium font -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<!-- Load premium fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -15,105 +15,83 @@
     --gold: #FFD700; /* “Lux” gold */
     --gray: #b5b5b5;
     --dark-gray: #111;
+    --transition-speed: 0.3s;
   }
 
-  /********************************************
-   * GLOBAL RESETS & BASE STYLES
-   ********************************************/
-  * {
+  /* GLOBAL RESETS & BASE STYLES */
+  *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
-
   body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: var(--black);
     color: var(--gray);
-    line-height: 1.5;
+    line-height: 1.6;
+    overflow-x: hidden;
   }
-
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+  }
   a {
     text-decoration: none;
     color: inherit;
   }
 
-  /********************************************
-   * NAVIGATION BAR (TOP)
-   ********************************************/
-  .dashboard-nav {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: 1rem;
-    background-color: var(--black);
-    border-bottom: 1px solid #333;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    flex-wrap: wrap;
+  /* LAYOUT CONTAINER */
+  .dashboard-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1rem;
   }
 
-  .dashboard-nav a {
+  /* SIDEBAR NAVIGATION */
+  .dashboard-sidebar {
+    background-color: var(--black);
+    padding: 1.5rem 1rem;
+    border-right: 1px solid #333;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.4);
+  }
+  .dashboard-sidebar nav {
+    display: flex;
+    flex-direction: column;
+  }
+  .dashboard-sidebar .nav-link {
+    display: block;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    background-color: transparent;
     color: var(--gray);
     font-weight: 500;
-    padding: 0.8rem 1.2rem;
-    margin: 0.4rem;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 8px;
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
   }
-
-  .dashboard-nav a.active,
-  .dashboard-nav a:hover {
+  .dashboard-sidebar .nav-link.active,
+  .dashboard-sidebar .nav-link:hover {
     background-color: var(--gold);
     color: var(--black);
   }
 
-  /********************************************
-   * MAIN DASHBOARD CONTAINER
-   ********************************************/
-  .dashboard-content {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
+  /* MAIN CONTENT AREA */
+  .dashboard-main {
+    /* This area holds the profile header and all sections */
   }
-
-  /********************************************
-   * MESSAGES
-   ********************************************/
-  .messages {
-    margin-bottom: 1rem;
-  }
-
-  .alert {
-    padding: 1rem;
-    margin: 0.5rem 0;
-    border-radius: 5px;
-  }
-  .alert.success {
-    background-color: #4caf50; /* Example success color */
-    color: #fff;
-  }
-  .alert.error {
-    background-color: #f44336; /* Example error color */
-    color: #fff;
-  }
-
-  /********************************************
-   * PROFILE HEADER
-   ********************************************/
+  
+  /* PROFILE HEADER */
   .profile-header {
     background-color: var(--black);
     padding: 2rem;
     border-radius: 15px;
     display: flex;
     align-items: center;
-    margin-bottom: 2rem;
     flex-wrap: wrap;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    margin-bottom: 2rem;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
   }
-
-  /* Profile image container with overlay */
   .image-container {
     position: relative;
     width: 130px;
@@ -122,21 +100,28 @@
     margin-bottom: 1rem;
   }
   .profile-img {
-    width: 130px;
-    height: 130px;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--gold);
+    transition: transform var(--transition-speed);
+  }
+  .image-container:hover .profile-img {
+    transform: scale(1.05);
   }
   .overlay {
     position: absolute;
     top: 0; left: 0;
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--transition-speed);
   }
   .image-container:hover .overlay,
   .image-container:focus-within .overlay {
@@ -151,76 +136,86 @@
     cursor: pointer;
     font-weight: 600;
   }
-
   .profile-info {
     margin-left: 2rem;
     flex-grow: 1;
     min-width: 200px;
   }
   .profile-info h2 {
-    margin: 0 0 0.3rem 0;
     font-size: 2rem;
     color: var(--gold);
     font-weight: 600;
+    margin-bottom: 0.5rem;
   }
   .profile-info p {
-    margin: 0.2rem 0;
-    color: var(--gray);
     font-size: 1rem;
+    margin-bottom: 0.4rem;
   }
 
-  /********************************************
-   * SECTIONS
-   ********************************************/
+  /* SECTION CONTAINERS */
   .section {
     background-color: var(--black);
     padding: 2rem;
     border-radius: 15px;
     margin-bottom: 2rem;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
-    display: none; /* Hidden by default, shown via JS */
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    display: none;
+    transition: opacity var(--transition-speed);
   }
   .section.active {
-    display: block; /* Show when active */
+    display: block;
+    opacity: 1;
   }
-
   .section h3 {
-    margin-top: 0;
     font-size: 1.6rem;
     color: var(--gold);
     border-bottom: 1px solid #333;
-    padding-bottom: 1rem;
+    padding-bottom: 0.75rem;
     margin-bottom: 1.5rem;
     font-weight: 600;
   }
-
-  .section p,
-  .section li {
-    color: var(--gray);
+  .section p {
     margin-bottom: 1rem;
-    line-height: 1.5;
+    line-height: 1.6;
   }
-
+  /* PERSONAL INFO LISTS */
   .section ul {
-    list-style-type: disc;
-    padding-left: 1.5rem;
-    margin-top: 1rem;
+    list-style: none;
+    padding-left: 0;
+  }
+  .section ul li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 1rem;
+  }
+  .section ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6rem;
+    width: 10px;
+    height: 10px;
+    background-color: var(--gold);
+    border-radius: 50%;
   }
 
-  /********************************************
-   * COURSES & VIDEOS
-   ********************************************/
+  /* COURSES & VIDEOS */
   .course-item,
   .video-item {
     background-color: var(--dark-gray);
     padding: 1rem;
     margin: 1.5rem 0;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.15);
+    transition: transform var(--transition-speed);
+  }
+  .course-item:hover,
+  .video-item:hover {
+    transform: translateY(-5px);
   }
   .course-item h4,
   .video-item h4 {
-    margin: 0 0 0.5rem 0;
+    margin-bottom: 0.5rem;
   }
   .course-item p,
   .video-item p {
@@ -228,18 +223,20 @@
   }
   .course-item a,
   .video-item a {
-    text-decoration: none;
-    color: var(--black);
     background-color: var(--gold);
+    color: var(--black);
     padding: 0.5rem 1rem;
     border-radius: 4px;
     font-weight: 500;
     display: inline-block;
+    transition: background-color var(--transition-speed);
+  }
+  .course-item a:hover,
+  .video-item a:hover {
+    background-color: #e5c100;
   }
 
-  /********************************************
-   * FORMS
-   ********************************************/
+  /* FORMS */
   .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -267,6 +264,13 @@
     background-color: #1a1a1a;
     color: #fff;
     font-size: 1rem;
+    transition: border-color var(--transition-speed);
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: var(--gold);
   }
   .form-group textarea {
     resize: vertical;
@@ -276,8 +280,6 @@
     font-size: 0.9rem;
     margin-top: 0.3rem;
   }
-
-  /* Button general styles */
   .btn-primary {
     background-color: var(--gold);
     color: var(--black);
@@ -286,7 +288,7 @@
     border-radius: 5px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color var(--transition-speed);
   }
   .btn-primary:hover {
     background-color: #e5c100;
@@ -301,10 +303,12 @@
     cursor: pointer;
   }
 
-  /********************************************
-   * RESPONSIVE BREAKPOINTS
-   ********************************************/
+  /* RESPONSIVE BREAKPOINTS */
   @media (max-width: 992px) {
+    .dashboard-container {
+      margin-top:100px;
+      grid-template-columns: 1fr;
+    }
     .profile-header {
       flex-direction: column;
       align-items: flex-start;
@@ -314,313 +318,265 @@
       margin-top: 1.5rem;
     }
   }
-
   @media (max-width: 768px) {
     .form-grid {
       grid-template-columns: 1fr;
     }
   }
-
-  @media (max-width: 480px) {
-    .dashboard-nav {
-      flex-direction: column;
-    }
-    .dashboard-nav a {
-      margin: 0.3rem 0;
-    }
-    .profile-info h2 {
-      font-size: 1.4rem;
-    }
-    .section h3 {
-      font-size: 1.3rem;
-    }
-  }
 </style>
 
-<div class="dashboard-nav">
-  <a href="#" class="nav-link active" onclick="showContent('PersonalInfo')">Personal Info</a>
-  <a href="#" class="nav-link" onclick="showContent('Courses')">My Library</a>
-  <a href="#" class="nav-link" onclick="showContent('Settings')">Settings</a>
-  <a href="#" class="nav-link" onclick="showContent('PrivacySettings')">Privacy</a>
-</div>
+<div class="dashboard-container">
+  <!-- Sidebar Navigation -->
+  <aside class="dashboard-sidebar">
+    <nav>
+      <a href="#" class="nav-link active" onclick="showContent('PersonalInfo')">Personal Info</a>
+      <a href="#" class="nav-link" onclick="showContent('Courses')">My Library</a>
+      <a href="#" class="nav-link" onclick="showContent('Settings')">Settings</a>
+      <a href="#" class="nav-link" onclick="showContent('PrivacySettings')">Privacy</a>
+    </nav>
+  </aside>
 
-<div class="dashboard-content">
-  <!-- Django messages -->
-  {% if messages %}
-    <div class="messages">
-      {% for message in messages %}
-        <div class="alert {{ message.tags }}">{{ message }}</div>
-      {% endfor %}
-    </div>
-  {% endif %}
+  <!-- Main Content Area -->
+  <div class="dashboard-main">
+    <!-- Django messages -->
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
 
-  <!-- PROFILE HEADER -->
-  <div class="profile-header">
-    <div class="image-container">
-      {% if registration.profile_image %}
-        <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="profile-img">
-      {% else %}
-        <img src="{% static 'images/default_profile.png' %}" alt="Profile Image" class="profile-img">
-      {% endif %}
-      <div class="overlay">
-        <form id="image-update-form" action="{% url 'champions_dashboard' %}" method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <input type="file" id="profileImageInput" name="profile_image" accept="image/*" style="display: none;">
-          <button type="button" class="update-btn" onclick="triggerFileInput()">Update Image</button>
-        </form>
+    <!-- PROFILE HEADER -->
+    <div class="profile-header">
+      <div class="image-container">
+        {% if registration.profile_image %}
+          <img src="{{ registration.profile_image.url }}" alt="Profile Image" class="profile-img">
+        {% else %}
+          <img src="{% static 'images/default_profile.png' %}" alt="Profile Image" class="profile-img">
+        {% endif %}
+        <div class="overlay">
+          <form id="image-update-form" action="{% url 'champions_dashboard' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" id="profileImageInput" name="profile_image" accept="image/*" style="display: none;">
+            <button type="button" class="update-btn" onclick="triggerFileInput()">Update Image</button>
+          </form>
+        </div>
+      </div>
+      <div class="profile-info">
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+        <p>{{ registration.designation }}</p>
+        <p>{{ user.email }}</p>
+        <p>{{ registration.phone }}</p>
       </div>
     </div>
-    <div class="profile-info">
-      <h2>{{ user.first_name }} {{ user.last_name }}</h2>
-      <p>{{ registration.designation }}</p>
-      <p>{{ user.email }}</p>
-      <p>{{ registration.phone }}</p>
-    </div>
-  </div>
 
-  <!-- Scripts for updating profile image -->
-  <script>
-    function triggerFileInput() {
-      document.getElementById('profileImageInput').click();
-    }
-    document.getElementById('profileImageInput').addEventListener('change', function() {
-      if (this.files.length > 0) {
-        document.getElementById('image-update-form').submit();
-      } else {
-        console.error("No file selected.");
+    <!-- Script for updating profile image -->
+    <script>
+      function triggerFileInput() {
+        document.getElementById('profileImageInput').click();
       }
-    });
-  </script>
+      document.getElementById('profileImageInput').addEventListener('change', function() {
+        if (this.files.length > 0) {
+          document.getElementById('image-update-form').submit();
+        } else {
+          console.error("No file selected.");
+        }
+      });
+    </script>
 
-  <!-- PERSONAL INFO SECTION -->
-  <div id="PersonalInfo" class="section active">
-    <h3>Bio</h3>
-    <p>{{ registration.bio }}</p>
+    <!-- PERSONAL INFO SECTION -->
+    <div id="PersonalInfo" class="section active">
+      <h3>Bio</h3>
+      <p>{{ registration.bio }}</p>
 
-    <h3>Personality</h3>
-    <ul>
-      <li>{{ registration.personality_traits }}</li>
-    </ul>
+      <h3>Personality</h3>
+      <ul>
+        <li>{{ registration.personality_traits }}</li>
+      </ul>
 
-    <h3>Skills</h3>
-    <ul>
-      <li>{{ registration.skills }}</li>
-    </ul>
+      <h3>Skills</h3>
+      <ul>
+        <li>{{ registration.skills }}</li>
+      </ul>
 
-    <h3>Motivations</h3>
-    <ul>
-      <li>{{ registration.motivations }}</li>
-    </ul>
+      <h3>Motivations</h3>
+      <ul>
+        <li>{{ registration.motivations }}</li>
+      </ul>
 
-    <h3>Goals</h3>
-    <ul>
-      <li>{{ registration.goals }}</li>
-    </ul>
+      <h3>Goals</h3>
+      <ul>
+        <li>{{ registration.goals }}</li>
+      </ul>
 
-    <h3>Achievements</h3>
-    <ul>
-      <li>{{ registration.achievements }}</li>
-    </ul>
-  </div>
-
-  <!-- COURSES SECTION -->
-  <div id="Courses" class="section">
-    <h3>Courses Enrolled In</h3>
-    <div class="courses-list">
-      {% for enrollment in enrollments %}
-        <div class="course-item">
-          <h4>{{ enrollment.course.title }}</h4>
-          <p>{{ enrollment.course.description|truncatewords:50 }}</p>
-          <a href="{% url 'course_content' enrollment.course.id %}" class="btn-primary">Go to Course</a>
-        </div>
-      {% endfor %}
+      <h3>Achievements</h3>
+      <ul>
+        <li>{{ registration.achievements }}</li>
+      </ul>
     </div>
 
-    <h3>Last Watched Videos</h3>
-    <div class="videos-list">
-      {% for status in watched_videos %}
-        <div class="video-item">
-          <h4>{{ status.video.title }}</h4>
-          <p>Last Watched: {{ status.last_watched_time }}</p>
-          <a href="{% url 'video_play' status.video.id %}" class="btn-primary">Watch Remaining</a>
-        </div>
-      {% endfor %}
+    <!-- COURSES SECTION -->
+    <div id="Courses" class="section">
+      <h3>Courses Enrolled In</h3>
+      <div class="courses-list">
+        {% for enrollment in enrollments %}
+          <div class="course-item">
+            <h4>{{ enrollment.course.title }}</h4>
+            <p>{{ enrollment.course.description|truncatewords:50 }}</p>
+            <a href="{% url 'course_content' enrollment.course.id %}" class="btn-primary">Go to Course</a>
+          </div>
+        {% endfor %}
+      </div>
+
+      <h3>Last Watched Videos</h3>
+      <div class="videos-list">
+        {% for status in watched_videos %}
+          <div class="video-item">
+            <h4>{{ status.video.title }}</h4>
+            <p>Last Watched: {{ status.last_watched_time }}</p>
+            <a href="{% url 'video_play' status.video.id %}" class="btn-primary">Watch Remaining</a>
+          </div>
+        {% endfor %}
+      </div>
     </div>
-  </div>
 
-  <!-- SETTINGS SECTION -->
-  <div id="Settings" class="section">
-    <h3>Profile Settings</h3>
-    <form method="post" class="form-grid" enctype="multipart/form-data">
-      {% csrf_token %}
+    <!-- SETTINGS SECTION -->
+    <div id="Settings" class="section">
+      <h3>Profile Settings</h3>
+      <form method="post" class="form-grid" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- First Name -->
+        <div class="form-group">
+          <label for="first_name">First Name</label>
+          <input type="text" id="first_name" name="first_name" value="{{ form.first_name.value|default:user.first_name }}" required>
+          {% if form.first_name.errors %}
+            <div class="error">{{ form.first_name.errors.0 }}</div>
+          {% endif %}
+        </div>
+        <!-- Last Name -->
+        <div class="form-group">
+          <label for="last_name">Last Name</label>
+          <input type="text" id="last_name" name="last_name" value="{{ form.last_name.value|default:user.last_name }}" required>
+          {% if form.last_name.errors %}
+            <div class="error">{{ form.last_name.errors.0 }}</div>
+          {% endif %}
+        </div>
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" value="{{ form.email.value|default:user.email }}" required>
+          {% if form.email.errors %}
+            <div class="error">{{ form.email.errors.0 }}</div>
+          {% endif %}
+        </div>
+        <!-- Phone -->
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="text" id="phone" name="phone" value="{{ form.phone.value|default:registration.phone }}">
+          {% if form.phone.errors %}
+            <div class="error">{{ form.phone.errors.0 }}</div>
+          {% endif %}
+        </div>
+        <!-- Bio -->
+        <div class="form-group">
+          <label for="bio">Bio</label>
+          <textarea id="bio" name="bio">{{ form.bio.value|default:registration.bio }}</textarea>
+          {% if form.bio.errors %}
+            <div class="error">{{ form.bio.errors.0 }}</div>
+          {% endif %}
+        </div>
+        <!-- Designation -->
+        <div class="form-group">
+          <label for="designation">Designation</label>
+          <input type="text" id="designation" name="designation" value="{{ form.designation.value|default:registration.designation }}">
+        </div>
+        <!-- Personality Traits -->
+        <div class="form-group">
+          <label for="personality_traits">Personality Traits</label>
+          <textarea id="personality_traits" name="personality_traits">{{ form.personality_traits.value|default:registration.personality_traits }}</textarea>
+        </div>
+        <!-- Skills -->
+        <div class="form-group">
+          <label for="skills">Skills</label>
+          <textarea id="skills" name="skills">{{ form.skills.value|default:registration.skills }}</textarea>
+        </div>
+        <!-- Motivations -->
+        <div class="form-group">
+          <label for="motivations">Motivations</label>
+          <textarea id="motivations" name="motivations">{{ form.motivations.value|default:registration.motivations }}</textarea>
+        </div>
+        <!-- Goals -->
+        <div class="form-group">
+          <label for="goals">Goals</label>
+          <textarea id="goals" name="goals">{{ form.goals.value|default:registration.goals }}</textarea>
+        </div>
+        <!-- Achievements -->
+        <div class="form-group">
+          <label for="achievements">Achievements</label>
+          <textarea id="achievements" name="achievements">{{ form.achievements.value|default:registration.achievements }}</textarea>
+        </div>
+        <!-- Update Button -->
+        <div style="grid-column: span 2;">
+          <button type="submit" name="update_info" class="btn-primary" style="width: 100%;">Update Information</button>
+        </div>
+      </form>
+    </div>
 
-      <!-- First Name -->
-      <div class="form-group">
-        <label for="first_name">First Name</label>
-        <input type="text" id="first_name" name="first_name" 
-               value="{{ form.first_name.value|default:user.first_name }}" required>
-        {% if form.first_name.errors %}
-          <div class="error">{{ form.first_name.errors.0 }}</div>
-        {% endif %}
-      </div>
-
-      <!-- Last Name -->
-      <div class="form-group">
-        <label for="last_name">Last Name</label>
-        <input type="text" id="last_name" name="last_name"
-               value="{{ form.last_name.value|default:user.last_name }}" required>
-        {% if form.last_name.errors %}
-          <div class="error">{{ form.last_name.errors.0 }}</div>
-        {% endif %}
-      </div>
-
-      <!-- Email -->
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email"
-               value="{{ form.email.value|default:user.email }}" required>
-        {% if form.email.errors %}
-          <div class="error">{{ form.email.errors.0 }}</div>
-        {% endif %}
-      </div>
-
-      <!-- Phone -->
-      <div class="form-group">
-        <label for="phone">Phone</label>
-        <input type="text" id="phone" name="phone" value="{{ form.phone.value|default:registration.phone }}">
-        {% if form.phone.errors %}
-          <div class="error">{{ form.phone.errors.0 }}</div>
-        {% endif %}
-      </div>
-
-      <!-- Bio -->
-      <div class="form-group">
-        <label for="bio">Bio</label>
-        <textarea id="bio" name="bio">{{ form.bio.value|default:registration.bio }}</textarea>
-        {% if form.bio.errors %}
-          <div class="error">{{ form.bio.errors.0 }}</div>
-        {% endif %}
-      </div>
-
-      <!-- Designation -->
-      <div class="form-group">
-        <label for="designation">Designation</label>
-        <input type="text" id="designation" name="designation"
-               value="{{ form.designation.value|default:registration.designation }}">
-      </div>
-
-      <!-- Personality Traits -->
-      <div class="form-group">
-        <label for="personality_traits">Personality Traits</label>
-        <textarea id="personality_traits" name="personality_traits">
-          {{ form.personality_traits.value|default:registration.personality_traits }}
-        </textarea>
-      </div>
-
-      <!-- Skills -->
-      <div class="form-group">
-        <label for="skills">Skills</label>
-        <textarea id="skills" name="skills">{{ form.skills.value|default:registration.skills }}</textarea>
-      </div>
-
-      <!-- Motivations -->
-      <div class="form-group">
-        <label for="motivations">Motivations</label>
-        <textarea id="motivations" name="motivations">
-          {{ form.motivations.value|default:registration.motivations }}
-        </textarea>
-      </div>
-
-      <!-- Goals -->
-      <div class="form-group">
-        <label for="goals">Goals</label>
-        <textarea id="goals" name="goals">{{ form.goals.value|default:registration.goals }}</textarea>
-      </div>
-
-      <!-- Achievements -->
-      <div class="form-group">
-        <label for="achievements">Achievements</label>
-        <textarea id="achievements" name="achievements">
-          {{ form.achievements.value|default:registration.achievements }}
-        </textarea>
-      </div>
-
-      <!-- Update Information Button -->
-      <div style="grid-column: span 2;">
-        <button type="submit" name="update_info" class="btn-primary" style="width: 100%;">
-          Update Information
-        </button>
-      </div>
-    </form>
-  </div>
-
-  <!-- PRIVACY SETTINGS SECTION -->
-  <div id="PrivacySettings" class="section">
-    <h3>Privacy Settings</h3>
-    <!-- Password Change Form -->
-    <form method="post" action="{% url 'change_password' %}" class="form-grid">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="current_password">Current Password</label>
-        <input type="password" id="current_password" name="current_password" required>
-      </div>
-
-      <div class="form-group">
-        <label for="new_password">New Password</label>
-        <input type="password" id="new_password" name="new_password" required>
-      </div>
-
-      <div class="form-group">
-        <label for="confirm_password">Confirm New Password</label>
-        <input type="password" id="confirm_password" name="confirm_password" required>
-      </div>
-
-      <div style="grid-column: span 2;">
-        <button type="submit" class="btn-primary" style="width: 100%; max-width: 200px;">
-          Change Password
-        </button>
-      </div>
-    </form>
-
-    <!-- Deactivate Account Form -->
-    <form method="post" action="{% url 'delete_account' %}">
-      {% csrf_token %}
-      <div class="delete-account-section" style="margin-top: 2rem;">
-        <p style="color: #ff0000; font-weight: 600; margin-bottom: 1rem;">
-          Please note that once you deactivate your account, your data will be retained for 90 days.
-          During this period, you can reactivate your account by logging in. After 90 days, all your
-          data will be permanently removed from our database, and you will not be able to rejoin
-          as a champion.
-        </p>
-        <p style="color: var(--gray); font-weight: 400; margin-bottom: 1rem;">
-          If you proceed with deactivation, your account will be immediately disabled.
-          You can contact support within the 90-day period if you wish to recover your account.
-          After the retention period, all your data will be irrevocably deleted.
-        </p>
-        <button type="submit" class="btn-danger" style="min-width: 170px; margin-top: 1rem;">
-          Deactivate Account
-        </button>
-      </div>
-    </form>
+    <!-- PRIVACY SETTINGS SECTION -->
+    <div id="PrivacySettings" class="section">
+      <h3>Privacy Settings</h3>
+      <!-- Password Change Form -->
+      <form method="post" action="{% url 'change_password' %}" class="form-grid">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="current_password">Current Password</label>
+          <input type="password" id="current_password" name="current_password" required>
+        </div>
+        <div class="form-group">
+          <label for="new_password">New Password</label>
+          <input type="password" id="new_password" name="new_password" required>
+        </div>
+        <div class="form-group">
+          <label for="confirm_password">Confirm New Password</label>
+          <input type="password" id="confirm_password" name="confirm_password" required>
+        </div>
+        <div style="grid-column: span 2;">
+          <button type="submit" class="btn-primary" style="width: 100%; max-width: 200px;">Change Password</button>
+        </div>
+      </form>
+      <!-- Deactivate Account Form -->
+      <form method="post" action="{% url 'delete_account' %}">
+        {% csrf_token %}
+        <div class="delete-account-section" style="margin-top: 2rem;">
+          <p style="color: #ff0000; font-weight: 600; margin-bottom: 1rem;">
+            Please note that once you deactivate your account, your data will be retained for 90 days.
+            During this period, you can reactivate your account by logging in. After 90 days, all your data will be permanently removed from our database, and you will not be able to rejoin as a champion.
+          </p>
+          <p style="color: var(--gray); font-weight: 400; margin-bottom: 1rem;">
+            If you proceed with deactivation, your account will be immediately disabled.
+            You can contact support within the 90-day period if you wish to recover your account.
+            After the retention period, all your data will be irrevocably deleted.
+          </p>
+          <button type="submit" class="btn-danger" style="min-width: 170px; margin-top: 1rem;">Deactivate Account</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 
-<!-- JS to show/hide sections -->
+<!-- JS to toggle sections -->
 <script>
   function showContent(sectionId) {
-    // Hide all sections
     document.querySelectorAll('.section').forEach(section => {
       section.classList.remove('active');
     });
-    // Show the targeted section
     document.getElementById(sectionId).classList.add('active');
-
-    // Remove 'active' from all nav links
-    document.querySelectorAll('.dashboard-nav a').forEach(link => {
+    
+    document.querySelectorAll('.dashboard-sidebar .nav-link').forEach(link => {
       link.classList.remove('active');
     });
-    // Add 'active' to the clicked link
-    document.querySelector(`.dashboard-nav a[onclick="showContent('${sectionId}')"]`).classList.add('active');
+    document.querySelector(`.dashboard-sidebar .nav-link[onclick="showContent('${sectionId}')"]`).classList.add('active');
   }
 </script>
 {% endblock %}

@@ -1,9 +1,12 @@
 <!-- careers/templates/careers/job_detail.html -->
-
 {% extends 'base1.html' %}
+{% load static %}
+
 
 {% block title %}{{ job.title }}{% endblock %}
-
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/career_styles.css' %}">
+{% endblock %}
 {% block content %}
 {% if messages %}
     <ul class="messages">

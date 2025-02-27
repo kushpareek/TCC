@@ -1,7 +1,10 @@
 <!-- careers/templates/careers/job_apply.html -->
-
 {% extends 'base1.html' %}
+{% load static %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/career_styles.css' %}">
+{% endblock %}
 {% block title %}Apply for {{ job.title }}{% endblock %}
 
 {% block content %}

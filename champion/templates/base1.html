@@ -39,6 +39,16 @@
 </head>
 
 <body>
+<style>
+
+h4 {
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 15px;
+    background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+</style>
   <iframe src="/background-music/" style="display:none;" id="music-frame" allow="autoplay"></iframe>
 
   
@@ -284,6 +294,42 @@
       muteIcon.classList.add("fa-volume-mute");
     }
   }
+  function toggleMenu() {
+    const menuIcon = document.querySelector('.menu-icon');
+    const navLinks = document.getElementById('nav-links');
+    const navbar = document.querySelector('.top-navbar'); // Select the navbar
+
+    menuIcon.classList.toggle('open');
+    navLinks.classList.toggle('show');
+
+    // Change opacity based on menu state
+    if (navLinks.classList.contains('show')) {
+        navbar.style.opacity = "1"; // Fully visible when menu opens
+    } else {
+        navbar.style.opacity = "{{ navbar_opacity|default:'1' }}"; // Revert to original opacity
+    }
+}
+document.addEventListener('DOMContentLoaded', function() {
+  const dropdownLinks = document.querySelectorAll('.dropdown > a');
+  
+  dropdownLinks.forEach(function(dropdownLink) {
+      dropdownLink.addEventListener('click', function(e) {
+          e.preventDefault(); // Prevent default link behavior
+          
+          const dropdown = this.parentElement; // Get the parent <li> element
+
+          // Toggle the 'show' class to show or hide the dropdown
+          dropdown.classList.toggle('show');
+
+          // Close any other open dropdowns
+          document.querySelectorAll('.dropdown').forEach(function(otherDropdown) {
+              if (otherDropdown !== dropdown) {
+                  otherDropdown.classList.remove('show');
+              }
+          });
+      });
+  });
+});
 </script>
 
 {% block content %}{% endblock %}

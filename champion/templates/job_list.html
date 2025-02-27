@@ -1,9 +1,11 @@
 <!-- careers/templates/careers/job_list.html -->
 
 {% extends 'base1.html' %}
-
+{% load static %}
 {% block title %}TCC | Job Openings{% endblock %}
-
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/career_styles.css' %}">
+{% endblock %}
 {% block content %}
 <section class="job-search">
     <h2>Find Your Next Opportunity</h2>

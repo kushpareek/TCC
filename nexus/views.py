@@ -209,9 +209,9 @@ def retweet(request, tweet_id):
     if original_tweet.registration != request.user.registration:
             
             Notification.objects.create(
-            user=the_owner_of_the_tweet,
-            target_tweet=the_current_tweet,
-            message="Someone commented on your tweet!"
+            user=original_tweet.registration.user,
+            target_tweet=new_tweet,
+            message=f"Your Tweet was retweeted by {request.user.username}"
         )
 
     return redirect('home')
