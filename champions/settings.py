@@ -13,21 +13,56 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from django.conf import settings
 from django.conf.urls.static import static
+import os
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ean#ub7o)9we4i+ep1!dz3t*luxeqnua^j!x#b6y4=lgsi1#u('
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} {name} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/django.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
 
 # Application definition
 
@@ -42,19 +77,16 @@ INSTALLED_APPS = [
      'crispy_forms',
     'crispy_bootstrap4',
     'paypal.standard.ipn',
-    'Team_dashboard',
     'channels',
     'ckeditor',
     'storages',
-    'nexus',
 ]
-X_FRAME_OPTIONS = 'SAMEORIGIN'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'  # or 'bootstrap5' or any other pack you use
 PAYPAL_RECEIVER_EMAIL = 'sb-dnlrv32270792@business.example.com'
 
 PAYPAL_TEST = True
-RAZORPAY_KEY_ID = 'rzp_test_wdTOpH9mNp17DE'
-RAZORPAY_KEY_SECRET = 'bAXbGVKOTPUghSx6ZokPZwZT'
+RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID')
+RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET')
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -62,7 +94,6 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'champion.middleware.PendingApprovalMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 ROOT_URLCONF = 'champions.urls'
@@ -79,7 +110,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
-                'nexus.notifications.notifications_count_processor',
             ],
         },
     },
@@ -99,15 +129,11 @@ STATICFILES_DIRS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'champion_db',
-        'USER': 'root',  # Default XAMPP MySQL user
-        'PASSWORD': '',  # Leave empty if there's no password
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'use_unicode': True,
-        },
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER':  os.getenv('DATABASE_USER'),  # Default XAMPP MySQL user
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),  # Leave empty if there's no password
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
 
@@ -122,11 +148,11 @@ DATABASES = {
 #     }
 # }
 # settings.py
-BREVO_SMTP_USERNAME = 'kpkbon@gmail.com'
-BREVO_SMTP_PASSWORD = 'xsmtpsib-93e2dba31e0798288d4e0114bdd1f10ddb85ef59a7b4d91f77747e5799a069ff-PXvw6ycDsO4jQaZF'
+BREVO_SMTP_USERNAME = os.getenv('BREVO_SMTP_USERNAME')
+BREVO_SMTP_PASSWORD = os.getenv('BREVO_SMTP_PASSWORD')
 
 # Default email settings
-DEFAULT_FROM_EMAIL = 'Service@thechampionsclub.com'
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_PORT = 587
@@ -192,11 +218,11 @@ LOGIN_URL = '/login/'
 
 # # In production, STATIC_ROOT is used to collect static files into a single directory
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # This is only used in production
-AWS_ACCESS_KEY_ID = 'AKIAR56Q2FALOZSAAMPZ'
-AWS_SECRET_ACCESS_KEY = 'KzGyOrBAtMSs8dqnPpgMVU02zMTQeWQGBdg5+CAj'
-AWS_STORAGE_BUCKET_NAME = 'thechampionsclubmedia'
-AWS_S3_REGION_NAME = 'ap-south-1'  # Replace with your bucket's region
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.ap-south-1.amazonaws.com'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')  # Replace with your bucket's region
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
 
 # Caching and Static Settings
 AWS_S3_FILE_OVERWRITE = False
