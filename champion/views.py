@@ -2662,6 +2662,8 @@ def associate_membership(request):
     return render(request,'associate_membership.html',context)
 
 from django.shortcuts import render
+from django.views.decorators.clickjacking import xframe_options_exempt
 
+@xframe_options_exempt
 def background_music(request):
     return render(request, 'background_music.html')
