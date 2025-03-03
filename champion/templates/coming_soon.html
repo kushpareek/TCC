@@ -1,80 +1,195 @@
 {% extends 'base1.html' %}
-
-{% block title %}Coming Soon{% endblock %}
 {% load static %}
+
+{% block title %}Coming Soon | Nexus{% endblock %}
+
 {% block content %}
 <style>
     body {
-        background: url("{% static 'images/Nexus_Soon.png' %}");
-        background-repeat: no-repeat;
+        background: url("{% static 'images/Nexus_Soon.png' %}") no-repeat center center fixed;
         background-size: cover;
-        background-position: center;
-        color: #fff;
+       
         margin: 0;
         font-family: 'Montserrat', sans-serif;
+        color: #fff;
+        overflow-x: hidden;
     }
-
+    a {
+        color: #d4af37;
+        text-decoration: none;
+    }
+    /* Animation Keyframes */
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    /* Container */
     .container {
-        text-align: center;
+        min-height: 100vh;
+        padding: 20px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        padding: 20px;
+        text-align: center;
     }
-
-    .text-container {
-        margin-bottom: 20px;
-        max-width: 80%;
-    }
-
-    .app-name {
-        font-size: 3rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-        color: #f1c40f;
-    }
-
-    .tagline {
-        font-size: 1.1rem;
-        font-weight: 400;
-        margin-bottom: 30px;
-        color: #bbb;
-        line-height: 1.5;
-        text-transform: uppercase;
-    }
-
-    .coming-soon {
-        font-size: 1.5rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #f1c40f;
+    /* Hero Section */
+    .hero {
         margin-bottom: 40px;
     }
-
-@media (max-width:1090px){
-    .container {
-        text-align: center;
+    .hero h1 {
+        font-size: 4rem; /* Reduced size */
+        font-weight: 900;
+        letter-spacing: 3px;
+        margin-bottom: 15px;
+        color: #d4af37; /* Gold Accent */
+        opacity: 0;
+        animation: fadeInUp 1.5s ease-out forwards;
+        animation-delay: 0.5s;
+    }
+    .hero p {
+        font-size: 1.2rem; /* Reduced size */
+        line-height: 1.5;
+        max-width: 800px;
+        color: #aaa;
+        margin-bottom: 30px;
+        opacity: 0;
+        animation: fadeInUp 1.5s ease-out forwards;
+        animation-delay: 1s;
+    }
+    /* Subscription Form */
+    .subscription-form {
+        margin-bottom: 40px;
+        opacity: 0;
+        animation: fadeInUp 1.5s ease-out forwards;
+        animation-delay: 1.5s;
+    }
+    .subscription-form form {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        margin-top:100px;
-        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 15px 25px; /* Reduced padding */
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        transition: transform 0.3s ease;
     }
-}
-   
+    .subscription-form form:hover {
+        transform: scale(1.02);
+    }
+    .subscription-form input[type="email"] {
+        padding: 12px;
+        width: 280px;
+        border: none;
+        border-radius: 5px;
+        margin: 8px;
+        font-size: 1rem;
+        outline: none;
+        background: #111;
+        color: #fff;
+    }
+    .subscription-form input[type="email"]::placeholder {
+        color: #555;
+    }
+    .subscription-form button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #d4af37;
+        color: #000;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin: 8px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .subscription-form button:hover {
+        background-color: #c29c31;
+        transform: scale(1.05);
+    }
+    /* Info Section */
+    .info-section {
+        max-width: 700px;
+        margin: 30px auto;
+        text-align: left;
+        opacity: 0;
+        animation: fadeInUp 1.5s ease-out forwards;
+        animation-delay: 2s;
+    }
+    .info-section h2 {
+        font-size: 2rem; /* Reduced size */
+        color: #d4af37;
+        margin-bottom: 15px;
+        letter-spacing: 2px;
+    }
+    .info-section p {
+        font-size: 1rem; /* Reduced size */
+        line-height: 1.6;
+        color: #ccc;
+        margin-bottom: 15px;
+    }
+    /* Message Styles */
+    .messages {
+        margin-top: 30px;
+        opacity: 0;
+        animation: fadeInUp 1.5s ease-out forwards;
+        animation-delay: 2.5s;
+    }
+    .messages p {
+        font-size: 0.9rem;
+        color: #f8d568;
+    }
+    @media (max-width: 768px) {
+        .hero h1 {
+            margin-top:100px;
+            font-size: 3rem;
+        }
+        .subscription-form input[type="email"] {
+            width: 220px;
+        }
+    }
 </style>
 
 <div class="container">
-    <div class="text-container">
-        <h1 class="app-name">NEXUS</h1>
-        <p class="tagline">A platform built exclusively for champions. Share, inspire, and connect like never before.</p>
-        <p class="coming-soon">Coming Soon</p>
+    <div class="hero">
+        <h1>NEXUS</h1>
+        <p>
+            Nexus is the pinnacle of professional networking—a refined platform for elite visionaries and industry leaders. Every detail is crafted with precision.
+        </p>
     </div>
-   
     
+    <div class="subscription-form">
+        <form method="POST" action="">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <button type="submit">Join the Exclusive List</button>
+        </form>
+    </div>
+    
+    <div class="info-section">
+        <h2>About Nexus</h2>
+        <p>
+            At Nexus, every detail is meticulously refined to create an extraordinary networking experience. Connect with influential professionals and forge unparalleled partnerships.
+        </p>
+        <p>
+            Experience bespoke events and tailored opportunities where your aspirations align with elite connections. This is networking redefined.
+        </p>
+    </div>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

@@ -2524,21 +2524,33 @@ def course_soon(request):
     return render(request,'courses_coming_soon.html')
 
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Subscriber  # Ensure you have created this model
+
 def coming_soon_page(request):
     try:
         registration = request.user.registration
     except AttributeError:
         registration = None
-        
-    
-    
+
+    if request.method == "POST":
+        email = request.POST.get('email')
+        if email:
+            # Check if the email is already subscribed
+            if Subscriber.objects.filter(email=email).exists():
+                messages.error(request, "You are already subscribed.")
+            else:
+                Subscriber.objects.create(email=email)
+                messages.success(request, "Thank you for subscribing!")
+        # Redirect to prevent re-submission on page refresh
+        return redirect('coming_soon')  # Adjust this URL name as needed
 
     context = {
-        
         'registration': registration,
-        # Pass the courses to the context
     }
-    return render(request,'coming_soon.html',context)
+    return render(request, 'coming_soon.html', context)
+
 def credits(request):
     try:
         registration = request.user.registration
