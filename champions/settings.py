@@ -82,7 +82,6 @@ INSTALLED_APPS = [
     'storages',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'  # or 'bootstrap5' or any other pack you use
-PAYPAL_RECEIVER_EMAIL = 'sb-dnlrv32270792@business.example.com'
 
 PAYPAL_TEST = True
 RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID')
@@ -137,16 +136,7 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'champions_db',
-#         'USER': 'codex',  # Default XAMPP MySQL user
-#         'PASSWORD': 'Hacker@9829593419',  # Leave empty if there's no password
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#     }
-# }
+
 # settings.py
 BREVO_SMTP_USERNAME = os.getenv('BREVO_SMTP_USERNAME')
 BREVO_SMTP_PASSWORD = os.getenv('BREVO_SMTP_PASSWORD')
